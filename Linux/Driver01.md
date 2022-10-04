@@ -1,4 +1,4 @@
-# Linux Driver Programming 01 Linux Kernel Module
+# Linux Driver Programming 01 Kernel Module
 
 [toc]
 
@@ -249,4 +249,3 @@ kernel_modules:
 clean:
     make -C /lib/modules/$(KVERS)/build M=$(CURDIR) clean
 ```
-
