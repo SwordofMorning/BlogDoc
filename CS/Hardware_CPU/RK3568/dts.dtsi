@@ -158,9 +158,9 @@
 	// };
 
 	adc_keys_0: adc-keys-0 {
-		compatible = "adc-keys";
+		compatible = "adc-keys-0";
 		io-channels = <&saradc 0>;
-		io-channel-names = "buttons";
+		io-channel-names = "buttons-0";
 		keyup-threshold-microvolt = <1800000>;
 		poll-interval = <100>;
 
@@ -193,66 +193,61 @@
 		};
 	};
 
-	// adc_keys_2: adc-keys-2 {
-	// 	compatible = "adc-keys";
-	// 	io-channels = <&saradc 2>;
-	// 	io-channel-names = "buttons";
-	// 	keyup-threshold-microvolt = <1800000>;
-	// 	poll-interval = <100>;
+	adc_keys_2: adc-keys-2 {
+		compatible = "adc-keys-2";
+		io-channels = <&saradc 2>;
+		io-channel-names = "buttons-2";
+		keyup-threshold-microvolt = <1800000>;
+		poll-interval = <100>;
 
-	// 	// Config key, K17
-	// 	config-key {
-	// 		label = "config";
-	// 		linux,code = <KEY_CONFIG>;
-	// 		press-threshold-microvolt = <500000>;
-	// 	};
+		// Config key, K17
+		config-key {
+			label = "config";
+			linux,code = <KEY_CONFIG>;
+			press-threshold-microvolt = <500000>;
+		};
 
-	// 	// Exit key, function as return , K16
-	// 	exit-key {
-	// 		label = "exit";
-	// 		linux,code = <KEY_EXIT>;
-	// 		press-threshold-microvolt = <900000>;
-	// 	};
+		// Exit key, function as return , K16
+		exit-key {
+			label = "exit";
+			linux,code = <KEY_EXIT>;
+			press-threshold-microvolt = <900000>;
+		};
 
-	// 	// File key, function as read existed image or video, K15
-	// 	file-key {
-	// 		label = "file";
-	// 		linux,code = <KEY_FILE>;
-	// 		press-threshold-microvolt = <1280000>;
-	// 	};
+		// File key, function as read existed image or video, K15
+		file-key {
+			label = "file";
+			linux,code = <KEY_FILE>;
+			press-threshold-microvolt = <1280000>;
+		};
 
-	// 	// Arraw key, center or enter, K14
-	// 	arr-enter-key {
-	// 		label = "enter";
-	// 		linux,code = <KEY_ENTER>;
-	// 		press-threshold-microvolt = <1700000>;
-	// 	};
-	// };
+		// Arraw key, center or enter, K14
+		arr-enter-key {
+			label = "enter";
+			linux,code = <KEY_ENTER>;
+			press-threshold-microvolt = <1700000>;
+		};
+	};
 
-	// adc_keys_5: adc-keys-5 {
-	// 	compatible = "adc-keys";
-	// 	io-channels = <&saradc 5>;
-	// 	io-channel-names = "buttons";
-	// 	keyup-threshold-microvolt = <1800000>;
-	// 	poll-interval = <100>;
+	adc_keys_5: adc-keys-5 {
+		compatible = "adc-keys-5";
+		io-channels = <&saradc 5>;
+		io-channel-names = "buttons-5";
+		keyup-threshold-microvolt = <1800000>;
+		poll-interval = <100>;
 
-	// 	// Trigger key, K17. Click capture image; press capture video
-	// 	trigger-camera-key {
-	// 		label = "trigger_camera";
-	// 		linux,code = <KEY_CAMERA>;
-	// 		press-threshold-microvolt = <500000>;
-	// 	};
-	// };
+		// Trigger key, K17. Click capture image; press capture video
+		trigger-camera-key {
+			label = "trigger_camera";
+			linux,code = <KEY_CAMERA>;
+			press-threshold-microvolt = <500000>;
+		};
+	};
 
 	leds: leds {
 		compatible = "gpio-leds";
 		work_led: work {
 			gpios = <&gpio0 RK_PB7 GPIO_ACTIVE_HIGH>;
-			linux,default-trigger = "heartbeat";
-		};
-
-		sys_led: sys {
-			gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "heartbeat";
 		};
 	};
@@ -526,46 +521,46 @@
 		io-channels = <&saradc 2>;
 	};
 
-	// dsi1_backlight: dsi1-backlight {
-	// 	compatible = "pwm-backlight";
-	// 	pwms = <&pwm5 0 20000 0>;
-	// 	brightness-levels = <
-	// 		  0  20  20  21  21  22  22  23
-	// 		 23  24  24  25  25  26  26  27
-	// 		 27  28  28  29  29  30  30  31
-	// 		 31  32  32  33  33  34  34  35
-	// 		 35  36  36  37  37  38  38  39
-	// 		 40  41  42  43  44  45  46  47
-	// 		 48  49  50  51  52  53  54  55
-	// 		 56  57  58  59  60  61  62  63
-	// 		 64  65  66  67  68  69  70  71
-	// 		 72  73  74  75  76  77  78  79
-	// 		 80  81  82  83  84  85  86  87
-	// 		 88  89  90  91  92  93  94  95
-	// 		 96  97  98  99 100 101 102 103
-	// 		104 105 106 107 108 109 110 111
-	// 		112 113 114 115 116 117 118 119
-	// 		120 121 122 123 124 125 126 127
-	// 		128 129 130 131 132 133 134 135
-	// 		136 137 138 139 140 141 142 143
-	// 		144 145 146 147 148 149 150 151
-	// 		152 153 154 155 156 157 158 159
-	// 		160 161 162 163 164 165 166 167
-	// 		168 169 170 171 172 173 174 175
-	// 		176 177 178 179 180 181 182 183
-	// 		184 185 186 187 188 189 190 191
-	// 		192 193 194 195 196 197 198 199
-	// 		200 201 202 203 204 205 206 207
-	// 		208 209 210 211 212 213 214 215
-	// 		216 217 218 219 220 221 222 223
-	// 		224 225 226 227 228 229 230 231
-	// 		232 233 234 235 236 237 238 239
-	// 		240 241 242 243 244 245 246 247
-	// 		248 249 250 251 252 253 254 255
-	// 	>;
-	// 	default-brightness-level = <200>;
-	// 	is-forlinx;
-	// };
+	dsi1_backlight: dsi1-backlight {
+		compatible = "pwm-backlight";
+		pwms = <&pwm5 0 20000 0>;
+		brightness-levels = <
+			  0  20  20  21  21  22  22  23
+			 23  24  24  25  25  26  26  27
+			 27  28  28  29  29  30  30  31
+			 31  32  32  33  33  34  34  35
+			 35  36  36  37  37  38  38  39
+			 40  41  42  43  44  45  46  47
+			 48  49  50  51  52  53  54  55
+			 56  57  58  59  60  61  62  63
+			 64  65  66  67  68  69  70  71
+			 72  73  74  75  76  77  78  79
+			 80  81  82  83  84  85  86  87
+			 88  89  90  91  92  93  94  95
+			 96  97  98  99 100 101 102 103
+			104 105 106 107 108 109 110 111
+			112 113 114 115 116 117 118 119
+			120 121 122 123 124 125 126 127
+			128 129 130 131 132 133 134 135
+			136 137 138 139 140 141 142 143
+			144 145 146 147 148 149 150 151
+			152 153 154 155 156 157 158 159
+			160 161 162 163 164 165 166 167
+			168 169 170 171 172 173 174 175
+			176 177 178 179 180 181 182 183
+			184 185 186 187 188 189 190 191
+			192 193 194 195 196 197 198 199
+			200 201 202 203 204 205 206 207
+			208 209 210 211 212 213 214 215
+			216 217 218 219 220 221 222 223
+			224 225 226 227 228 229 230 231
+			232 233 234 235 236 237 238 239
+			240 241 242 243 244 245 246 247
+			248 249 250 251 252 253 254 255
+		>;
+		default-brightness-level = <200>;
+		is-forlinx;
+	};
 
 	lvds_backlight: lvds-backlight {
 		compatible = "pwm-backlight";
@@ -771,7 +766,7 @@
 // 			bus-width = <8>;
 // 			hsync-active = <1>;
 // 			vsync-active = <1>;
-// 			pclk-sample = <1>;
+// 			pclk-sample = <0>;
 // 		};
 // 	};
 // };
@@ -905,22 +900,6 @@
 				<1 RK_PA4 RK_FUNC_GPIO &pcfg_pull_up>,
 				<1 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
-
-		// rgb_touch_gpio: rgb-touch-gpio {
-		// 	rockchip,pins =
-		// 		<4 RK_PC6 RK_FUNC_GPIO &pcfg_pull_up>,
-		// 		<4 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
-		// };
-
-		// ft5x06_int: ft5x06-int {
-		// 	rockchip,pins = <0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_up>,
-		// 					<0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_up>;
- 		// };
-
-		// dsi_gt911_int: dsi-gt911-int {
-		// 	rockchip,pins = <0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_up>,
-		// 					<0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_up>;
- 		// };
  	};
 
 	cam {
@@ -932,12 +911,12 @@
 
 		ov13850_default_pin: ov13850-default-pin {
 			rockchip,pins =
-				<4 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>,
+				<4 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>,
 				<0 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 		ov13850_sleep_pin: ov13850-sleep-pin {
 			rockchip,pins =
-				<4 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>,
+				<4 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>,
 				<0 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
@@ -982,6 +961,12 @@
 
 		net_5g_pwr_gpio: net_5g_pwr_gpio {
 			rockchip,pins = <1 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;			 
+		};
+	};
+
+	fusb {
+		fusb_int: fusb_int {
+			rockchip,pins = <3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 };
@@ -1358,9 +1343,9 @@
 		rockchip,camera-module-index = <0>;
 		rockchip,camera-module-facing = "back";
 
-		// rockchip,vcm-start-current = <20>;
-        // rockchip,vcm-rated-current = <80>;
-        // rockchip,vcm-step-mode = <13>;
+		rockchip,vcm-start-current = <20>;
+        rockchip,vcm-rated-current = <80>;
+        rockchip,vcm-step-mode = <13>;
 	};
 
 	ov13850: ov13850@10 {
@@ -1373,7 +1358,6 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&cam_clkout0>, <&ov13850_default_pin>;
 		pwdn-gpios = <&gpio4 RK_PA6 GPIO_ACTIVE_HIGH>;
-		// pwdn-gpios = <&gpio4 RK_PB2 GPIO_ACTIVE_HIGH>;
 		reset-gpios = <&gpio0 RK_PD6 GPIO_ACTIVE_HIGH>;
 		rockchip,camera-module-index = <0>;
 		rockchip,camera-module-facing = "back";
@@ -1407,8 +1391,6 @@
 		rockchip,camera-module-facing = "front";
 		rockchip,camera-module-name = "default"; 
 		rockchip,camera-module-lens-name = "default"; 
-		// rockchip,dvp_mode = "BT601";
-		// rockchip,default_rect= <768 288>;
 
 		port {
 			cam_para_out1: endpoint{
@@ -1426,80 +1408,18 @@
 		interrupts = <RK_PA4 IRQ_TYPE_EDGE_FALLING>;
 		irq-gpio = <&gpio1 RK_PA4 IRQ_TYPE_LEVEL_LOW>;
 		reset-gpio = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
-		touchscreen-size-x = <800>;
-		touchscreen-size-y = <480>;
-		max-x = <800>;
-		max-y = <480>;
+		// touchscreen-size-x = <800>;
+		// touchscreen-size-y = <480>;
+		touchscreen-size-x = <1024>;
+		touchscreen-size-y = <600>;
 		// touchscreen-swapped-x-y;
 		uniq = "lvds";
 		status = "okay";
 	};
-
-	// gt9xx_lvds: gt9xx@5d {
-	// 	compatible = "goodix,gt928";
-	// 	reg = <0x5d>;
-	// 	pinctrl-names = "default";
-	// 	pinctrl-0 = <&touch_gpio>;
-	// 	interrupt-parent = <&gpio1>;
-	// 	interrupts = <RK_PA4 IRQ_TYPE_EDGE_FALLING>;
-	// 	irq-gpio = <&gpio1 RK_PA4 IRQ_TYPE_LEVEL_LOW>;
-	// 	reset-gpio = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
-	// 	touchscreen-size-x = <1280>;
-	// 	touchscreen-size-y = <800>;
-	// 	touchscreen-swapped-x-y;
-	// 	uniq = "lvds";
-	// 	status = "okay";
-	// };
-
-	// gt9xx_rgb: gt9xx-rgb@5d {
-	// 	compatible = "goodix,gt928";
-	// 	reg = <0x5d>;
-	// 	pinctrl-names = "default";
-	// 	pinctrl-0 = <&rgb_touch_gpio>;
-	// 	interrupt-parent = <&gpio4>;
-	// 	interrupts = <RK_PC6 IRQ_TYPE_EDGE_FALLING>;
-	// 	irq-gpio = <&gpio4 RK_PC6 IRQ_TYPE_LEVEL_LOW>;
-	// 	reset-gpio = <&gpio4 RK_PC5 GPIO_ACTIVE_HIGH>;
-	// 	touchscreen-size-x = <800>;
-	// 	touchscreen-size-y = <480>;
-	// 	touchscreen-inverted-x;
-	// 	touchscreen-inverted-y;
-	// 	uniq = "rgb";
-	// 	status = "disabled";
-	// };
-
-	// gt9xx_dsi: gt9xx@14 {
-	// 	compatible = "goodix,gt928";
-	// 	reg = <0x14>;
-	// 	pinctrl-names = "default";
-	// 	pinctrl-0 = <&dsi_gt911_int>;
-	// 	interrupt-parent = <&gpio0>;
-	// 	interrupts = <RK_PA0 IRQ_TYPE_EDGE_FALLING>;
-	// 	irq-gpio = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
-	// 	reset-gpio = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-	// 	touchscreen-size-x = <1024>;
-	// 	touchscreen-size-y = <600>;
-	// 	uniq = "dsi";
-	// 	status = "okay";
-	// };
-
-	// polytouch: edt-ft5x06@38{
-	// 	compatible = "edt,edt-ft5406", "edt,edt-ft5x06";
-	// 	reg = <0x38>;
-	// 	pinctrl-names = "defaults";
-	// 	pinctrl-0 = <&ft5x06_int>;
-	// 	interrupt-parent = <&gpio0>;
-	// 	interrupts = <RK_PA0 IRQ_TYPE_EDGE_FALLING>;
-	// 	touchscreen-size-x = <1024>;
-	// 	touchscreen-size-y = <600>;
-	// 	status = "okay";
-	// };
 };
 
 &i2c3 {
 	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c3m0_xfer>;
 
 	rx8010: rx8010@32 {
 		compatible = "epson,rx8010";
@@ -1512,19 +1432,18 @@
 		#clock-cells = <0>;
 	};
 
+	fusb302: fusb302@5c {
+		compatible = "fairchild,fusb302";
+		reg = <0x22>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&fusb_int>;
+		int-n-gpios = <&gpio3 RK_PA7 GPIO_ACTIVE_LOW>;
+		status = "okay";
+	};
+
 	/* Slave: SHT40 */
 
-	/* Slave: AP3216C */
-
 	/* Slave: MP2760(PMIC) */
-
-	/* Slave: HUSB238 */
-};
-
-&i2c4 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c4m0_xfer>;
 };
 
 &i2s0_8ch {
@@ -1608,9 +1527,8 @@
 	status = "okay";
 };
 
-// mipi dsi
 &pwm5 {
-	status = "disable";
+	status = "okay";
 };
 
 &pwm14 {
@@ -1660,9 +1578,8 @@
 	status = "okay";
 };
 
-// tf card
 &sdmmc0 {
-	max-frequency = <200000000>;
+	max-frequency = <150000000>;
 	supports-sd;
 	bus-width = <4>;
 	cap-mmc-highspeed;
@@ -1845,6 +1762,7 @@
 	status = "disabled";
 };
 
+// TODO
 &dsi1 {
 	status = "disabled";
 	//rockchip,lane-rate = <1000>;
@@ -1862,33 +1780,6 @@
 		dsi,format = <MIPI_DSI_FMT_RGB888>;
 		dsi,lanes  = <4>;
 		panel-init-sequence = [
-			15 00 02 53 29
-			39 00 03 51 FF 01
-			39 00 07 80 00 68 68 0E 00 31
-			39 00 08 81 03 40 00 29 00 05 00
-			39 00 08 82 03 40 00 29 00 05 01
-			15 00 02 25 00
-			15 00 02 26 20
-			39 00 03 2A 00 A0
-			39 00 03 F0 AA 11
-			15 00 02 C0 00
-			39 00 09 C2 01 1D 01 1D 01 1D 01 1D
-			39 00 03 F0 AA 12
-			39 00 03 BF 37 A9
-			39 00 03 FF 5A 80
-			39 00 02 65 2F
-			15 00 02 F2 01
-			39 00 03 FF 5A 81
-			15 00 02 65 05
-			15 00 02 F2 22
-			15 00 02 65 0A
-			15 00 02 F2 00
-			15 00 02 65 17
-			39 14 0E F9 5E 62 66 6A 6F 73 77 7B 7F 84 88 8C 90
-			05 64 01 11
-			05 14 01 29
-			39 00 03 F0 AA 11
-			15 00 02 C0 FF
 		];
 
 		panel-exit-sequence = [
@@ -1896,25 +1787,21 @@
 
 		panel-width-mm = <68>;
         panel-height-mm = <121>;
-        // backlight = <&dsi1_backlight>;
-
-		// i.e. enable gpio, default to high
-		// enable-gpios = <&gpio3 RK_PA5 GPIO_ACTIVE_HIGH>;
-		// i.e. ctl gpio, default to high
-		// reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
+        backlight = <&dsi1_backlight>;
+		enable-gpios = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
 
         display-timings {
-			native-mode = <&panel_evf>;
-            panel_evf: timings {
-				hfront-porch    = <88>;
-				hsync-len       = <44>;
-                hback-porch     = <148>;
-                hactive         = <1440>;
-                vfront-porch    = <5>;
-				vsync-len       = <5>;
-				vback-porch     = <36>;
-                vactive         = <1080>;
-                clock-frequency = <116000000>;
+			native-mode = <&panel7_1024x600>;
+            panel7_1024x600: timings {
+                hback-porch     = <48>;
+                hfront-porch    = <40>;
+                hactive         = <1024>;
+                hsync-len       = <48>;
+                vback-porch     = <48>;
+                vfront-porch    = <40>;
+                vactive         = <600>;
+                vsync-len       = <4>;
+                clock-frequency = <45000000>;
                 vsync-active    = <0>;
                 hsync-active    = <0>;
                 de-active       = <0>;
@@ -2043,15 +1930,11 @@
 };
 
 &uart5 {
-	status = "okay";
+	// status = "okay";
+	// xjt
+	status = "disable";
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart5m1_xfer>;
-};
-
-&uart5 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart9m1_xfer>;
 };
 
 &spi0 {
