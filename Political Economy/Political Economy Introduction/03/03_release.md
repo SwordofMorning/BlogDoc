@@ -212,16 +212,16 @@ $$
 
 两边同时对z求偏导数得到：
 $$
-Y = F_{1}^{'}(zK, zL)K + F_{2}^{'}(zK, zL)L \notag
+Y = F\_{1}^{'}(zK, zL)K + F\_{2}^{'}(zK, zL)L \notag
 $$
 
 我们可以从图3中看出，当$z=1$时，对生产函数$F(\overline{K},L)$求偏导得到的值即$MPL$，于是我们可以写成：
 
 $$
-\left\{
-\begin{array}{**lr**}
-F_{1}^{'}(zK, zL) = MPK \notag \newline
-F_{2}^{'}(zK, zL) = MPL \notag
+\left\\{
+\begin{array}{\*\*lr\*\*}
+F\_{1}^{'}(zK, zL) = MPK \notag \newline
+F\_{2}^{'}(zK, zL) = MPL \notag
 \end{array}
 \right.
 $$
@@ -247,8 +247,8 @@ $$
 &emsp;&emsp;保罗·道格拉斯在1927年发现：国民收入在资本与劳动之间的分配在长期内大体上不变，换言之，当经济繁荣的时候，它们分配的增长也是成比例的。道格拉斯向查尔斯·柯布请教，如果生产要素报酬总是等于它们的边际产量，那么，什么生产函数(如果存在的话)能导致不变的要素份额？这个生产函数需要具备如下性质：
 
 $$
-\left\{
-\begin{array}{**lr**}
+\left\\{
+\begin{array}{\*\*lr\*\*}
 \text{资本收入} = MPK \times K = \alpha Y \newline
 \text{劳动收入} = MPL \times L = (1-\alpha) Y \tag{1-21}
 \end{array}
