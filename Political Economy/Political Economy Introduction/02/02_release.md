@@ -1,7 +1,4 @@
-# 宏观经济学的数据
-<center><strong>Political Economy Introduction 02《Marcoeconomics》Chapter 1</strong></center>
-
-&emsp;&emsp;在本篇中，我们将预先地为后面的内容铺垫一些基本的经济学术语和知识。
+&emsp;&emsp;**Political Economy Introduction 02《Marcoeconomics》Chapter 1**，在本篇中，我们将预先地为后面的内容铺垫一些基本的经济学术语和知识。
 
 [toc]
 
@@ -13,10 +10,9 @@
 
 $$
 \begin{eqnarray}
-GDP &= \text{苹果的价格} \times \text{苹果的数量} \newline
-&+\text{橘子的价格} \times \text{橘子的数量}
+GDP &= \text{苹果的价格} \times \text{苹果的数量} \notag \newline
+&+\text{橘子的价格} \times \text{橘子的数量} \tag{1-1}
 \end{eqnarray}
-\tag{1-1}
 $$
 
 &emsp;&emsp;经济学家把用现期价格衡量的产品与服务的价值叫做**名义GDP(nominal GDP)**，名义GDP的上升可能是价格的上升，也可能是数量的增加。这种计算方法并不是一种衡量经济福利的好指标。换言之，这个指标并没有确切反映出经济可以在多大程度上满足家庭、企业和政府的需求。如果没有任何变化的情况下，所有商品和服务的价格翻倍了，那么名义GDP也将翻倍。但是我们并不能认为经济满足需求的能力也翻倍了，因为每一种产品或服务的数量是不变的。
@@ -25,29 +21,26 @@ $$
 
 $$
 \begin{eqnarray}
-实际GDP &= \text{2020年苹果的价格} \times \text{2020年苹果的数量} \newline
-&+\text{2020年橘子的价格} \times \text{2020年橘子的数量}
+实际GDP &= \text{2020年苹果的价格} \times \text{2020年苹果的数量} \notag \newline
+&+\text{2020年橘子的价格} \times \text{2020年橘子的数量} \tag{1-2}
 \end{eqnarray} 
-\tag{1-2}
 $$
 
 同样的，2021年的实际GDP是：
 
 $$
 \begin{eqnarray}
-实际GDP &= \text{2020年苹果的价格} \times \text{2021年苹果的数量} \newline
-&+\text{2020年橘子的价格} \times \text{2021年橘子的数量}
+实际GDP &= \text{2020年苹果的价格} \times \text{2021年苹果的数量} \notag \newline
+&+\text{2020年橘子的价格} \times \text{2021年橘子的数量} \tag{1-3}
 \end{eqnarray}
-\tag{1-3}
 $$
 
 2022年的实际GDP是
 $$
 \begin{eqnarray}
-实际GDP &= \text{2020年苹果的价格} \times \text{2022年苹果的数量} \newline
-&+\text{2020年橘子的价格} \times \text{2022年橘子的数量}
+实际GDP &= \text{2020年苹果的价格} \times \text{2022年苹果的数量} \notag \newline
+&+\text{2020年橘子的价格} \times \text{2022年橘子的数量} \tag{1-4}
 \end{eqnarray}
-\tag{1-4}
 $$
 
 注意，这里2020年的价格被用来计算这三年的实际GDP。由于价格是不变的，不同年份的实际GDP一定反映了商品和服务数量的波动。由于一个社会向其成员提供经济上满足的能力最终取决于生产的商品和服务的数量，实际GDP比名义GDP提供了一个更好的经济福利衡量指标。
@@ -57,17 +50,16 @@ $$
 &emsp;&emsp;利用名义GDP和实际GDP，我们可以计算**GDP平减指数(GDP deflator)**，又称GDP的隐形价格平减指数：
 
 $$
-\text{GDP平减指数}=\frac{{\text{名义GDP}}}{{\text{实际GDP}}}
-\tag{1-5}
+\text{GDP平减指数}=\frac{{\text{名义GDP}}}{{\text{实际GDP}}} \tag{1-5}
 $$
 
 其反应了经济体中总体价格水平所发生的变动。
 
-&emsp;&emsp;为了更好的理解这一概念，我们思考下面这种情况，假设在一个只有面包的经济体中。我们另今年的面包价格为$P$，今年的面包数量是$Q$，那么今年的名义GDP为$P \times Q$；同样的，如果我们以之前某一年的价格$\mathop{P}\nolimits_{base}$作为基点，今年的实际GDP则是${\mathop{P}\nolimits_{base} \times Q}$，于是有：
+&emsp;&emsp;为了更好的理解这一概念，我们思考下面这种情况，假设在一个只有面包的经济体中。我们另今年的面包价格为$P$，今年的面包数量是$Q$，那么今年的名义GDP为$P \times Q$；同样的，如果我们以之前某一年的价格${P}\_{base}$作为基点，今年的实际GDP则是${P}\_{base} \times Q$，于是有：
 
 $$
 \begin{eqnarray}
-GDP deflator = \frac{P \times Q}{\mathop{P}\nolimits_{base} \times Q} = \frac{P}{\mathop{P}\nolimits_{base}}
+GDP deflator = \frac{P \times Q}{{P}\_{base} \times Q} = \frac{P}{{P}\_{base}} \tag{1-6}
 \end{eqnarray}
 $$
 
@@ -77,7 +69,7 @@ $$
 
 $$
 \begin{eqnarray}
-d(PY) &=& YdP+dyP \newline
+d(PY) &=& YdP+dyP \notag \newline
 \frac{{d \left( PY \right) }}{{PY}} &=& \frac{{dP}}{{P}}+\frac{{dY}}{{Y}} \tag{1-7}
 \end{eqnarray}
 $$
