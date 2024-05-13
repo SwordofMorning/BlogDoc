@@ -1,6 +1,6 @@
   <root>
   <!-->
-  sensor id 0
+  sensor id 0, now test for IR
   <-->
       <CameraModuleCfg>
         <SlotId>0</SlotId>
@@ -9,13 +9,13 @@
         <Orientation>90</Orientation>
         <Resource_cost>55</Resource_cost>
         <SensorRole>dualcam_master</SensorRole>
-        <VCM>
+        <!-- <VCM>
             <AfName>dw9763</AfName>
             <Mode>0</Mode>
         </VCM>
         <TuningParameter>
             <TuningName>ov13855_back_main</TuningName>
-        </TuningParameter>
+        </TuningParameter> -->
       </CameraModuleCfg>
   <!-->
   sensor id 1
@@ -45,7 +45,7 @@
         </TuningParameter>
       </CameraModuleCfg>
   <!-->
-  sensor id 3
+  sensor id 3, for vis
   <-->
       <CameraModuleCfg>
         <SlotId>3</SlotId>
