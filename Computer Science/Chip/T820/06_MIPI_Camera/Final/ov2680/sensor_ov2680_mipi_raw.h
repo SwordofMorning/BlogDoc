@@ -32,21 +32,21 @@
 
 /* sensor parameters begin */
 /* effective sensor output image size */
-#define SNAPSHOT_WIDTH 1600
-#define SNAPSHOT_HEIGHT 1200
-#define PREVIEW_WIDTH 1600
-#define PREVIEW_HEIGHT 1200
+#define SNAPSHOT_WIDTH 1280
+#define SNAPSHOT_HEIGHT 512
+#define PREVIEW_WIDTH 1280
+#define PREVIEW_HEIGHT 512
 
 /* frame length*/
-#define SNAPSHOT_FRAME_LENGTH 1294
-#define PREVIEW_FRAME_LENGTH 1294
+#define SNAPSHOT_FRAME_LENGTH 1280
+#define PREVIEW_FRAME_LENGTH 1280
 
 /*Mipi output*/
 #define LANE_NUM 1
-#define RAW_BITS 10
+#define RAW_BITS 8
 
-#define SNAPSHOT_MIPI_PER_LANE_BPS 628
-#define PREVIEW_MIPI_PER_LANE_BPS 628
+#define SNAPSHOT_MIPI_PER_LANE_BPS 384
+#define PREVIEW_MIPI_PER_LANE_BPS 384
 
 /* please ref your spec */
 #define FRAME_OFFSET 4
@@ -417,7 +417,7 @@ static struct sensor_res_tab_info s_ov2680_resolution_tab_raw[VENDOR_NUM] = {
               .image_format = SENSOR_IMAGE_FORMAT_RAW},
 
              {ADDR_AND_LEN_OF_ARRAY(ov2680_1600X1200_mipi_raw), PNULL, 0,
-              .width = 1600, .height = 1200, .xclk_to_sensor = 24,
+              .width = 1280, .height = 512, .xclk_to_sensor = 24,
               .image_format = SENSOR_IMAGE_FORMAT_RAW},
          }}
     /*If there are multiple modules,please add here*/
@@ -431,12 +431,12 @@ static SENSOR_TRIM_T s_ov2680_resolution_trim_tab[VENDOR_NUM] = {
 
              {.trim_start_x = 0,
               .trim_start_y = 0,
-              .trim_width = 1600,
-              .trim_height = 1200,
-              .line_time = 25760,
-              .bps_per_lane = 628,
-              .frame_line = 1294,
-              .scaler_trim = {.x = 0, .y = 0, .w = 1600, .h = 1200}},
+              .trim_width = 1280,
+              .trim_height = 512,
+              .line_time = 37500,   // Line_Length / PCLK == (Effective Pixel + Blanking) / PCLK
+              .bps_per_lane = 384,
+              .frame_line = 1280,   // Maybe: Total lines per frame high byte
+              .scaler_trim = {.x = 0, .y = 0, .w = 1280, .h = 512}},
 
          }}
 
@@ -568,7 +568,7 @@ static struct sensor_module_info s_ov2680_module_info_tab[VENDOR_NUM] = {
                          {
                              .type = SENSOR_INTERFACE_TYPE_CSI2,
                              .bus_width = LANE_NUM,
-                             .pixel_width = 10,
+                             .pixel_width = RAW_BITS,
                              #ifdef _SENSOR_RAW_SHARKL5PRO_H_,
                                  .is_loose = 2,
                              #else

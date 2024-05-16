@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfg>
+    <sensor_name>ov13855_back_slave</sensor_name>
+    <versionid>0x000D0010</versionid>
+    <scenario_num>4</scenario_num>
+    <scenario alia="com">
+        <id>0x0000000000000000</id>
+        <block_num>55</block_num>
+        <imageWidth>4224</imageWidth>
+        <imageHeight>3136</imageHeight>
+        <block name="3DNR">
+            <block_id>0x505b</block_id>
+            <param>com</param>
+        </block>
+        <block name="3D_LUT">
+            <block_id>0x5089</block_id>
+            <param>com</param>
+        </block>
+        <block name="4IN1">
+            <block_id>0x5008</block_id>
+            <param>com</param>
+        </block>
+        <block name="AE">
+            <block_id>0x4031</block_id>
+            <param>com</param>
+        </block>
+        <block name="AEM">
+            <block_id>0x400e</block_id>
+            <param>com</param>
+        </block>
+        <block name="AE_ADAPT">
+            <block_id>0x5009</block_id>
+            <param>com</param>
+        </block>
+        <block name="AE_SYNC">
+            <block_id>0x5007</block_id>
+            <param>com</param>
+        </block>
+        <block name="AF">
+            <block_id>0x4033</block_id>
+            <param>com</param>
+        </block>
+        <block name="AFL_V1">
+            <block_id>0x4019</block_id>
+            <param>com</param>
+        </block>
+        <block name="AFL_V3">
+            <block_id>0x401a</block_id>
+            <param>com</param>
+        </block>
+        <block name="AFT">
+            <block_id>0x4030</block_id>
+            <param>com</param>
+        </block>
+        <block name="AI_PRO">
+            <block_id>0x5079</block_id>
+            <param>com</param>
+        </block>
+        <block name="ALSC">
+            <block_id>0x402f</block_id>
+            <param>com</param>
+        </block>
+        <block name="ANTIFL">
+            <block_id>0x403b</block_id>
+            <param>com</param>
+        </block>
+        <block name="ATM4GAMM">
+            <block_id>0x403d</block_id>
+            <param>com</param>
+        </block>
+        <block name="AWB">
+            <block_id>0x4032</block_id>
+            <param>com</param>
+        </block>
+        <block name="AWBC">
+            <block_id>0x400d</block_id>
+            <param>com</param>
+        </block>
+        <block name="BCHS">
+            <block_id>0x5065</block_id>
+            <param>com</param>
+        </block>
+        <block name="BLC">
+            <block_id>0x4002</block_id>
+            <param>com</param>
+        </block>
+        <block name="BPC">
+            <block_id>0x5054</block_id>
+            <param>com</param>
+        </block>
+        <block name="BWUD">
+            <block_id>0x5069</block_id>
+            <param>com</param>
+        </block>
+        <block name="CCE">
+            <block_id>0x4017</block_id>
+            <param>com</param>
+        </block>
+        <block name="CDN">
+            <block_id>0x505e</block_id>
+            <param>com</param>
+        </block>
+        <block name="CFA">
+            <block_id>0x5059</block_id>
+            <param>com</param>
+        </block>
+        <block name="CMC10">
+            <block_id>0x4013</block_id>
+            <param>com</param>
+        </block>
+        <block name="DFLASH">
+            <block_id>0x4036</block_id>
+            <param>com</param>
+        </block>
+        <block name="RGB_DITHER">
+            <block_id>0x5051</block_id>
+            <param>com</param>
+        </block>
+        <block name="D_ENVI">
+            <block_id>0x4035</block_id>
+            <param>com</param>
+        </block>
+        <block name="EDGE">
+            <block_id>0x5061</block_id>
+            <param>com</param>
+        </block>
+        <block name="FDR">
+            <block_id>0x5078</block_id>
+            <param>com</param>
+        </block>
+        <block name="HIST2">
+            <block_id>0x4022</block_id>
+            <param>com</param>
+        </block>
+        <block name="HSV">
+            <block_id>0x508d</block_id>
+            <param>com</param>
+        </block>
+        <block name="IMBLANC">
+            <block_id>0x506e</block_id>
+            <param>com</param>
+        </block>
+        <block name="LSC_2D">
+            <block_id>0x400a</block_id>
+            <param>com</param>
+        </block>
+        <block name="NFILTER">
+            <block_id>0x5063</block_id>
+            <param>com</param>
+        </block>
+        <block name="NLM">
+            <block_id>0x506f</block_id>
+            <param>com</param>
+        </block>
+        <block name="PPE">
+            <block_id>0x5073</block_id>
+            <param>com</param>
+        </block>
+        <block name="RGBGAIN">
+            <block_id>0x4007</block_id>
+            <param>com</param>
+        </block>
+        <block name="RGB_AFM">
+            <block_id>0x5055</block_id>
+            <param>com</param>
+        </block>
+        <block name="RGB_GAM">
+            <block_id>0x4014</block_id>
+            <param>com</param>
+        </block>
+        <block name="RGB_GTM">
+            <block_id>0x508a</block_id>
+            <param>com</param>
+        </block>
+        <block name="RGB_LTM">
+            <block_id>0x506b</block_id>
+            <param>com</param>
+        </block>
+        <block name="SW3DNR">
+            <block_id>0x5066</block_id>
+            <param>com</param>
+        </block>
+        <block name="SWYNR">
+            <block_id>0x506c</block_id>
+            <param>com</param>
+        </block>
+        <block name="UVDIV">
+            <block_id>0x505a</block_id>
+            <param>com</param>
+        </block>
+        <block name="YNR">
+            <block_id>0x5060</block_id>
+            <param>com</param>
+        </block>
+        <block name="Y_GAMMA">
+            <block_id>0x5075</block_id>
+            <param>com</param>
+        </block>
+        <block name="cnr3">
+            <block_id>0x5076</block_id>
+            <param>com</param>
+        </block>
+        <block name="cnr_h">
+            <block_id>0x508b</block_id>
+            <param>com</param>
+        </block>
+        <block name="dct">
+            <block_id>0x5088</block_id>
+            <param>com</param>
+        </block>
+        <block name="mfnr">
+            <block_id>0x5080</block_id>
+            <param>com</param>
+        </block>
+        <block name="POST_CNR_H">
+            <block_id>0x508c</block_id>
+            <param>com</param>
+        </block>
+        <block name="post_ee">
+            <block_id>0x5082</block_id>
+            <param>com</param>
+        </block>
+        <block name="PYRAMID_OFFL">
+            <block_id>0x5087</block_id>
+            <param>com</param>
+        </block>
+        <block name="PYRAMID_ONL">
+            <block_id>0x5086</block_id>
+            <param>com</param>
+        </block>
+    </scenario>
+    <scenario alia="prv0">
+        <id>0x0000010000000000</id>
+        <block_num>1</block_num>
+        <imageWidth>2112</imageWidth>
+        <imageHeight>1568</imageHeight>
+        <block name="BLC">
+            <block_id>0x4002</block_id>
+            <param>prv0</param>
+        </block>
+    </scenario>
+    <scenario alia="cap0">
+        <id>0x0000050000000000</id>
+        <block_num>0</block_num>
+        <imageWidth>4224</imageWidth>
+        <imageHeight>3136</imageHeight>
+    </scenario>
+    <scenario alia="video0">
+        <id>0x0000090000000000</id>
+        <block_num>0</block_num>
+        <imageWidth>4224</imageWidth>
+        <imageHeight>3136</imageHeight>
+    </scenario>
+</cfg>

@@ -4,7 +4,7 @@
   <-->
       <CameraModuleCfg>
         <SlotId>0</SlotId>
-        <SensorName>ov13855</SensorName>
+        <SensorName>ov2680</SensorName>
         <Facing>BACK</Facing>
         <Orientation>90</Orientation>
         <Resource_cost>55</Resource_cost>
@@ -55,7 +55,7 @@
         <Resource_cost>45</Resource_cost>
         <SensorRole>dualcam_slave</SensorRole>
         <TuningParameter>
-            <TuningName>ov8856_front_dual</TuningName>
+            <TuningName>ov8856_back_ultrawide</TuningName>
         </TuningParameter>
       </CameraModuleCfg>
  </root>
