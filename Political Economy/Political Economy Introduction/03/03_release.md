@@ -23,7 +23,7 @@
 3. 谁购买经济的产出？家庭购买多少用于消费？家庭和企业购买多少用于投资？政府购买多少用于公共目的？
 4. 什么使产品与服务的需求和供给达到均衡？
 
-[caption width="621" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_02/01_Circular_flow_of_income.drawio.svg" width="621" height="402" alt="图1" class="size-full" /> 图1：货币在金融中的循环流程图[/caption]
+[caption width="621" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/01_Circular_flow_of_income.drawio.svg" width="621" height="402" alt="图1" class="size-full" /> 图1：货币在金融中的循环流程图[/caption]
 
 &emsp;&emsp;在本章，我们将建立一个基本的古典模型来解释图1中描述的经济相互流动。我们从企业开始，看看什么因素决定了企业的生产水平，以及由此决定的国民收入水平。之后再考察生产市场要素如何把收入分配给家庭，家庭又把多少收入用于消费，多少用于储蓄。除了讨论家庭消费引起的产品与服务需求外，我们还要讨论投资和政府购买产生的需求。最后我们得到了一个完整的循环，考察产品与服务的需求和其供给如何实现平衡。
 
@@ -81,7 +81,7 @@ $$
 
 &emsp;&emsp;国民收入的分配由要素价格决定，**要素价格(factor prices)**是支付给生产要素的报酬数量。在一个只有资本和劳动力两种生产要素的经济体中，两种要素的价格是支付给资本家的租金以及支付给工人的工资。如图2所示，每种生产要素因其提供服务而所得到的价格，由该生产要素的供给和需求决定。由于我们假设经济体中的生产要素是固定的，因此**要素供给**是一条垂直线，无论要素价格为多少，向市场提供的要素量相等。向下倾斜的要素需求曲线与垂直的供给曲线的交点，决定了均衡的要素价格。
 
-[caption width="469" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_02/02_Factor_prices.drawio.svg" width="469" height="416" alt="图2" class="size-full" /> 图2：生产要素的报酬如何决定[/caption]
+[caption width="469" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/02_Factor_prices.drawio.svg" width="469" height="416" alt="图2" class="size-full" /> 图2：生产要素的报酬如何决定[/caption]
 
 &emsp;&emsp;为了理解要素价格和收入分配，我们必须考察生产要素的需求。由于要素需求产生于成千上万家企业，所以我们从考察一家典型的企业使用生产要素问题开始。
 
@@ -158,7 +158,7 @@ $$
 
 &emsp;&emsp;图3反应了生产函数和$MPL$的关系：
 
-[caption width="1049" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_02/03_MPL.drawio.svg" width="1049" height="448" alt="图3" class="size-full" /> 图3：生产函数和MPL曲线[/caption]
+[caption width="1049" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/03_MPL.drawio.svg" width="1049" height="448" alt="图3" class="size-full" /> 图3：生产函数和MPL曲线[/caption]
 
 ##### 资本的边际量和资本需求
 
@@ -435,7 +435,7 @@ $$
 
 这个方程的左边是国民储蓄$\overline{S}$，决定于固定的收入$Y$和外生的$G$和$T$；方程的右边则是“投资取决于利率”的函数。由于在这个模型中，储蓄不取决于利率(后面将放宽假设)，于是我们得到了这样一个类似于产品供需关系的图表：
 
-[caption width="660" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_02/04_ir_graph.drawio.svg" width="660" height="456" alt="图4" class="size-full" /> 图4：投资、储蓄和利率[/caption]
+[caption width="660" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/04_ir_graph.drawio.svg" width="660" height="456" alt="图4" class="size-full" /> 图4：投资、储蓄和利率[/caption]
 
 在这种情况下，“产品”是可贷资金；“价格”是利率；储蓄是可贷资金的供给；投资是可贷资金的需求。
 
@@ -450,7 +450,7 @@ $$
 
 &emsp;&emsp;为了更好的理解挤出，我们可以考虑政府增加购买对可贷资金市场的影响。由于政府只增加了支出，而没有增加税收，因此要通过借贷——通过减少公共储蓄——来为增加的支出融资。如图5所示，国民储蓄的减少由可用于投资的可贷资金供给的左移来表示，在初始利率$r1$处，可贷资金的需求大于供给，均衡利率上升到了投资曲线与平移后的$S2$的交点。因此政府购买导致利率从$r1$上升到了$r2$。
 
-[caption width="660" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_02/05_Goverment.drawio.svg" width="660" height="456" alt="图5" class="size-full" /> 图5：政府购买导致储蓄减少[/caption]
+[caption width="660" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/05_Goverment.drawio.svg" width="660" height="456" alt="图5" class="size-full" /> 图5：政府购买导致储蓄减少[/caption]
 
 ##### 税收的减少
 
@@ -462,13 +462,13 @@ $$
 
 &emsp;&emsp;我们已经考察了财政政策(政府支出、税收收入)，我们现在用这个模型来考察市场的另一边——投资的需求。投资的需求可能因为生产力的提高而提高，也可能因为政府的财政政策而提高，例如增加税率、减少支出。图6表明了投资增加的情况：
 
-[caption width="761" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_02/06_Ir.drawio.svg" width="761" height="456" alt="图6" class="size-full" /> 图6：投资需求的增加[/caption]
+[caption width="761" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/06_Ir.drawio.svg" width="761" height="456" alt="图6" class="size-full" /> 图6：投资需求的增加[/caption]
 
 &emsp;&emsp;我们发现，投资的增加(表现为投资曲线的右移)使得经济的均衡点从$r1$提高到了$r2$。但是值得注意的是，和图5不同的是，这里虽然利率$r$提高了，但是投资量$S$(两个均衡点的横坐标)却没有变动。
 
 &emsp;&emsp;这是因为我们假设消费和储蓄都是固定的，这里我们使其可变——即消费与储蓄和利率相关——高利率将减少消费并提高储蓄、低利率将促进消费减少储蓄。那么，储蓄的曲线$S(r)$将会是一个斜向上的曲线，而不再是一条垂线，于是我们得到了图7：
 
-[caption width="641" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_02/07_nonconst_ir.drawio.svg" width="641" height="456" alt="图7" class="size-full" /> 图7：储蓄取决于利率时的投资增加[/caption]
+[caption width="641" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/07_nonconst_ir.drawio.svg" width="641" height="456" alt="图7" class="size-full" /> 图7：储蓄取决于利率时的投资增加[/caption]
 
 我们可以发现，投资的增加使得利率上升，接着导致储蓄的增加，进而导致消费的减少。
 
@@ -955,3 +955,56 @@ i = r + E \pi \tag{3-10}
 $$
 
 其中，事前实际利率$r$如第一章中提到的一样，由产品与服务的供需均衡决定；名义利率$i$与预期通胀率$E \pi$一一对应。
+
+### 3.4 名义利率与货币需求
+
+&emsp;&emsp;货币数量论以简单的需求函数为基础：它假设对货币余额的需求与收入成比例。虽然货币数量理论在分析货币对经济的效应时是一个好的出发点，这里我们将加上货币需求量的另一个决定因素——名义利率。
+
+#### 3.4.1 持有货币的成本
+
+&emsp;&emsp;你放在钱包里的钱赚不到利息，如果你将钱放到储蓄账户上则可以赚到名义利率，名义利率是持有货币的成本：它是持有货币而不是债券所放弃的东西。
+
+&emsp;&emsp;理解货币持有成本的另一种方法是比较不同资产的回报，货币以外的资产，比如持有政府债券，你可以赚到实际回报$r$；持有货币赚到的实际回报则是$-E \pi$。当持有货币时，我们放弃了这两种回报之间的差额，换言之我们支付了$r - (-E \pi)$的持有成本——即费雪方程中的名义利率$i$。
+
+&emsp;&emsp;正如面包的需求取决于其价格一样，货币的需求量也却决于持有货币的价格。因此，实际货币余额的需求即取决于收入水平，又取决于名义利率。我们可以把一般货币需求函数写为：
+
+$$
+{(\frac{M}{P})}^{d} = L(i, Y) \tag{3-11}
+$$
+
+&emsp;&emsp;用字母$L$来表示货币需求，因为货币是经济中最具Liquidity的资产。这个方程说，对货币余额流动性的需求是收入和名义利率的函数。收入水平$Y$越高，实际余额需求就越大；名义利率$i$越高，实际货币余额需求越小。
+
+#### 3.4.1 未来货币与现期价格
+
+&emsp;&emsp;货币、价格与利率现在以几种形式相互关联，图8说明了其关系：
+
+[caption width="721" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/08_money_price_interest.drawio.svg" width="721" height="289" alt="图8" class="size-full" /> 图8：货币、价格和利率之间的关系[/caption]
+
+&emsp;&emsp;我们考虑“名义利率 - 货币需求”的联系是如何影响我们的价格水平理论。首先，令实际货币余额的供给$\frac{M}{P}$与需求$L(i, Y)$相等：
+
+$$
+\frac{M}{P} = L(i, Y) \tag{3-12}
+$$
+
+然后，用费雪方程把名义利率写为实际利率与预期通胀率之和：
+
+<span id="eq:3-13"></span>
+$$
+\frac{M}{P} = L(r + E \pi, Y) \tag{3-13}
+$$
+
+这个方程说明，货币实际余额的水平取决于预期通胀率。与货币数量论[式3-7](#eq:3-7)相比，[式3-13](#eq:3-13)告诉了我们一个更详细的关于价格水平的故事。
+
+> 货币数量论认为，今天的货币供给取决于今天的价格。这个结论仍然部分正确，如果名义利率和产出水平保持不变，那么价格水平的变动与货币供给的变化成比例。但名义利率不是恒定的，它取决于预期通胀率，预期通胀率又取决于价格水平——货币供给的增长。
+
+> 而从货币需求函数的角度来看，价格水平不仅取决于今天的货币供给，而且取决于预期未来的货币供给。假设美联储宣布未来会增加货币供给，即使它没有改变今天的货币供给，但这一声明却导致人们有更高的货币供给和通胀预期。
+
+&emsp;&emsp;这里我们一言以蔽之，价格水平取决于现期货币供给和预期未来货币供给的加权平均值。通胀既受到现期货币供给增加的影响，又受到预期未来货币供给增加的影响。
+
+### 3.5 总结
+
+&emsp;&emsp;我们在第一章中学习了国民收入模型，第二章中介绍了货币的基础知识，以及本章对价格水平的解释。现在我们来讨论我们模型中的一个重要假设。
+
+&emsp;&emsp;在第一章中，我们解释了许多宏观经济变量，其中一些变量是数量的，如GDP和资本存量；另一些变量是相对价格，比如实际工资和实际利率。但这些所有的变量都有一个共同点，它们是实际的(而不是货币的)数量。实际GDP是某一年生产的产品与服务的数量；资本存量是在某个时间可以得到的机器与建筑的数量；实际工资是一个工人赚到的产出数量；实际利率是一个人今天借出给某单位赚到的未来产出的数量。这些用实际单位衡量的变量，如数量和相对价格，被称为**实际变量(real variables)**。
+
+&emsp;&emsp;而在本章中，我们考察了**名义变量(nominal variables)**——用货币来表示的变量。而这种将实际变量和名义变量分离的方法，被称为**古典二分法(classical dichotomy)**。其产生是由于在古典经济理论中，货币供给的变动不影响实际变量。货币在实际变量中的这种无关性被称为**货币中性(monetary neutrality)**，换言之，在长期来看，价格是弹性的。对于短期内的影响，我们将在后面的文章中讨论。
