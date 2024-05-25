@@ -1223,3 +1223,79 @@ $$
 $$
 
 如果国外增加政府购买$G$，则同样会降低该国的国民储蓄$S$。同时为了实现均衡，投资$I(r)$也将减少，其藉由利率$r$的上升完成调节。而该国的经济体量足够影响世界利率，因此世界利率$r^{\*}$也会上升。
+
+[caption width="679" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/11_LOE_Expansionary_foreign_fiscal_policy.drawio.svg" width="679" height="419" alt="图11" class="size-full" /> 图11：小型开放经济中的国外的扩张性财政政策[/caption]
+
+同样的，如果是紧缩性的财政政策则导致相反的结果。
+
+##### 投资需求的移动
+
+&emsp;&emsp;现在我们假设这个经济体在给定利率的条件下出现了投资需求的增加，这可能是因为政府监管放松或是其他原因导致的。图12说明了这种情况，当本国储蓄不变的情况下，只能通过从国外借贷来满足本国的投资需求。
+
+[caption width="614" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/12_LOE_investment_demand_.drawio.svg" width="614" height="419" alt="图12" class="size-full" /> 图12：小型开放经济中的投资需求增长[/caption]
+
+### 4.3 汇率
+
+&emsp;&emsp;在考察了资本以及产品的国际流动之后，我们通过考虑适用于这些交易的价格来扩展分析。两个国家之间的**汇率(exchange rate)**是这些国家居民相互进行贸易的价格。在本节，我们首先考察汇率衡量了什么，然后讨论汇率是如何决定的。
+
+#### 4.3.1 名义汇率和实际汇率
+
+##### 名义汇率
+
+&emsp;&emsp;**名义汇率(nominal exchange rate)**指的是两个国家通货的相对价格。例如美元和日元的汇率是1美元兑换100日元，那么在外汇市场上，你就可以使用该比例来进行货币互换。我们常说的国家之间的“汇率”通常指的是名义汇率。
+
+&emsp;&emsp;当1美元能兑换的日元从100日元上升到110日元时，我们说美元**升值(appreciation)**，或者说美元**坚挺(strengthening)**；日元则是**贬值(depreciation)**，或者说**疲软(weakening)**。
+
+##### 实际汇率
+
+&emsp;&emsp;实际汇率**实际汇率(real exchange rate)**指的是两个国家产品的相对价格。假设一辆福特汽车在日本的售价为6,000,000日元，在美国的售价是30,000美元，按照名义利率1:100来计算。它们的实际汇率则是：
+
+$$
+\begin{eqnarray}
+0.5 &=& 100 \times \frac{30,000}{6,000,000}  \notag \newline
+\text{实际汇率} &=& \text{名义汇率} \times \text{价格水平比} \notag \newline
+\epsilon &=& e \times \frac{P}{P^{\*}} \tag{4-12}
+\end{eqnarray}
+$$
+
+#### 4.3.2 实际汇率与贸易余额
+
+&emsp;&emsp;假设美国的实际汇率低。在这种情况下，由于美国产品相对便宜，美国消费者将更少地购买进口产品，更倾向于购买本国的产品。同样的，外国人也将更多地购买美国的产品。于是美国的净出口将会提高。
+
+&emsp;&emsp;假设美国的实际汇率高。美国人就会倾向于购买进口商品，而外国人也将减少购买美国产品。因此净出口就会降低。
+
+&emsp;&emsp;我们把这种净出口和实际汇率的关系写为：
+
+$$
+NX = NX(\epsilon) \tag{4-13}
+$$
+
+该函数说明了，净出口是关于实际汇率的函数，其关系是负相关的。
+
+#### 4.3.3 实际汇率的决定因素
+
+&emsp;&emsp;我们已经知道了$NX = NX(\epsilon)$，现在我们要来回答什么决定了实际汇率。
+
+- 一种通货的实际价值与净出口负相关。当实际汇率低的时候，国内产品相对于国际产品更便宜，净出口增加。
+- 贸易余额(净出口)必须等于资本净流出，资本净流出等于储蓄减去投资。储蓄函数由消费函数和财政政策确定；投资由投资函数和世界利率确定。
+
+图13说明了这种情况：
+
+[caption width="649" align="aligncenter"]<img src="https://cdn.swordofmorning.com/SwordofMorning/Article%20Images/Political%20Economy/PEI_03/13_LOE_EX_howto_.drawio.svg" width="649" height="456" alt="图13" class="size-full" /> 图13：实际汇率是如决定的[/caption]
+
+因为“净出口是关于实际汇率的函数，其关系是负相关的”，所以$NX(\epsilon)$是一个向右下方倾斜的曲线；投资和储蓄不取决于实际汇率，所以两者是垂直的。这两条线的交点决定了均衡的实际汇率。
+
+&emsp;&emsp;同样的，我们可以使用“外汇的供给和需求”来理解图13。垂线$S-I$代表了资本净流出，表示用于交换外汇的美元的供给；向右下方倾斜的曲线$NX(\epsilon)$代表了外国人对美元的需求。
+
+#### 4.3.4 政策如何影响实际汇率
+
+&emsp;&emsp;和我们在4.2.3节中讨论的方式类似，我们这里讨论政策对实际汇率的影响。这里我们省略公式推理和作图，因为它和前面的内容是相似的。
+
+
+&emsp;&emsp;我们考虑扩张性的国内财政政策。该政策使得$S-I$减少，进而使得实际汇率上升，最终导致净出口$NX$的减少。
+
+&emsp;&emsp;我们考虑国外的扩张性财政政策。该政策使得世界利率$r$上升，导致投资$I(r)$减少(因为是投资是贷款来的)。于是$S-I$上升，导致汇率下降，最终导致净出口$NX$的上涨。
+
+&emsp;&emsp;我们考虑国内投资需求的增加。投资$I$的增加导致$S-I$的减少，这和扩张性的国内财政政策一样。
+
+### 4.4 开放的大型经济
