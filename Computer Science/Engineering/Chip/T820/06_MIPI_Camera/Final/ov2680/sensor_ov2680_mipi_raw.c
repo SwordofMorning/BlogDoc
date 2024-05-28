@@ -29,60 +29,54 @@
 /*==============================================================================
  * Description:
  * write gain to sensor registers
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static void ov2680_drv_write_gain(cmr_handle handle, float gain) {
-    // float gain_a = gain;
-    // float gain_d = 0x400; // spec p70, X1 = 15bit
+    float gain_a = gain;
+    float gain_d = 0x400; // spec p70, X1 = 15bit
     // SENSOR_IC_CHECK_HANDLE_VOID(handle);
-    // struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
+    struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
 
-    // if (SENSOR_MAX_GAIN < (cmr_u16)gain_a) {
-    //     gain_a = SENSOR_MAX_GAIN;
-    //     gain_d = gain * 0x400 / gain_a;
-    //     if ((cmr_u16)gain_d > 0x4 * 0x400 - 1)
-    //         gain_d = 0x4 * 0x400 - 1;
-    // }
-    // SENSOR_LOGI("E gain_a %f gain_d %f", gain_a, gain_d);
+    if (SENSOR_MAX_GAIN < (cmr_u16)gain_a) {
+        gain_a = SENSOR_MAX_GAIN;
+        gain_d = gain * 0x400 / gain_a;
+        if ((cmr_u16)gain_d > 0x4 * 0x400 - 1)
+            gain_d = 0x4 * 0x400 - 1;
+    }
+    SENSOR_LOGI("E gain_a %f gain_d %f", gain_a, gain_d);
 
-    // // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x320a, 0x01);
-    // // group 1:all other registers( gain)
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3208, 0x01);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x350b, (cmr_u16)gain_a & 0xff);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x350a, ((cmr_u16)gain_a >> 8));
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5004,
-    //                     ((cmr_u16)gain_d >> 8) & 0x7f);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5005, (cmr_u16)gain_d & 0xff);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5006,
-    //                     ((cmr_u16)gain_d >> 8) & 0x7f);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5007, (cmr_u16)gain_d & 0xff);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5008,
-    //                     ((cmr_u16)gain_d >> 8) & 0x7f);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5009, (cmr_u16)gain_d & 0xff);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3208, 0x11);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3208, 0xA1);
-
-    SENSOR_LOGI("ov2680_drv_write_gain");
+    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x320a, 0x01);
+    // group 1:all other registers( gain)
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3208, 0x01);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x350b, (cmr_u16)gain_a & 0xff);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x350a, ((cmr_u16)gain_a >> 8));
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5004,
+                        ((cmr_u16)gain_d >> 8) & 0x7f);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5005, (cmr_u16)gain_d & 0xff);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5006,
+                        ((cmr_u16)gain_d >> 8) & 0x7f);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5007, (cmr_u16)gain_d & 0xff);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5008,
+                        ((cmr_u16)gain_d >> 8) & 0x7f);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x5009, (cmr_u16)gain_d & 0xff);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3208, 0x11);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3208, 0xA1);
 }
 
 /*==============================================================================
  * Description:
  * read frame length from sensor registers
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static cmr_u16 ov2680_drv_read_frame_length(cmr_handle handle) {
     cmr_u32 frame_len;
-    frame_len = 512;
-
     // SENSOR_IC_CHECK_HANDLE(handle);
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
 
-    // frame_len = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x380e) & 0xff;
-    // frame_len = frame_len << 8 |
-    //             (hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x380f) & 0xff);
+    frame_len = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x380e) & 0xff;
+    frame_len = frame_len << 8 |
+                (hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x380f) & 0xff);
     sns_drv_cxt->sensor_ev_info.preview_framelength = frame_len;
-
-    SENSOR_LOGI("ov2680_drv_read_frame_length, frame_len = %d", frame_len);
 
     return frame_len;
 }
@@ -90,45 +84,41 @@ static cmr_u16 ov2680_drv_read_frame_length(cmr_handle handle) {
 /*==============================================================================
  * Description:
  * write frame length to sensor registers
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static void ov2680_drv_write_frame_length(cmr_handle handle,
                                           cmr_u32 frame_len) {
     // SENSOR_IC_CHECK_HANDLE_VOID(handle);
-    // SENSOR_LOGI("E %d ", frame_len);
+    SENSOR_LOGI("E %d ", frame_len);
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x380e,
-    //                     (frame_len >> 8) & 0xff);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x380f, frame_len & 0xff);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x380e,
+                        (frame_len >> 8) & 0xff);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x380f, frame_len & 0xff);
     sns_drv_cxt->sensor_ev_info.preview_framelength = frame_len;
-
-    SENSOR_LOGI("ov2680_drv_write_frame_length, frame_len = %d", frame_len);
 }
 
 /*==============================================================================
  * Description:
  * read shutter from sensor registers
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static cmr_u32 ov2680_drv_read_shutter(cmr_handle handle) {
     cmr_u32 value = 0x00;
-    // cmr_u8 shutter_l = 0x00;
-    // cmr_u8 shutter_m = 0x00;
-    // cmr_u8 shutter_h = 0x00;
+    cmr_u8 shutter_l = 0x00;
+    cmr_u8 shutter_m = 0x00;
+    cmr_u8 shutter_h = 0x00;
     // SENSOR_IC_CHECK_HANDLE(handle);
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
 
-    // shutter_l = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x3502);
-    // // value=(shutter>>0x04)&0x0f;
-    // shutter_m = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x3501);
-    // // value+=(shutter&0xff)<<0x04;
-    // shutter_h = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x3500);
-    // // value+=(shutter&0x0f)<<0x0c;
-    // value = ((shutter_h & 0x0f) << 12) + (shutter_m << 4) +
-    //         ((shutter_l >> 4) & 0x0f);
+    shutter_l = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x3502);
+    // value=(shutter>>0x04)&0x0f;
+    shutter_m = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x3501);
+    // value+=(shutter&0xff)<<0x04;
+    shutter_h = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x3500);
+    // value+=(shutter&0x0f)<<0x0c;
+    value = ((shutter_h & 0x0f) << 12) + (shutter_m << 4) +
+            ((shutter_l >> 4) & 0x0f);
     sns_drv_cxt->sensor_ev_info.preview_shutter = value;
-
-    SENSOR_LOGI("ov2680_drv_read_shutter, shutter = %d", value);
 
     return value;
 }
@@ -137,23 +127,21 @@ static cmr_u32 ov2680_drv_read_shutter(cmr_handle handle) {
  * Description:
  * write shutter to sensor registers
  * please pay attention to the frame length
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static void ov2680_drv_write_shutter(cmr_handle handle, cmr_u32 shutter) {
-    // cmr_u16 value = 0x00;
+    cmr_u16 value = 0x00;
     // SENSOR_IC_CHECK_HANDLE_VOID(handle);
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
-    // SENSOR_LOGI("E %d ", shutter);
+    SENSOR_LOGI("E %d ", shutter);
 
-    // value = (shutter << 0x04) & 0xff;
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3502, value);
-    // value = (shutter >> 0x04) & 0xff;
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3501, value);
-    // value = (shutter >> 0x0c) & 0x0f;
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3500, value);
+    value = (shutter << 0x04) & 0xff;
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3502, value);
+    value = (shutter >> 0x04) & 0xff;
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3501, value);
+    value = (shutter >> 0x0c) & 0x0f;
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3500, value);
     sns_drv_cxt->sensor_ev_info.preview_shutter = shutter;
-
-    SENSOR_LOGI("ov2680_drv_write_shutter, shutter = %d", shutter);
 }
 
 /*==============================================================================
@@ -173,7 +161,7 @@ static cmr_int ov2680_drv_write_exposure_dummy(cmr_handle handle,
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
     fr_len = sns_drv_cxt->frame_length_def;
     // ov2680_group_hold_on(handle);
-    // SENSOR_LOGI("E %d %d %d", shutter, dummy_line, size_index);
+    SENSOR_LOGI("E %d %d %d", shutter, dummy_line, size_index);
 
     dummy_line = dummy_line > FRAME_OFFSET ? dummy_line : FRAME_OFFSET;
     dest_fr_len =
@@ -198,14 +186,13 @@ write_sensor_shutter:
             sns_drv_cxt->caller_handle, SENSOR_EXIF_CTRL_EXPOSURETIME, shutter);
     }
 
-    SENSOR_LOGI("ov2680_drv_write_exposure_dummy, Success!");
     return SENSOR_SUCCESS;
 }
 
 /*==============================================================================
  * Description:
  * sensor power on
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static cmr_int ov2680_drv_power_on(cmr_handle handle, cmr_uint power_on) {
     // SENSOR_IC_CHECK_HANDLE(handle);
@@ -244,7 +231,6 @@ static cmr_int ov2680_drv_power_on(cmr_handle handle, cmr_uint power_on) {
         //  hw_sensor_set_dvdd_val(sns_drv_cxt->hw_handle, SENSOR_AVDD_CLOSED);
         hw_sensor_set_iovdd_val(sns_drv_cxt->hw_handle, SENSOR_AVDD_CLOSED);
     }
-    SENSOR_LOGI("ov2680_drv_power_on");
     SENSOR_LOGI("(1:on, 0:off): %lu", power_on);
     return SENSOR_SUCCESS;
 }
@@ -252,10 +238,9 @@ static cmr_int ov2680_drv_power_on(cmr_handle handle, cmr_uint power_on) {
 /*==============================================================================
  * Description:
  * calculate fps for every sensor mode according to frame_line and line_time
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static cmr_int ov2680_drv_init_fps_info(cmr_handle handle) {
-    SENSOR_LOGI("ov2680_drv_init_fps_info enter!");
     cmr_int rtn = SENSOR_SUCCESS;
     // SENSOR_IC_CHECK_HANDLE(handle);
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
@@ -269,7 +254,7 @@ static cmr_int ov2680_drv_init_fps_info(cmr_handle handle) {
         cmr_u32 i, modn, tempfps = 0;
         SENSOR_LOGI("start init");
         for (i = 0; i < SENSOR_MODE_MAX; i++) {
-            // max fps should be multiple of 30,it calculated from line_time and
+            // max fps should be multiple of 30,it calulated from line_time and
             // frame_line
             tempfps = trim_info[i].line_time * trim_info[i].frame_line;
             if (0 != tempfps) {
@@ -300,12 +285,10 @@ static cmr_int ov2680_drv_init_fps_info(cmr_handle handle) {
         fps_info->is_init = 1;
     }
     SENSOR_LOGV("X");
-    SENSOR_LOGI("ov2680_drv_init_fps_info end!");
     return rtn;
 }
 
 static cmr_int ov2680_drv_get_static_info(cmr_handle handle, cmr_u32 *param) {
-    SENSOR_LOGI("ov2680_drv_get_static_info enter!");
     cmr_int rtn = SENSOR_SUCCESS;
     struct sensor_ex_info *ex_info = (struct sensor_ex_info *)param;
     cmr_u32 up = 0;
@@ -342,13 +325,11 @@ static cmr_int ov2680_drv_get_static_info(cmr_handle handle, cmr_u32 *param) {
     ex_info->pos_dis.up2hori = up;
     ex_info->pos_dis.hori2down = down;
     sensor_ic_print_static_info((cmr_s8 *)SENSOR_NAME, ex_info);
-    
-    SENSOR_LOGI("ov2680_drv_get_static_info end!");
+
     return rtn;
 }
 
 static cmr_int ov2680_drv_get_fps_info(cmr_handle handle, cmr_u32 *param) {
-    SENSOR_LOGI("ov2680_drv_get_fps_info enter!");
     cmr_int rtn = SENSOR_SUCCESS;
     SENSOR_MODE_FPS_T *fps_info = (SENSOR_MODE_FPS_T *)param;
     // SENSOR_IC_CHECK_HANDLE(handle);
@@ -357,7 +338,7 @@ static cmr_int ov2680_drv_get_fps_info(cmr_handle handle, cmr_u32 *param) {
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
     struct sensor_fps_info *fps_data = sns_drv_cxt->fps_info;
 
-    // make sure have initiated fps of every sensor mode.
+    // make sure have inited fps of every sensor mode.
     if (!fps_data->is_init) {
         ov2680_drv_init_fps_info(handle);
     }
@@ -372,17 +353,15 @@ static cmr_int ov2680_drv_get_fps_info(cmr_handle handle, cmr_u32 *param) {
     SENSOR_LOGI("is_high_fps: %d", fps_info->is_high_fps);
     SENSOR_LOGI("high_fps_skip_num: %d", fps_info->high_fps_skip_num);
 
-    SENSOR_LOGI("ov2680_drv_get_fps_info end!");
     return rtn;
 }
 
 /*==============================================================================
  * Description:
  * cfg otp setting
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static cmr_int ov2680_drv_access_val(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_access_val enter!");
     cmr_int ret = SENSOR_SUCCESS;
     SENSOR_VAL_T *param_ptr = (SENSOR_VAL_T *)param;
     // SENSOR_IC_CHECK_HANDLE(handle);
@@ -395,7 +374,7 @@ static cmr_int ov2680_drv_access_val(cmr_handle handle, cmr_uint param) {
         ov2680_drv_get_static_info(handle, param_ptr->pval);
         break;
     case SENSOR_VAL_TYPE_GET_FPS_INFO:
-        ov2680_drv_get_fps_info(handle, param_ptr->pval);
+        // ov2680_drv_get_fps_info(handle, param_ptr->pval);
         break;
     case SENSOR_VAL_TYPE_SET_SENSOR_CLOSE_FLAG:
         sns_drv_cxt->is_sensor_close = 1;
@@ -405,17 +384,15 @@ static cmr_int ov2680_drv_access_val(cmr_handle handle, cmr_uint param) {
     }
     ret = SENSOR_SUCCESS;
 
-    SENSOR_LOGI("ov2680_drv_access_val end!");
     return ret;
 }
 
 /*==============================================================================
  * Description:
  * identify sensor id
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static cmr_int ov2680_drv_identify(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_identify enter!");
     cmr_u16 pid_value = 0x00;
     cmr_u16 ver_value = 0x00;
     cmr_int ret_value = SENSOR_FAIL;
@@ -425,24 +402,23 @@ static cmr_int ov2680_drv_identify(cmr_handle handle, cmr_uint param) {
     SENSOR_LOGI("mipi raw identify");
 
     // pid_value = hw_sensor_read_reg(sns_drv_cxt->hw_handle, ov2680_PID_ADDR);
+    pid_value = ov2680_PID_VALUE;
+    ver_value = ov2680_VER_VALUE;
 
-    // if (ov2680_PID_VALUE == pid_value) {
-    //     ver_value = hw_sensor_read_reg(sns_drv_cxt->hw_handle, ov2680_VER_ADDR);
-    //     SENSOR_LOGI("Identify: PID = %x, VER = %x", pid_value, ver_value);
-    //     if (ov2680_VER_VALUE == ver_value) {
-    //         SENSOR_LOGI("this is ov2680 sensor");
-    //         //            ov2680_drv_init_fps_info(handle);
-    //         ret_value = SENSOR_SUCCESS;
-    //     } else {
-    //         SENSOR_LOGI("Identify this is %x%x sensor", pid_value, ver_value);
-    //     }
-    // } else {
-    //     SENSOR_LOGI("sensor identify fail, pid_value = %x", pid_value);
-    // }
+    if (ov2680_PID_VALUE == pid_value) {
+        // ver_value = hw_sensor_read_reg(sns_drv_cxt->hw_handle, ov2680_VER_ADDR);
+        SENSOR_LOGI("Identify: PID = %x, VER = %x", pid_value, ver_value);
+        if (ov2680_VER_VALUE == ver_value) {
+            SENSOR_LOGI("this is ov2680 sensor");
+            //            ov2680_drv_init_fps_info(handle);
+            ret_value = SENSOR_SUCCESS;
+        } else {
+            SENSOR_LOGI("Identify this is %x%x sensor", pid_value, ver_value);
+        }
+    } else {
+        SENSOR_LOGI("sensor identify fail, pid_value = %x", pid_value);
+    }
 
-    ret_value = SENSOR_SUCCESS;
-
-    SENSOR_LOGI("ov2680_drv_identify end!");
     return ret_value;
 }
 
@@ -452,7 +428,6 @@ static cmr_int ov2680_drv_identify(cmr_handle handle, cmr_uint param) {
  * you can change this function if it's necessary
  *============================================================================*/
 static cmr_int ov2680_drv_before_snapshot(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_before_snapshot enter!");
     cmr_u32 cap_shutter = 0;
     cmr_u32 prv_shutter = 0;
     cmr_u32 gain = 0;
@@ -504,7 +479,6 @@ snapshot_info:
     } else {
         sns_drv_cxt->exif_info.exposure_line = cap_shutter;
     }
-    SENSOR_LOGI("ov2680_drv_before_snapshot end!");
     return SENSOR_SUCCESS;
 }
 
@@ -514,7 +488,6 @@ snapshot_info:
  * please don't change this function unless it's necessary
  *============================================================================*/
 static cmr_int ov2680_drv_write_exposure(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_write_exposure enter!");
     cmr_int ret_value = SENSOR_SUCCESS;
     cmr_u32 exposure_line = 0x00;
     cmr_u32 dummy_line = 0x00;
@@ -544,7 +517,6 @@ static cmr_int ov2680_drv_write_exposure(cmr_handle handle, cmr_uint param) {
     ret_value = ov2680_drv_write_exposure_dummy(handle, exposure_line,
                                                 dummy_line, size_index);
 
-    SENSOR_LOGI("ov2680_drv_write_exposure enter!");
     return ret_value;
 }
 
@@ -554,7 +526,6 @@ static cmr_int ov2680_drv_write_exposure(cmr_handle handle, cmr_uint param) {
  * you can change this function if it's necessary
  *============================================================================*/
 static cmr_int ov2680_drv_write_gain_value(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_write_gain_value enter!");
     cmr_int ret_value = SENSOR_SUCCESS;
     float real_gain = 0;
     // SENSOR_IC_CHECK_HANDLE(handle);
@@ -572,14 +543,12 @@ static cmr_int ov2680_drv_write_gain_value(cmr_handle handle, cmr_uint param) {
 
     ov2680_drv_write_gain(handle, real_gain);
 
-    SENSOR_LOGI("ov2680_drv_write_gain_value end!");
     return ret_value;
 }
 
 static cmr_u16 ov2680_drv_calc_exposure(cmr_handle handle, cmr_u32 shutter,
                                         cmr_u32 dummy_line, cmr_u16 mode,
                                         struct sensor_aec_i2c_tag *aec_info) {
-    SENSOR_LOGI("ov2680_drv_calc_exposure enter!");
     cmr_u32 dest_fr_len = 0;
     cmr_u32 cur_fr_len = 0;
     cmr_u32 fr_len = 0;
@@ -624,7 +593,6 @@ static cmr_u16 ov2680_drv_calc_exposure(cmr_handle handle, cmr_u32 shutter,
                 aec_info->shutter->settings[1].reg_value,
                 aec_info->shutter->settings[0].reg_value);*/
 
-    SENSOR_LOGI("ov2680_drv_calc_exposure enter!");
     return shutter;
 }
 
@@ -632,8 +600,6 @@ static void ov2680_drv_calc_gain(float gain,
                                  struct sensor_aec_i2c_tag *aec_info) {
     float gain_a = gain;
     float gain_d = 0x400;
-
-    SENSOR_LOGI("ov2680_drv_calc_gain enter!");
 
     if (SENSOR_MAX_GAIN < (cmr_u16)gain_a) {
 
@@ -654,11 +620,9 @@ static void ov2680_drv_calc_gain(float gain,
     aec_info->dgain->settings[3].reg_value = (cmr_u16)gain_d & 0xff;
     aec_info->dgain->settings[4].reg_value = ((cmr_u16)gain_d >> 8) & 0x7f;
     aec_info->dgain->settings[5].reg_value = (cmr_u16)gain_d & 0xff;
-    SENSOR_LOGI("ov2680_drv_calc_gain end!");
 }
 
 static cmr_int ov2680_drv_read_aec_info(cmr_handle handle, void *param) {
-    SENSOR_LOGI("ov2680_drv_read_aec_info enter!");
     cmr_int ret_value = SENSOR_SUCCESS;
     struct sensor_aec_reg_info *info = (struct sensor_aec_reg_info *)param;
     cmr_u16 exposure_line = 0x00;
@@ -695,19 +659,15 @@ static cmr_int ov2680_drv_read_aec_info(cmr_handle handle, void *param) {
     real_gain = (float)info->gain * SENSOR_BASE_GAIN / ISP_BASE_GAIN * 1.0;
     ov2680_drv_calc_gain(real_gain, &ov2680_aec_info);
 
-    SENSOR_LOGI("ov2680_drv_read_aec_info end!");
     return ret_value;
 }
 
 cmr_int ov2680_drv_set_master_FrameSync(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_set_master_FrameSync enter!");
     // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3028, 0x20);
-    SENSOR_LOGI("ov2680_drv_set_master_FrameSync end!");
     return 0;
 }
 
 cmr_int ov2680_drv_set_slave_FrameSync(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_set_slave_FrameSync enter!");
     SENSOR_LOGI("E");
     //cmr_u16 r_rst_timer_h = 0;
     //cmr_u16 r_rst_timer_l = 0;
@@ -726,23 +686,21 @@ cmr_int ov2680_drv_set_slave_FrameSync(cmr_handle handle, cmr_uint param) {
     //r_rst_timer_l = (2 * cur_fr_len - 16) & 0xFF;
 
     /* setting from ov5675 */
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3002, 0x00);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3823, 0x30);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3824, 0x00);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3825, 0x20);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3826, 0x07);
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3827, 0xf5);
-    SENSOR_LOGI("ov2680_drv_set_slave_FrameSync end!");
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3002, 0x00);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3823, 0x30);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3824, 0x00);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3825, 0x20);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3826, 0x07);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x3827, 0xf5);
     return 0;
 }
 
 /*==============================================================================
  * Description:
  * mipi stream on
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static cmr_int ov2680_drv_stream_on(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_stream_on enter!");
     // SENSOR_IC_CHECK_HANDLE(handle);
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
     SENSOR_LOGI("E");
@@ -751,7 +709,7 @@ static cmr_int ov2680_drv_stream_on(cmr_handle handle, cmr_uint param) {
     char value1[PROPERTY_VALUE_MAX];
     property_get("debug.camera.test.mode", value1, "0");
     if (!strcmp(value1, "1")) {
-        // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x4503, 0x80);
+        hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x4503, 0x80);
     }
 #endif
 
@@ -764,21 +722,19 @@ static cmr_int ov2680_drv_stream_on(cmr_handle handle, cmr_uint param) {
         }
     }
 
-    // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x0100, 0x01);
+    hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x0100, 0x01);
     /*delay*/
     usleep(20 * 1000);
 
-    SENSOR_LOGI("ov2680_drv_stream_on end!");
     return 0;
 }
 
 /*==============================================================================
  * Description:
  * mipi stream off
- * please modify this function according your spec
+ * please modify this function acording your spec
  *============================================================================*/
 static cmr_int ov2680_drv_stream_off(cmr_handle handle, cmr_uint param) {
-    SENSOR_LOGI("ov2680_drv_stream_off enter!");
     SENSOR_LOGI("E");
     cmr_u8 value;
     cmr_u32 sleep_time = 0, frame_time;
@@ -787,25 +743,23 @@ static cmr_int ov2680_drv_stream_off(cmr_handle handle, cmr_uint param) {
 
     value = hw_sensor_read_reg(sns_drv_cxt->hw_handle, 0x0100);
     if (value != 0x00) {
-        // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x0100, 0x00);
+        hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x0100, 0x00);
         if (!sns_drv_cxt->is_sensor_close) {
             sleep_time = 50 * 1000;
             usleep(sleep_time);
         }
     } else {
-        // hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x0100, 0x00);
+        hw_sensor_write_reg(sns_drv_cxt->hw_handle, 0x0100, 0x00);
     }
 
     sns_drv_cxt->is_sensor_close = 0;
     SENSOR_LOGI("X sleep_time=%dus", sleep_time);
-    SENSOR_LOGI("ov2680_drv_stream_off end!");
     return 0;
 }
 
 static cmr_int
 ov2680_drv_handle_create(struct sensor_ic_drv_init_para *init_param,
                          cmr_handle *sns_ic_drv_handle) {
-    SENSOR_LOGI("ov2680_drv_handle_create enter!");
     cmr_int ret = SENSOR_SUCCESS;
     struct sensor_ic_drv_cxt *sns_drv_cxt = NULL;
     void *pri_data = NULL;
@@ -833,33 +787,27 @@ ov2680_drv_handle_create(struct sensor_ic_drv_init_para *init_param,
     /*init exif info,this will be deleted in the future*/
     ov2680_drv_init_fps_info(sns_drv_cxt);
 
-    SENSOR_LOGI("ov2680_drv_handle_create end!");
-
     /*add private here*/
     return ret;
 }
 
 static cmr_int ov2680_drv_handle_delete(cmr_handle handle, void *param) {
-    SENSOR_LOGI("ov2680_drv_handle_delete enter!");
     cmr_int ret = SENSOR_SUCCESS;
 
     // SENSOR_IC_CHECK_HANDLE(handle);
     struct sensor_ic_drv_cxt *sns_drv_cxt = (struct sensor_ic_drv_cxt *)handle;
 
     ret = sensor_ic_drv_delete(handle, param);
-    SENSOR_LOGI("ov2680_drv_handle_delete end!");
     return ret;
 }
 
 static cmr_int ov2680_drv_get_private_data(cmr_handle handle, cmr_uint cmd,
                                            void **param) {
-    SENSOR_LOGI("ov2680_drv_get_private_data enter!");
     cmr_int ret = SENSOR_SUCCESS;
     // SENSOR_IC_CHECK_HANDLE(handle);
     // SENSOR_IC_CHECK_PTR(param);
 
-    // ret = sensor_ic_get_private_data(handle, cmd, param);
-    SENSOR_LOGI("ov2680_drv_get_private_data end!");
+    ret = sensor_ic_get_private_data(handle, cmd, param);
     return ret;
 }
 
@@ -870,7 +818,7 @@ void *sensor_ic_open_lib(void)
 
 /*==============================================================================
  * Description:
- * all ioctl functions
+ * all ioctl functoins
  * you can add functions reference SENSOR_IOCTL_FUNC_TAB_T from sensor_drv_u.h
  *
  * add ioctl functions like this:
@@ -883,8 +831,8 @@ static struct sensor_ic_ops s_ov2680_ops_tab = {
     /*---------------------------------------*/
     .power = ov2680_drv_power_on,
     .identify = ov2680_drv_identify,
-    .ex_write_exp = ov2680_drv_write_exposure,
-    .write_gain_value = ov2680_drv_write_gain_value,
+    // .ex_write_exp = ov2680_drv_write_exposure,
+    // .write_gain_value = ov2680_drv_write_gain_value,
 #if defined(CONFIG_DUAL_MODULE)
     .read_aec_info = ov2680_drv_read_aec_info,
 #endif
