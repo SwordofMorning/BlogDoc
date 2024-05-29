@@ -231,3 +231,128 @@ $$
 \end{array}
 \right)
 $$
+
+## 四、转置
+
+&emsp;&emsp;对于矩阵$\rm A$，其**转置矩阵(transpose matrix)**写作$\rm A^{T}$，对于一个$m-{\rm by}-n$的矩阵$\rm A$有：
+
+$$
+{\rm A} = \left(
+\begin{array}{\*{20}{l}}
+{a\_{11}}&{a\_{12}}&{\cdots}&{a\_{1n}} \newline
+{a\_{21}}&{a\_{22}}&{\cdots}&{a\_{2n}} \newline
+{\vdots}&{\vdots}&{\ddots}&{\vdots} \newline
+{a\_{m1}}&{a\_{m2}}&{\cdots}&{a\_{mn}}
+\end{array}
+\right)
+,
+{\rm A^{T}} = \left(
+\begin{array}{\*{20}{l}}
+{a\_{11}}&{a\_{21}}&{\cdots}&{a\_{m1}} \newline
+{a\_{12}}&{a\_{22}}&{\cdots}&{a\_{m2}} \newline
+{\vdots}&{\vdots}&{\ddots}&{\vdots} \newline
+{a\_{1n}}&{a\_{2n}}&{\cdots}&{a\_{mn}}
+\end{array}
+\right)
+$$
+
+换言之，我们可以写作：
+
+$$
+a\_{ij}^{\rm T} = a\_{ji}
+$$
+
+&emsp;&emsp;显然，如果一个矩阵大小是$m-{\rm by}-n$的，那么其转置矩阵的大小则是$n-{\rm by}-m$的。我们以一个$3-{\rm by}-2$的矩阵为例：
+
+$$
+{\left(
+\begin{array}{\*{20}{l}}
+{a}&{d} \newline
+{b}&{e} \newline
+{c}&{f}
+\end{array}
+\right)}^{\rm T}=
+\left(
+\begin{array}{\*{20}{l}}
+{a}&{b}&{c} \newline
+{d}&{e}&{f}
+\end{array}
+\right)
+$$
+
+&emsp;&emsp;下面是两个容易证明的事实：
+
+$$
+\rm ({A}^{T})^{T} = {A}, (A+B)^{T} = A^{T}+B^{T}
+$$
+
+而和标量不同，矩阵乘积的转置等于矩阵转置的乘积：
+
+$$
+\rm (AB)^{T} = B^{T}A^{T}
+$$
+
+其证明如下：
+
+对于矩阵$\rm A$和矩阵$\rm B$的叉乘而言，有：
+
+$$
+\begin{eqnarray}
+\left\\{
+\begin{array}{\*\*lr\*\*}
+({\rm AB})\_{ij} = row({\rm A})\_{i} \cdot col({\rm B}\_{j}) \newline
+({\rm AB})\_{ij}^{\rm T} = row({\rm A})\_{j} \cdot col({\rm B}\_{i})
+\end{array}
+\right. \newline 
+\left\\{
+\begin{array}{\*\*lr\*\*}
+row({\rm A})\_{i} = col({\rm A}^{T})\_{i} \newline
+col({\rm B})\_{j} = row({\rm B}^{T})\_{j}
+\end{array}
+\right.
+\end{eqnarray}
+$$
+
+我们将下面的等式带入上面的等式中：
+
+$$
+\begin{eqnarray}
+({\rm AB})\_{ij} &=& row({\rm A})\_{i} \cdot col({\rm B}\_{j}) \newline
+&=& col({\rm A}^{T})\_{i} \cdot row({\rm B}^{T})\_{j} \newline
+&=& row({\rm B}^{T})\_{j} \cdot col({\rm A}^{T})\_{i} \newline
+&=& {\rm (B^{T} A^{T})}\_{ji}
+\end{eqnarray}
+$$
+
+我们将其用矩阵描述则有：
+
+$$
+\begin{eqnarray}
+({\rm AB}) &=& {\rm (B^{T} A^{T})}^{T} \newline
+({\rm AB})^{\rm T} &=& {\rm (B^{T} A^{T})}
+\end{eqnarray}
+$$
+
+证毕。
+
+&emsp;&emsp;此外，转置矩阵中也存在一些特殊的矩阵。**对称矩阵(symmetric matrix)**指的是$\rm A^T = A$；而**斜对称矩阵(skew symmetric matrix)**指的是$\rm A^T = -A$。下面是一个$3-{\rm by}-3$的例子：
+
+$$
+\left(
+\begin{array}{\*{20}{l}}
+{a}&{b}&{c} \newline
+{b}&{d}&{e} \newline
+{c}&{e}&{f}
+\end{array}
+\right)
+,
+\left(
+\begin{array}{\*{20}{l}}
+{0}&{b}&{c} \newline
+{-b}&{0}&{e} \newline
+{-c}&{-e}&{0}
+\end{array}
+\right)
+$$
+
+这里需要注意的是，斜对称矩阵的对角线必须为0。
