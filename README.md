@@ -18,6 +18,7 @@
 │   │   ├───Lang                        # 编程语言相关
 │   │   ├───Linux                       # Linux环境下的开发
 │   │   ├───Machine Learning            # 机器学习
+│   │   ├───Mathematics                 # 数学
 │   │   └───Vision                      # 计算机视觉
 │   └───Engineering
 │       ├───Android                     # 安卓应用开发
@@ -36,3 +37,5 @@
 ## 二、其他事项
 
 &emsp;&emsp;我的博客经过一次迁移，最初并未以Markdown的形式发布在Github。如果你看到的`.md`文档里面实际是一堆HTML，则说明该文档是我21年之前写的，在将其从Wordpress迁移出来的时候由Markdown变成了HTML。您可以前往我的博客网站查看，如果遇到公式未能加载的情况，请刷新一次网页。
+
+&emsp;&emsp;我的部分博客可能会写两份文档，其中一份的后缀名为`release`。通常，该版本是为了在我的博客上发布使用，对latex公式做了一定的修改。比如，`**lr**`会被修改为`\*\*lr\*\*`；`A_{ij}`会被修改为`A\_{ij}`。这是因为我博客的编辑器同时使用了markdown和MathJax(latex)解析，因此需要用`\`标注markdown中的特殊符号。
