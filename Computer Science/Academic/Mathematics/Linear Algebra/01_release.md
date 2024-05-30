@@ -452,14 +452,14 @@ $$
 
 $$
 \begin{eqnarray}
-ax\_1 + by\_1 &=& 1 \tag{5-1} \newline
-ax\_2 + by\_2 &=& 0 \tag{5-2} \newline
-cx\_1 + dy\_1 &=& 0 \tag{5-3} \newline
-cx\_2 + dy\_2 &=& 1 \tag{5-4}
+ax\_1 + by\_1 &=& 1 \tag{6-1} \newline
+ax\_2 + by\_2 &=& 0 \tag{6-2} \newline
+cx\_1 + dy\_1 &=& 0 \tag{6-3} \newline
+cx\_2 + dy\_2 &=& 1 \tag{6-4}
 \end{eqnarray}
 $$
 
-为了求解$y\_1$和$y\_2$，我们可以使用式(5-2)和式(5-3)的**齐次方程(homogenous equations)**来用$x$表示$y$；为了求解$x\_1$和$x\_2$，我们则可以将之前算出来的$y\_1$和$y\_2$带入式(5-1)和式(5-4)的**非齐次方程(inhomogeneous equations)**中。于是我们得到：
+为了求解$y\_1$和$y\_2$，我们可以使用式(6-2)和式(6-3)的**齐次方程(homogenous equations)**来用$x$表示$y$；为了求解$x\_1$和$x\_2$，我们则可以将之前算出来的$y\_1$和$y\_2$带入式(6-1)和式(6-4)的**非齐次方程(inhomogeneous equations)**中。于是我们得到：
 
 $$
 \begin{eqnarray}
@@ -508,12 +508,12 @@ $$
 
 $$
 \begin{eqnarray}
-\rm {(AB)}^{-1} = {B}^{-1}{A}^{-1} \tag{5-5} \newline
-\rm {(A^{T})}^{-1} = {(A^{-1})}^{-T} \tag{5-6}
+\rm {(AB)}^{-1} = {B}^{-1}{A}^{-1} \tag{6-5} \newline
+\rm {(A^{T})}^{-1} = {(A^{-1})}^{-T} \tag{6-6}
 \end{eqnarray}
 $$
 
-式(5-5)证明如下：
+式(6-5)证明如下：
 
 $$
 \begin{eqnarray}
@@ -529,7 +529,7 @@ $$
 \end{eqnarray}
 $$
 
-式(5-6)证明如下：
+式(6-6)证明如下：
 
 $$
 \begin{eqnarray}
@@ -542,3 +542,75 @@ $$
 \end{eqnarray}
 $$
 
+## 七、正交矩阵
+
+&emsp;&emsp;具有实数项的方阵$\rm Q$满足：
+
+$$
+{\rm Q}^{-1} = {\rm Q}^{\rm T} \tag{7-1}
+$$
+
+这个矩阵被称为**正交矩阵(orthogonal matrix)**，其另一个定义写做：
+
+$$
+\rm {Q}{Q}^{T} = I, {Q}^{T}{Q} = I \tag{7-2}
+$$
+
+&emsp;&emsp;下面是一个$2-{\rm by}-2$的例子：
+
+$$
+{\rm Q} =
+\left(
+\begin{array}{\*{20}{c}}
+{q\_{11}} & {q\_{12}} \newline
+{q\_{21}} & {q\_{22}}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{\rm q\_1} & {\rm q\_2} \newline
+\end{array}
+\right)
+$$
+
+其中$\rm q\_1$和$\rm q\_2$是一个$2-{\rm by}-1$的列向量，于是有：
+
+$$
+\rm {Q}^{T}{Q} =
+\left(
+\begin{array}{\*{20}{c}}
+{\rm q\_1^T} \newline
+{\rm q\_1^T}
+\end{array}
+\right)
+\left(
+\begin{array}{\*{20}{c}}
+{\rm q\_1} & {\rm q\_2} \newline
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{\rm q\_1^T q\_1} & {\rm q\_1^T q\_2} \newline
+{\rm q\_2^T q\_1} & {\rm q\_2^T q\_2}
+\end{array}
+\right)
+$$
+
+如果$\rm Q$是正交的，那么：
+
+$$
+\begin{eqnarray}
+{\rm q\_1^T q\_1} = {\rm q\_2^T q\_2} = 1 \newline
+{\rm q\_1^T q\_2} = {\rm q\_2^T q\_1} = 0
+\end{eqnarray}
+$$
+
+也就是说，$\rm Q$的列互相为正交向量集；同理，也适用于其行向量。因此，正交矩阵的等效定义也可以是：一个具有实数项的方阵，其列(以及行)是一组正交向量。
+
+&emsp;&emsp;正交矩阵的第三个定义如下。另$\rm Q$为一个$n-{\rm by}-n$的正交矩阵，另$\rm x$为一个$n-{\rm by}-1$的列向量。向量$\rm Qx$的长度(范数、模长)的平方可以写做：
+
+$$
+\rm {\left \Vert{Qx} \right \Vert}^{2} = {(Qx)}^{T}(Qx) = {x}^{T}{Q}^{T}{Q}{x} = {x}^{T}{I}{x} = {x}^{T}{x} = {\left \Vert{x} \right \Vert}^{2} \tag{7-3}
+$$
+
+我们发现$\rm Qx$的长度等于$\rm x$的长度，因此我们说正交矩阵是保留长度的矩阵。在下一节中，我们将看到正交矩阵的一个应用，它在二维空间中旋转一个向量。
