@@ -682,3 +682,102 @@ $$
 $$
 
 证毕。
+
+## 九、置换矩阵
+
+&emsp;&emsp;正交矩阵的另一个例子是**置换矩阵(permutation matrices)**，下面是一个$2-{\rm by}-2$的例子，来看一下它是如何做置换的。
+
+对于一个$2-{\rm by}-2$的矩阵来说，其列向量(或者行向量)可能的排序只有$(1,2)$或者$(2,1)$，如果按照前者排序，则该置换矩阵等于$\rm I$，如果按后者排序，可以写做：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{0} & {1} \newline
+{1} & {0}
+\end{array}
+\right)
+$$
+
+下面是它和其他矩阵进行计算的例子：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{0} & {1} \newline
+{1} & {0}
+\end{array}
+\right)
+\left(
+\begin{array}{\*{20}{c}}
+{a} & {b} \newline
+{c} & {d}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{c} & {d} \newline
+{a} & {b}
+\end{array}
+\right)
+$$
+
+当置换矩阵位于左边时，它交换了右侧矩阵的行。
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{a} & {b} \newline
+{c} & {d}
+\end{array}
+\right)
+\left(
+\begin{array}{\*{20}{c}}
+{0} & {1} \newline
+{1} & {0}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{b} & {a} \newline
+{d} & {c}
+\end{array}
+\right)
+$$
+
+当置换矩阵位于右边时，它交换了左侧矩阵的列。
+
+&emsp;&emsp;对于一个$3-{\rm by}-3$的矩阵来说，其可能存在的排序组合有：$3! = 6$种，我们观察其中一种组合$(3,1,2)$是如何影响矩阵的：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{0} & {0} & {1} \newline
+{1} & {0} & {0} \newline
+{0} & {1} & {0} \newline
+\end{array}
+\right)
+\left(
+\begin{array}{\*{20}{c}}
+{a} & {b} & {c} \newline
+{d} & {e} & {f} \newline
+{g} & {h} & {i} \newline
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{g} & {h} & {i} \newline
+{a} & {b} & {c} \newline
+{d} & {e} & {f} \newline
+\end{array}
+\right)
+$$
+
+不难发现，置换矩阵将右侧的矩阵的行交换到了置换矩阵对应的位置上。
+
+&emsp;&emsp;值得注意的是，置换矩阵只是通过对单位矩阵进行相应的置换得到的，上面的例子就是将$(1,2,3)$置换为$(3,1,2)$得到的。我们可以将一个行置换矩阵表示为：
+
+$$
+\rm PA = (PI)A
+$$
+
+$\rm P$是置换矩阵，$\rm PI$是具有置换行的单位矩阵。单位矩阵是正交的，因此通过对单位矩阵进行置换得到的置换矩阵也是正交的。因此，本节的开头才说置换矩阵是正交矩阵的另一个例子。
