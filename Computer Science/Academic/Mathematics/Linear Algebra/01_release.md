@@ -614,3 +614,71 @@ $$
 $$
 
 我们发现$\rm Qx$的长度等于$\rm x$的长度，因此我们说正交矩阵是保留长度的矩阵。在下一节中，我们将看到正交矩阵的一个应用，它在二维空间中旋转一个向量。
+
+## 八、旋转矩阵
+
+&emsp;&emsp;假设我们现在有一个二维向量$(x,y)$，其与坐标轴的夹角为$\phi$，其长度为$r$；旋转$\theta$后的向量为$(x', y')$。我们用三角函数来表示这个新的向量：
+
+$$
+\begin{eqnarray}
+x' = r {\rm cos}(\theta + \phi) = r ({\rm cos}{\theta}{\rm cos}{\phi} - {\rm sin}{\theta}{\rm sin}{\phi}) = x{\rm cos}{\theta} - y{\rm sin}{\theta} \newline
+y' = r {\rm sin}(\theta + \phi) = r ({\rm sin}{\theta}{\rm cos}{\phi} + {\rm cos}{\theta}{\rm sin}{\phi}) = x{\rm sin}{\theta} + y{\rm cos}{\theta}
+\end{eqnarray}
+$$
+
+将其用矩阵的形式表达则有：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{x'} \newline
+{y'}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{{\rm cos}{\theta}} & {-{\rm sin}{\theta}} \newline
+{{\rm sin}{\theta}} & {{\rm cos}{\theta}}
+\end{array}
+\right)
+\left(
+\begin{array}{\*{20}{c}}
+{x} \newline
+{y}
+\end{array}
+\right)
+$$
+
+我们用$\rm R\_{\theta}$来表示上面这个$2-{\rm by}-2$的旋转矩阵。我们很容易发现其行列是正交的，并且其逆矩阵等于其转置。逆阵$\rm R\_{\theta}^{-1}$表示旋转了$- \theta$。
+
+&emsp;&emsp;逆阵$\rm R\_{\theta}^{-1}$表示旋转了$- \theta$。我们将证明这一点：
+
+三角函数具有：
+
+$$
+\begin{eqnarray}
+{\rm sin}{(- \theta)} &=& -{\rm sin}{(\theta)} \newline
+{\rm cos}{(- \theta)} &=& {\rm cos}{(\theta)}
+\end{eqnarray}
+$$
+
+因此：
+
+$$
+{\rm R\_{- \theta}} =
+\left(
+\begin{array}{\*{20}{c}}
+{{\rm cos}{(- \theta)}} & {-{\rm sin}{(- \theta)}} \newline
+{{\rm sin}{(- \theta)}} & {{\rm cos}{(- \theta)}}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{{\rm cos}{\theta}} & {{\rm sin}{\theta}} \newline
+{{- \rm sin}{\theta}} & {{\rm cos}{\theta}}
+\end{array}
+\right) =
+{\rm R\_{\theta}^{-1}}
+$$
+
+证毕。
