@@ -59,15 +59,15 @@ $$
 $$
 {\rm A} = \left(
 \begin{array}{\*{20}{l}}
-{a\_{11}}&{a\_{12}}&{\cdots}&{a\_{1n}} \newline
-{a\_{21}}&{a\_{22}}&{\cdots}&{a\_{2n}} \newline
+{a\\\_{11}}&{a\\\_{12}}&{\cdots}&{a\\\_{1n}} \newline
+{a\\\_{21}}&{a\\\_{22}}&{\cdots}&{a\\\_{2n}} \newline
 {\vdots}&{\vdots}&{\ddots}&{\vdots} \newline
-{a\_{m1}}&{a\_{m2}}&{\cdots}&{a\_{mn}}
+{a\\\_{m1}}&{a\\\_{m2}}&{\cdots}&{a\\\_{mn}}
 \end{array}
 \right)
 $$
 
-其中第$i$行$j$列的元素被表示为$a\_{ij}$。
+其中第$i$行$j$列的元素被表示为$a\\\_{ij}$。
 
 ## 二、矩阵的加法和乘法
 
@@ -159,10 +159,10 @@ $$
 
 &emsp;&emsp;我们总结上面的乘法，并将其扩展到$m-{\rm by}-n$的一般情况。结果矩阵的第(i,j)元素的值，等于$\sum{(\text{矩阵的i行} \cdot \text{矩阵的j列})}$。不难发现，i行的元素个数应该和j列的元素个数相等，即，前一个矩阵的列应该和后一个矩阵的行相等。
 
-&emsp;&emsp;如果我们用$\rm A$来表示一个$m-{\rm by}-p$的矩阵，其元素用$a\_{ij}$来表示；用$\rm B$来表示一个$p-{\rm by}-n$的矩阵，其元素用$b\_{ij}$来表示。那么，$\rm C=AB$就是一个$m-{\rm by}-p$的矩阵，其中的元素$c\_{ij}$可以表示为：
+&emsp;&emsp;如果我们用$\rm A$来表示一个$m-{\rm by}-p$的矩阵，其元素用$a\\\_{ij}$来表示；用$\rm B$来表示一个$p-{\rm by}-n$的矩阵，其元素用$b\\\_{ij}$来表示。那么，$\rm C=AB$就是一个$m-{\rm by}-p$的矩阵，其中的元素$c\\\_{ij}$可以表示为：
 
 $$
-C\_{ij} = \mathop{\sum} \limits\_{k=1}^{n} {a\_{ik} \cdot b\_{kj}}
+C\\\_{ij} = \mathop{\sum} \limits\\\_{k=1}^{n} {a\\\_{ik} \cdot b\\\_{kj}}
 $$
 
 ## 三、特殊矩阵
@@ -194,22 +194,22 @@ $$
 $$
 {\rm D} = \left(
 \begin{array}{\*{20}{l}}
-{d\_{1}}&{0} \newline
-{0}&{d\_{2}}
+{d\\\_{1}}&{0} \newline
+{0}&{d\\\_{2}}
 \end{array}
 \right)
 $$
 
-通常，对角矩阵是一个方阵。但如果是一个满足$d\_{ij}=0, i \neq j$的矩形矩阵，也可以被认为是对角矩阵。
+通常，对角矩阵是一个方阵。但如果是一个满足$d\\\_{ij}=0, i \neq j$的矩形矩阵，也可以被认为是对角矩阵。
 
 &emsp;&emsp;**带状矩阵(band or banded matrix)**，相当于对角矩阵的扩展版，它要求仅在对角带上存在非零元素，例如一个$3-{\rm by}-3$的带状矩阵：
 
 $$
 {\rm B} = \left(
 \begin{array}{\*{20}{l}}
-{d\_{1}}&{a\_{1}}&{0} \newline
-{b\_{1}}&{d\_{2}}&{a\_{2}} \newline
-{0}&{b\_{2}}&{d\_{3}}
+{d\\\_{1}}&{a\\\_{1}}&{0} \newline
+{b\\\_{1}}&{d\\\_{2}}&{a\\\_{2}} \newline
+{0}&{b\\\_{2}}&{d\\\_{3}}
 \end{array}
 \right)
 $$
@@ -239,19 +239,19 @@ $$
 $$
 {\rm A} = \left(
 \begin{array}{\*{20}{l}}
-{a\_{11}}&{a\_{12}}&{\cdots}&{a\_{1n}} \newline
-{a\_{21}}&{a\_{22}}&{\cdots}&{a\_{2n}} \newline
+{a\\\_{11}}&{a\\\_{12}}&{\cdots}&{a\\\_{1n}} \newline
+{a\\\_{21}}&{a\\\_{22}}&{\cdots}&{a\\\_{2n}} \newline
 {\vdots}&{\vdots}&{\ddots}&{\vdots} \newline
-{a\_{m1}}&{a\_{m2}}&{\cdots}&{a\_{mn}}
+{a\\\_{m1}}&{a\\\_{m2}}&{\cdots}&{a\\\_{mn}}
 \end{array}
 \right)
 ,
 {\rm A^{T}} = \left(
 \begin{array}{\*{20}{l}}
-{a\_{11}}&{a\_{21}}&{\cdots}&{a\_{m1}} \newline
-{a\_{12}}&{a\_{22}}&{\cdots}&{a\_{m2}} \newline
+{a\\\_{11}}&{a\\\_{21}}&{\cdots}&{a\\\_{m1}} \newline
+{a\\\_{12}}&{a\\\_{22}}&{\cdots}&{a\\\_{m2}} \newline
 {\vdots}&{\vdots}&{\ddots}&{\vdots} \newline
-{a\_{1n}}&{a\_{2n}}&{\cdots}&{a\_{mn}}
+{a\\\_{1n}}&{a\\\_{2n}}&{\cdots}&{a\\\_{mn}}
 \end{array}
 \right)
 $$
@@ -259,7 +259,7 @@ $$
 换言之，我们可以写作：
 
 $$
-a\_{ij}^{\rm T} = a\_{ji}
+a\\\_{ij}^{\rm T} = a\\\_{ji}
 $$
 
 &emsp;&emsp;显然，如果一个矩阵大小是$m-{\rm by}-n$的，那么其转置矩阵的大小则是$n-{\rm by}-m$的。我们以一个$3-{\rm by}-2$的矩阵为例：
@@ -300,14 +300,14 @@ $$
 \begin{eqnarray}
 \left\\{
 \begin{array}{\*\*lr\*\*}
-({\rm AB})\_{ij} = row({\rm A})\_{i} \cdot col({\rm B}\_{j}) \newline
-({\rm AB})\_{ij}^{\rm T} = row({\rm A})\_{j} \cdot col({\rm B}\_{i})
+({\rm AB})\\\_{ij} = row({\rm A})\\\_{i} \cdot col({\rm B}\\\_{j}) \newline
+({\rm AB})\\\_{ij}^{\rm T} = row({\rm A})\\\_{j} \cdot col({\rm B}\\\_{i})
 \end{array}
 \right. \newline 
 \left\\{
 \begin{array}{\*\*lr\*\*}
-row({\rm A})\_{i} = col({\rm A}^{T})\_{i} \newline
-col({\rm B})\_{j} = row({\rm B}^{T})\_{j}
+row({\rm A})\\\_{i} = col({\rm A}^{T})\\\_{i} \newline
+col({\rm B})\\\_{j} = row({\rm B}^{T})\\\_{j}
 \end{array}
 \right.
 \end{eqnarray}
@@ -317,10 +317,10 @@ $$
 
 $$
 \begin{eqnarray}
-({\rm AB})\_{ij} &=& row({\rm A})\_{i} \cdot col({\rm B}\_{j}) \newline
-&=& col({\rm A}^{T})\_{i} \cdot row({\rm B}^{T})\_{j} \newline
-&=& row({\rm B}^{T})\_{j} \cdot col({\rm A}^{T})\_{i} \newline
-&=& {\rm (B^{T} A^{T})}\_{ji}
+({\rm AB})\\\_{ij} &=& row({\rm A})\\\_{i} \cdot col({\rm B}\\\_{j}) \newline
+&=& col({\rm A}^{T})\\\_{i} \cdot row({\rm B}^{T})\\\_{j} \newline
+&=& row({\rm B}^{T})\\\_{j} \cdot col({\rm A}^{T})\\\_{i} \newline
+&=& {\rm (B^{T} A^{T})}\\\_{ji}
 \end{eqnarray}
 $$
 
@@ -356,3 +356,61 @@ $$
 $$
 
 这里需要注意的是，斜对称矩阵的对角线必须为0。
+
+## 五、内积和外积
+
+&emsp;&emsp;两个向量的**内积(inner product, dot product, scalar product)**从行向量和列向量的乘积中获得。这里我们默认向量都是列向量，因此下面是两个$3-{\rm by}-1$的列向量$\rm u$和$\rm v$相乘得到内积的例子：
+
+$$
+{\rm {u}^{T}{v}} = 
+\left(
+    \begin{array}{\*{20}{l}}
+        {u\\_1}&{u\\_2}&{u\\_3}
+    \end{array}
+\right) 
+\left(
+    \begin{array}{\*{20}{l}}
+        {v\\_1} \newline
+        {v\\_2} \newline
+        {v\\_3}
+    \end{array}
+\right) 
+= {u\\_1}{v\\_1} + {u\\_2}{v\\_2} + {u\\_3}{v\\_3}
+$$
+
+如果两个非零向量的内积是零，那么我们说这两个向量是**正交的(orthogonal)**。向量的**范数(norm)**被定义为：
+
+$$
+{\left \Vert {\rm u} \right \Vert} = 
+{\left( {\rm {u}^{T}{u}} \right)}^{1/2}=
+{\left( {u\_1^2 + u\_2^2 + u\_3^2} \right)}^{1/2}
+$$
+
+如果向量的范数等于一，我们说这个向量已经**归一化(normalized)**。如果一组向量它们相互正交且是归一的，那么它们被称为**标准正交基(orthonormal basis)**。
+
+&emsp;&emsp;向量的外积则是被定义为列向量与行向量的乘积，下面是同样是$\rm u$和$\rm v$的例子：
+
+$$
+{\rm {u}{v}^{T}} =
+\left(
+\begin{array}{\*{20}{l}}
+{u\_1} \newline
+{u\_2} \newline
+{u\_3}
+\end{array}
+\right) 
+\left(
+\begin{array}{\*{20}{l}}
+{v\_1}&{v\_2}&{v\_3}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{l}}
+{{u}\_{1}{v}\_{1}} & {{u}\_{1}{v}\_{2}} & {{u}\_{1}{v}\_{3}} \newline
+{{u}\_{2}{v}\_{1}} & {{u}\_{2}{v}\_{2}} & {{u}\_{2}{v}\_{3}} \newline
+{{u}\_{3}{v}\_{1}} & {{u}\_{3}{v}\_{2}} & {{u}\_{3}{v}\_{3}}
+\end{array}
+\right) 
+$$
+
+&emsp;&emsp;矩阵$\rm B$的**迹(trace)**被记作$\rm Tr B$，是$\rm B$的对角元素之和。
