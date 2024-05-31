@@ -1,0 +1,535 @@
+# Linear Algebra 02 Systems of Linear Equations
+
+[toc]
+
+## 一、高斯消元法
+
+&emsp;&emsp;假设我们现在有一组方程：
+
+$$
+\begin{eqnarray}
+-3x\_1 + 2x\_2 - x\_3 = -1 \newline
+6x\_1 - 6x\_2 + 7x\_3 = -7 \newline
+3x\_1 - 4x\_2 + 4x\_3 = -6
+\end{eqnarray}
+$$
+
+我们将其以矩阵的形式描述：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{6} & {-6} & {7} \newline
+{3} & {-4} & {4}
+\end{array}
+\right)
+\left(
+\begin{array}{\*{20}{c}}
+{x\_1} \newline
+{x\_2} \newline
+{x\_3}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{1} \newline
+{-7} \newline
+{-6}
+\end{array}
+\right)
+$$
+
+我们也可以将其记作：$\rm Ax = b$。
+
+&emsp;&emsp;用于求解线性方程组的标准数值算法被称为**高斯消元法(Gaussian elimination)**。我们首先将$\rm A$和$\rm b$用一种叫**增广矩阵(augmented matrix)**来表示：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} & {-1} \newline
+{6} & {-6} & {7} & {-7} \newline
+{3} & {-4} & {4} & {-6}
+\end{array}
+\right)
+$$
+
+我们将第$i$行的$a\_{ii}$选为主元来消去其他的行上第$i$列的元素。我们首先从$a\_{11}$开始，用它消去第2、3行的元素：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} & {-1} \newline
+{0} & {-2} & {5} & {-9} \newline
+{0} & {-2} & {3} & {-7}
+\end{array}
+\right)
+$$
+
+我们现在选中$a\_{22}$，用它消去第1、3行的元素：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {0} & {4} & {-10} \newline
+{0} & {-2} & {5} & {-9} \newline
+{0} & {0} & {-2} & {2}
+\end{array}
+\right)
+$$
+
+我们现在选中$a\_{33}$，用它消去第1、2行的元素：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {0} & {0} & {-6} \newline
+{0} & {-2} & {0} & {-4} \newline
+{0} & {0} & {1} & {-1}
+\end{array}
+\right)
+$$
+
+&emsp;&emsp;化简一下得到：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} & {2} \newline
+{0} & {1} & {0} & {2} \newline
+{0} & {0} & {1} & {-1}
+\end{array}
+\right)
+$$
+
+即：
+
+$$
+\begin{eqnarray}
+x\_1 &=& 2 \newline
+x\_2 &=& 2 \newline
+x\_3 &=& -1
+\end{eqnarray}
+$$
+
+## 二、求逆
+
+&emsp;&emsp;高斯消元法还可以用于矩阵的求逆：
+
+$$
+\rm AI \to I{A}^{-1}
+$$
+
+&emsp;&emsp;假设现在我们有如下矩阵：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{6} & {-6} & {7} \newline
+{3} & {-4} & {4}
+\end{array}
+\right)
+$$
+
+其求逆阵过程如下：
+
+$$
+\begin{eqnarray}
+& \left(
+    \begin{array}{\*{20}{c}}
+    {-3} & {2} & {-1} & {1} & {0} & {0} \newline
+    {6} & {-6} & {7} & {0} & {1} & {0} \newline
+    {3} & {-4} & {4} & {0} & {0} & {1}
+    \end{array}
+\right) \newline
+& \Downarrow \newline
+& \left(
+    \begin{array}{\*{20}{c}}
+    {-3} & {2} & {-1} & {1} & {0} & {0} \newline
+    {0} & {-2} & {5} & {2} & {1} & {0} \newline
+    {0} & {-2} & {3} & {1} & {0} & {1}
+    \end{array}
+\right) \newline
+& \Downarrow \newline
+& \left(
+    \begin{array}{\*{20}{c}}
+    {-3} & {0} & {4} & {3} & {1} & {0} \newline
+    {0} & {-2} & {5} & {2} & {1} & {0} \newline
+    {0} & {0} & {-2} & {-1} & {-1} & {1}
+    \end{array}
+\right) \newline
+& \Downarrow \newline
+& \left(
+    \begin{array}{\*{20}{c}}
+    {-3} & {0} & {0} & {1} & {-1} & {2} \newline
+    {0} & {-2} & {0} & {-1/2} & {-3/2} & {5/2} \newline
+    {0} & {0} & {-2} & {-1} & {-1} & {1}
+    \end{array}
+\right) \newline
+& \Downarrow \newline
+& \left(
+    \begin{array}{\*{20}{c}}
+    {1} & {0} & {0} & {-1/3} & {1/3} & {-2/3} \newline
+    {0} & {1} & {0} & {1/4} & {3/4} & {-5/4} \newline
+    {0} & {0} & {1} & {1/2} & {1/2} & {-1/2}
+    \end{array}
+\right) \newline
+\end{eqnarray}
+$$
+
+于是我们得到了$\rm A^{-1}$：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-1/3} & {1/3} & {-2/3} \newline
+{1/4} & {3/4} & {-5/4} \newline
+{1/2} & {1/2} & {-1/2}
+\end{array}
+\right)
+$$
+
+## 三、初等变换
+
+&emsp;&emsp;在之前的例子中：
+
+$$
+{\rm A} =
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{6} & {-6} & {7} \newline
+{3} & {4} & {4}
+\end{array}
+\right) \to
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{0} & {-2} & {5} \newline
+{3} & {4} & {4}
+\end{array}
+\right) =
+{\rm M\_{1}A}
+$$
+
+这相当于把第一行的二倍加到第二行，因此我们可以用一个矩阵来表示$\rm M\_1$：
+
+$$
+{\rm M\_1} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{2} & {1} & {0} \newline
+{0} & {0} & {1}
+\end{array}
+\right)
+$$
+
+$\rm M\_1$基于单位矩阵，为了表示“把第一行的2倍加到第二行”，因此$m\_{2,1}$=2。同理，我们继续来看这一个变换：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{0} & {-2} & {5} \newline
+{3} & {4} & {4}
+\end{array}
+\right) \to
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{0} & {-2} & {5} \newline
+{0} & {-2} & {3}
+\end{array}
+\right) =
+{\rm {M}\_{2}{M}\_{1}{A}}
+$$
+
+这相当于“将第一行的1倍加到第三行”，因此$m\_{3,1}=1$：
+
+$$
+{\rm M\_2} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{0} & {1} & {0} \newline
+{1} & {0} & {1}
+\end{array}
+\right)
+$$
+
+同理，我们再来看一个变换：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{0} & {-2} & {5} \newline
+{0} & {-2} & {3}
+\end{array}
+\right) \to
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{0} & {-2} & {5} \newline
+{0} & {0} & {-2}
+\end{array}
+\right) =
+{\rm {M}\_{3}{M}\_{2}{M}\_{1}{A}}
+$$
+
+这相当于“将第二行的-1倍加到第三行”，因此$m\_{3,2}=-1$。
+
+$$
+{\rm M\_3} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{0} & {1} & {0} \newline
+{0} & {-1} & {1}
+\end{array}
+\right)
+$$
+
+&emsp;&emsp;于是我们发现：
+
+$$
+\rm {M}\_{3}{M}\_{2}{M}\_{1}A = U =
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{0} & {-2} & {5} \newline
+{0} & {0} & {-2}
+\end{array}
+\right)
+$$
+
+其中$\rm U$是上三角矩阵，我们将在下一节具体讨论。
+
+## 四、LU分解
+
+&emsp;&emsp;在第三节中，我们得到了：
+
+$$
+\rm {M}\_{3}{M}\_{2}{M}\_{1}A = U
+$$
+
+我们可以将其写作：
+
+$$
+\rm A = {M}\_{1}^{-1}{M}\_{2}^{-1}{M}\_{3}^{-1}U
+$$
+
+同时我们发现：
+
+$$
+{\rm M\_1} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{2} & {1} & {0} \newline
+{0} & {0} & {1}
+\end{array}
+\right),
+{\rm {M}\_{1}^{-1}} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{-2} & {1} & {0} \newline
+{0} & {0} & {1}
+\end{array}
+\right)
+$$
+
+$$
+{\rm M\_2} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{0} & {1} & {0} \newline
+{1} & {0} & {1}
+\end{array}
+\right),
+{\rm {M}\_{2}^{-1}} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{0} & {1} & {0} \newline
+{-1} & {0} & {1}
+\end{array}
+\right)
+$$
+
+$$
+{\rm M\_2} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{0} & {1} & {0} \newline
+{0} & {-1} & {1}
+\end{array}
+\right),
+{\rm {M}\_{2}^{-1}} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{0} & {1} & {0} \newline
+{0} & {1} & {1}
+\end{array}
+\right)
+$$
+
+$$
+{\rm {M}\_{1}^{-1}{M}\_{2}^{-1}{M}\_{3}^{-1}} = 
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{-2} & {1} & {0} \newline
+{-1} & {1} & {1}
+\end{array}
+\right)
+= {\rm L}
+$$
+
+因此，我们可以写作：
+
+$$
+\rm LU = A
+$$
+
+## 五、(LU)x = b
+
+&emsp;&emsp;回顾我们之前计算方程：
+
+$$
+\rm Ax = b
+$$
+
+为了提高计算机的计算速度，我们引入$\rm LU$来表示$A$，因此方程变成了：
+
+$$
+\rm LUx = b
+$$
+
+我们将$\rm Ux$记作$\rm y$，于是解方程的步骤变成了：
+
+$$
+\begin{eqnarray}
+&1&: \quad \rm let \ y = Ux \newline
+&2&: \quad \rm solve \ Ly = b \newline
+&3&: \quad \rm slove \ Ux = y
+\end{eqnarray}
+$$
+
+&emsp;&emsp;我们依然通过之前的例子来看一下这个解方程的过程：
+
+$$
+{\rm L} =
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{-2} & {1} & {0} \newline
+{-1} & {1} & {1}
+\end{array}
+\right),
+{\rm U} =
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{0} & {-2} & {5} \newline
+{0} & {0} & {-2}
+\end{array}
+\right),
+{\rm b} =
+\left(
+\begin{array}{\*{20}{c}}
+{-1} \newline
+{-7}\newline
+{-6}
+\end{array}
+\right)
+$$
+
+
+首先我们令$\rm y = Ux$，然后解方程$\rm Ly = b$：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{1} & {0} & {0} \newline
+{-2} & {1} & {0} \newline
+{-1} & {1} & {1}
+\end{array}
+\right)
+\left(
+\begin{array}{\*{20}{c}}
+{y\_1} \newline
+{y\_2} \newline
+{y\_3}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{-1} \newline
+{-7}\newline
+{-6}
+\end{array}
+\right)
+\to
+\left(
+\begin{array}{\*{20}{c}}
+{y\_1} \newline
+{y\_2} \newline
+{y\_3}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{-1} \newline
+{-9}\newline
+{-2}
+\end{array}
+\right)
+$$
+
+接着，我们再解方程$\rm Ux = y$：
+
+$$
+\left(
+\begin{array}{\*{20}{c}}
+{-3} & {2} & {-1} \newline
+{0} & {-2} & {5} \newline
+{0} & {0} & {-2}
+\end{array}
+\right)
+\left(
+\begin{array}{\*{20}{c}}
+{x\_1} \newline
+{x\_2} \newline
+{x\_3}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{-1} \newline
+{-9}\newline
+{-2}
+\end{array}
+\right)
+\to
+\left(
+\begin{array}{\*{20}{c}}
+{x\_1} \newline
+{x\_2} \newline
+{x\_3}
+\end{array}
+\right) =
+\left(
+\begin{array}{\*{20}{c}}
+{2} \newline
+{2}\newline
+{-1}
+\end{array}
+\right)
+$$

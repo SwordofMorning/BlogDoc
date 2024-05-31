@@ -31,3 +31,5 @@ SHARKL
 RAWRGB
 xclk
 SwordofMorning
+mathop
+eqnarray
