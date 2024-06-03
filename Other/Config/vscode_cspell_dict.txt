@@ -33,3 +33,4 @@ xclk
 SwordofMorning
 mathop
 eqnarray
+mathbb
