@@ -76,3 +76,5 @@ ifdown
 ifup
 setprop
 scrfd
+aarch64
+MSVC
