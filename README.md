@@ -1,5 +1,7 @@
 # 博客文档
 
+[![en](https://img.shields.io/badge/Lang-En-blue.svg)](./README.en.md)
+
 博客地址：<a href = "https://swordofmorning.com/">SwordofMorning</a>
 
 ## 一、简要说明
