@@ -78,3 +78,4 @@ setprop
 scrfd
 aarch64
 MSVC
+struct
