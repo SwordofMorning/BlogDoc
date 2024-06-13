@@ -80,3 +80,4 @@ aarch64
 MSVC
 struct
 Hypohemat
+CangKu
