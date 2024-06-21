@@ -81,3 +81,7 @@ MSVC
 struct
 Hypohemat
 CangKu
+Solow
+aligncenter
+Marcoeconomics
+notag
