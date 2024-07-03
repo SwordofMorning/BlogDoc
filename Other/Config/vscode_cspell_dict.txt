@@ -85,3 +85,7 @@ Solow
 aligncenter
 Marcoeconomics
 notag
+gpio
+mipi
+GPIO
+MIPI
