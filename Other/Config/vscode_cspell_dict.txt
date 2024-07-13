@@ -97,3 +97,9 @@ musleabi
 vintf
 aarch
 Gogs
+VOCs
+OLED
+Altera
+Buildroot
+LVDS
+LVGL
