@@ -95,10 +95,12 @@
 ## 二、与我联系
 
 <p align="center">
-
 <a href="mailto:master@xiaojintao.email
-"><img alt="Email" src="https://img.shields.io/badge/Email-master@xiaojintao.email-blue?style=flat-square&logo=gmail"></a>
-
-<a href="https://github.com/SwordofMorning"><img alt="Website" src="https://img.shields.io/badge/Github-SwordofMorning-blue?style=flat-square&logo=google-chrome"></a>
-
+"><img alt="Email" src="https://img.shields.io/badge/Email-master@xiaojintao.email-blue?style=flat-square&logo=gmail"></a> <a href="https://github.com/SwordofMorning"><img alt="Website" src="https://img.shields.io/badge/Github-SwordofMorning-blue?style=flat-square&logo=google-chrome"></a>
 </p>
+
+## 三、其他兴趣
+
+1. Strava: `111090606`，甚至是Cat 6公路车爱好者；
+2. Steam: `212899807`，不能把NPC全部图图的RPG不是好RPG；
+3. Ultimate-Guitar: `SwordofMorning`，上班之后就没练琴的Metal Guitarist；
