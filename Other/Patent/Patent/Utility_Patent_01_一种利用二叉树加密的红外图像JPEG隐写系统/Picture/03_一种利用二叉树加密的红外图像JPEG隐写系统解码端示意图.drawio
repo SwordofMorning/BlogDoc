@@ -1,0 +1,103 @@
+<mxfile host="Electron" modified="2024-05-10T08:54:03.587Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.18 Chrome/120.0.6099.199 Electron/28.1.2 Safari/537.36" etag="Ug-3d3hh6PKivVS05tXU" version="22.1.18" type="device">
+  <diagram name="第 1 页" id="0oK_lKw3NX719zOaVCa5">
+    <mxGraphModel dx="2074" dy="2365" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="fq-z41ix4KnH-Qz98avV-21" value="&lt;span style=&quot;font-size: 18px;&quot;&gt;先序遍历的数据&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="160" y="200" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-22" value="&lt;span style=&quot;font-size: 18px;&quot;&gt;编码后的数据&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="40" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-23" value="&lt;span style=&quot;font-size: 18px;&quot;&gt;后序遍历的数据&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="400" y="200" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-24" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="fq-z41ix4KnH-Qz98avV-22" target="fq-z41ix4KnH-Qz98avV-21" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="140" as="sourcePoint" />
+            <mxPoint x="450" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-25" value="分割" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="fq-z41ix4KnH-Qz98avV-24" vertex="1" connectable="0">
+          <mxGeometry x="-0.0122" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-26" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" parent="1" source="fq-z41ix4KnH-Qz98avV-22" target="fq-z41ix4KnH-Qz98avV-23" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="410" y="160" as="sourcePoint" />
+            <mxPoint x="460" y="110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-27" value="分割" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="fq-z41ix4KnH-Qz98avV-26" vertex="1" connectable="0">
+          <mxGeometry x="-0.0017" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-28" value="&lt;span style=&quot;font-size: 18px;&quot;&gt;二叉树结构化的数据&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="360" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-29" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="fq-z41ix4KnH-Qz98avV-21" target="fq-z41ix4KnH-Qz98avV-28" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="310" as="sourcePoint" />
+            <mxPoint x="400" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-31" value="构建二叉树" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="fq-z41ix4KnH-Qz98avV-29" vertex="1" connectable="0">
+          <mxGeometry x="0.0153" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-30" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="fq-z41ix4KnH-Qz98avV-23" target="fq-z41ix4KnH-Qz98avV-28" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="310" as="sourcePoint" />
+            <mxPoint x="400" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-32" value="构建二叉树" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="fq-z41ix4KnH-Qz98avV-30" vertex="1" connectable="0">
+          <mxGeometry x="-0.0251" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-33" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Base64编码数据&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="520" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-34" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="fq-z41ix4KnH-Qz98avV-28" target="fq-z41ix4KnH-Qz98avV-33" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="450" as="sourcePoint" />
+            <mxPoint x="440" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-35" value="二叉树层次遍历" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="fq-z41ix4KnH-Qz98avV-34" vertex="1" connectable="0">
+          <mxGeometry x="-0.0357" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-36" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;探测器原始数据&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="680" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-37" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="fq-z41ix4KnH-Qz98avV-33" target="fq-z41ix4KnH-Qz98avV-36" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="650" as="sourcePoint" />
+            <mxPoint x="350" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq-z41ix4KnH-Qz98avV-38" value="Base64解码" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="fq-z41ix4KnH-Qz98avV-37" vertex="1" connectable="0">
+          <mxGeometry x="-0.0238" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_OFqfoqrRvWzFLtMrUBS-2" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;封装的JPEG图像&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="-120" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_OFqfoqrRvWzFLtMrUBS-5" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="_OFqfoqrRvWzFLtMrUBS-2" target="fq-z41ix4KnH-Qz98avV-22" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="20" as="sourcePoint" />
+            <mxPoint x="400" y="-30" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

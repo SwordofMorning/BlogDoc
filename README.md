@@ -24,8 +24,11 @@
 │   │   └───Vision                      # 计算机视觉
 │   └───Engineering
 │       ├───Android                     # 安卓应用开发
-│       └───Chip                        # 嵌入式开发，按照芯片分类
+│       ├───Chip                        # 嵌入式开发，按照芯片分类
+│       ├───Docker                      # 配置环境
+│       └───Tricks                      # 不知道怎么分类的杂项
 ├───Other
+│   ├───BlogPage                        # 博客页面
 │   ├───CangKu                          # 其他平台发布的博客
 │   ├───Config                          # 个人常用的各类配置文件
 │   ├───DCS                             # DCS:World笔记
