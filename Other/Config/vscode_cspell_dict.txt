@@ -145,3 +145,4 @@ timeval
 gdatetime
 gboolean
 gobj
+menuconfig
