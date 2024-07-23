@@ -146,3 +146,5 @@ gdatetime
 gboolean
 gobj
 menuconfig
+pinctrl
+xfer
