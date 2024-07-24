@@ -149,3 +149,4 @@ menuconfig
 pinctrl
 xfer
 Uboot
+Kconfig
