@@ -166,3 +166,5 @@ atoi
 O_RDWR
 perror
 memcpy
+libncurses
+sshpass
