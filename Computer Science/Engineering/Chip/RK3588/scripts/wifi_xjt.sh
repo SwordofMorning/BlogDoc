@@ -276,6 +276,10 @@ echo "sta connected!!"
 function start_ap() {
 echo "starting hostapd..."
 
+# 直接使用wlan0接口，不再创建ap0虚拟接口
+ifconfig wlan0 down
+ifconfig wlan0 $ap_ip netmask 255.255.255.0 up
+
 # 配置 hostapd.conf
 echo "interface=wlan0
 driver=nl80211
@@ -294,16 +298,13 @@ echo "hostapd starting."
 if [ -e "/var/run/hostapd/wlan0" ]; then
     rm "/var/run/hostapd/wlan0"
 fi
-/usr/sbin/hostapd -i wlan0 /etc/hostapd.conf &
+/usr/sbin/hostapd /etc/hostapd.conf &
 
-sleep 2 
+sleep 2
 
 check_in_loop 10 check_hostapd
 
 echo "hostapd started successfully!"
-
-# 配置 wlan0 的 IP 地址  
-ifconfig wlan0 $ap_ip netmask 255.255.255.0
 
 echo "AP started successfully!"
 }
@@ -322,10 +323,10 @@ fuser 53/tcp
 echo "Checking if port 67 is in use..."
 fuser 67/udp
 
-# 配置 dnsmasq.conf  
+# 配置 dnsmasq.conf
 echo "interface=wlan0
 listen-address=$ap_ip
-dhcp-range=192.168.2.100,192.168.2.200,255.255.255.0,12h  
+dhcp-range=192.168.2.100,192.168.2.200,255.255.255.0,12h
 " > /etc/dnsmasq.conf
 
 # 启动 dnsmasq
@@ -334,16 +335,15 @@ echo "dnsmasq starting."
 if [ $? -ne 0 ]; then
     echo "Failed to start dnsmasq!"
     # 在这里可以添加更详细的错误处理逻辑
-    exit 1  
+    exit 1
 fi
 
 sleep 2
 
-check_in_loop 5 check_dnsmasq 
+check_in_loop 5 check_dnsmasq
 
 echo "dnsmasq started successfully!"
 }
-
 function start_wifi() {
 
 echo "########starting wifi#####################"   

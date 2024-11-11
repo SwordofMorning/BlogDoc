@@ -169,3 +169,5 @@ memcpy
 libncurses
 sshpass
 nplanes
+litelog
+steganography
