@@ -58,3 +58,42 @@
 &emsp;&emsp;`git rebase`则可以作为一种显式的`ff`进行合并：
 
 
+<!-- 图4 -->
+
+## 三、冷门知识
+
+### 3.1 git blame
+
+1. `git blame <filename>`，逐行显示指定文件的每一行代码是由谁在什么时候引入或修改的；
+2. `git blame <filename> -L x,y`，指定查看范围行号的修改；
+3. `git blame <filename> -w`，忽略空格；
+4. `git blame <filename> -C`，检测在同一提交中移动或复制的行；
+5. `git blame <filename> -C -C`，检测在同一个提交或创建文件的提交中移动或复制的行;
+6. `git blame <filename> -C -C -C`，检测在同一个提交或创建文件的提交或任何提交中移动或复制的行。
+
+&emsp;&emsp;因此使用`git blame <filename> -w -C -C -C`，可以更好的查询到代码的“最终”责任人。
+
+### 3.2 git log
+
+1. `git log -p <hash/name>`，查看提交的具体补丁；
+2. `git log -S <str>`，查找和str有关的提交；
+3. `git log -S <str> -p`，查找和str有关的提交，并显示其具体内容。
+
+&emsp;&emsp;`git log -S <str> -p`用于查找仓库中历史更改，尤其是删除的内容十分有效。
+
+### 3.2 git reflog
+
+```log
+0b98876 (HEAD -> dev) HEAD@{0}: rebase (finish): returning to refs/heads/dev
+0b98876 (HEAD -> dev) HEAD@{1}: rebase (pick): up1
+003600d (master) HEAD@{2}: rebase (start): checkout master
+5bba514 HEAD@{3}: checkout: moving from master to dev
+003600d (master) HEAD@{4}: commit: m
+ffb409c HEAD@{5}: checkout: moving from dev to master
+5bba514 HEAD@{6}: commit: up2
+ef04433 HEAD@{7}: commit: up1
+ffb409c HEAD@{8}: checkout: moving from master to dev
+ffb409c HEAD@{9}: commit: test
+37f33ca (origin/master, origin/HEAD) HEAD@{10}: pull: Fast-forward
+```
+
