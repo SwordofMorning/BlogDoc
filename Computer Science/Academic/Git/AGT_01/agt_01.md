@@ -60,7 +60,7 @@
 
 <!-- 图4 -->
 
-## 三、冷门知识
+## 三、冷门但是有用
 
 ### 3.1 git blame
 
@@ -81,7 +81,9 @@
 
 &emsp;&emsp;`git log -S <str> -p`用于查找仓库中历史更改，尤其是删除的内容十分有效。
 
-### 3.2 git reflog
+### 3.3 git reflog
+
+&emsp;&emsp;`git reflog`允许我们查看当前HEAD的所有git操作历史记录。
 
 ```log
 0b98876 (HEAD -> dev) HEAD@{0}: rebase (finish): returning to refs/heads/dev
@@ -96,4 +98,12 @@ ffb409c HEAD@{8}: checkout: moving from master to dev
 ffb409c HEAD@{9}: commit: test
 37f33ca (origin/master, origin/HEAD) HEAD@{10}: pull: Fast-forward
 ```
+
+### 3.4 git diff
+
+&emsp;&emsp;默认的`git diff`会按照**行**给出diff，如果我们加上参数`--word-diff`则会按照“词/列”给出diff。
+
+### 3.5 rerere
+
+see：<a href=https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-Rerere>git-scm</a>
 
