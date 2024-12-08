@@ -379,3 +379,4 @@ c4: Refactor feature A
 
 &emsp;&emsp;这样，`fixup`提交就被无缝地合并到了它所修复的提交中，使提交历史保持简洁和可读性。
 
+## 八、Cherry pick
