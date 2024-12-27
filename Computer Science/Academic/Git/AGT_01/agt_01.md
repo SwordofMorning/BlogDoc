@@ -380,3 +380,10 @@ c4: Refactor feature A
 &emsp;&emsp;这样，`fixup`提交就被无缝地合并到了它所修复的提交中，使提交历史保持简洁和可读性。
 
 ## 八、Cherry pick
+
+&emsp;&emsp;`cherry-pick`允许我们将一个节点的内容拷贝到另一个节点上，一个典型的应用场景如下：
+
+1. 我在开发过程中新增了一个feat_01；
+2. 我错误的将这个feat_01提交到了master分支，而不是dev分支。
+
+&emsp;&emsp;通常，我们不希望直接修改master分支，因此我们可以通过在dev分支上使用`git cherry-pick <hash>`来将之前提交到master分支的代码移动到dev分支上。
