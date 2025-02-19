@@ -5,17 +5,18 @@
 &emsp;&emsp;本篇文章我们关注导论部分的内容。
 
 ```
-Introduction
-    I. Of the difference between Pure and Empirical Knowledge
-    II. The Human Intellect, even in an Unphilosophical State, is in Possession of Certain Cognitions “à priori”.
-    III. Philosophy stands in need of a Science which shall Determine the Possibility, Principles, and Extent of Human Knowledge “à priori”
-    IV. Of the Difference Between Analytical and Synthetical Judgements.
-    V. In all Theoretical Sciences of Reason, Synthetical Judgements “à priori” are contained as Principles.
-    VI. The Universal Problem of Pure Reason.
-    VII. Idea and Division of a Particular Science, under the Name of a Critique of Pure Reason.
+I. Of the difference between Pure and Empirical Knowledge
+II. The Human Intellect, even in an Unphilosophical State, is in Possession of Certain Cognitions “à priori”.
+III. Philosophy stands in need of a Science which shall Determine the Possibility, Principles, and Extent of Human Knowledge “à priori”
+IV. Of the Difference Between Analytical and Synthetical Judgements.
+V. In all Theoretical Sciences of Reason, Synthetical Judgements “à priori” are contained as Principles.
+VI. The Universal Problem of Pure Reason.
+VII. Idea and Division of a Particular Science, under the Name of a Critique of Pure Reason.
 ```
 
-## I. Of the difference between Pure and Empirical Knowledge
+## Section I 
+
+**Of the difference between Pure and Empirical Knowledge**
 
 **纯粹知识与经验知识的区别**
 
@@ -55,7 +56,9 @@ Introduction
 2. 引入先验知识概念，为后续认识论奠定基础
 3. 区分"始于经验"和"源于经验"的差异，揭示认知的复杂性
 
-## II. The Human Intellect, even in an Unphilosophical State, is in Possession of Certain Cognitions “à priori”.
+## Section II
+
+**The Human Intellect, even in an Unphilosophical State, is in Possession of Certain Cognitions “à priori”.**
 
 **即使在非哲学状态下，人类理智也拥有某些先验认知**
 
@@ -104,7 +107,9 @@ Introduction
    - 经验并非知识的唯一来源
    - 必然性和普遍性是认知的基本特征
 
-## III. Philosophy stands in need of a Science which shall Determine the Possibility, Principles, and Extent of Human Knowledge “à priori”
+## Section III
+
+**Philosophy stands in need of a Science which shall Determine the Possibility, Principles, and Extent of Human Knowledge “à priori”**
 
 **哲学需要一门确定人类先验知识的可能性、原理和范围的科学**
 
@@ -156,7 +161,9 @@ Introduction
    - 理性需要自我检视
    - 知识扩展需要合理界限
 
-## IV. Of the Difference Between Analytical and Synthetical Judgements.
+## Section IV
+
+**Of the Difference Between Analytical and Synthetical Judgements.**
 
 **论分析判断和综合判断的区别**
 
@@ -216,7 +223,9 @@ Introduction
 3. 深入思考先验综合判断的可能性问题
 4. 认识分析判断的工具性价值
 
-## V. In all Theoretical Sciences of Reason, Synthetical Judgements “à priori” are contained as Principles.
+## Section V
+
+**In all Theoretical Sciences of Reason, Synthetical Judgements “à priori” are contained as Principles.**
 
 **在理性的所有理论科学中，先验综合判断作为原理而存在**
 
@@ -278,7 +287,9 @@ Introduction
 3. 认识先验综合判断在各学科中的地位
 4. 思考形而上学重建的可能性
 
-## VI. The Universal Problem of Pure Reason.
+## Section VI
+
+**The Universal Problem of Pure Reason.**
 
 **纯粹理性的普遍问题**
 
@@ -360,7 +371,9 @@ Introduction
 3. 认识批判方法的重要性
 4. 思考理性自我认识的意义
 
-## VII. Idea and Division of a Particular Science, under the Name of a Critique of Pure Reason.
+## Section VII
+
+**Idea and Division of a Particular Science, under the Name of a Critique of Pure Reason.**
 
 **作为纯粹理性批判的特殊科学的理念与分类**
 
