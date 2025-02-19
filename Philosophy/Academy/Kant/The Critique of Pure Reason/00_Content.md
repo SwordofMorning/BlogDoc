@@ -1,4 +1,4 @@
-# The Critique of Pure Reason 00 目录
+# 《纯粹理性批判》 00 目录
 
 ## 简化目录
 
