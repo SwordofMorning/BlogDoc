@@ -1,10 +1,6 @@
-# Introduction
+# The Critique of Pure Reason 01 Introduction
 
-Contents of The Critique of Pure Reason
-
-
-
-In this article, we focus on:
+&emsp;&emsp;本篇文章我们关注导论部分的内容。
 
 ```
 Introduction
