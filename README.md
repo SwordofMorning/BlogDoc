@@ -10,8 +10,9 @@
 
 ```sh
 .
-├───.vscode
-├───Computer Science
+├── Art
+│   └── Music
+├── Computer Science
 │   ├───Academic
 │   │   ├───Architecture                # 架构
 │   │   ├───Concurrent Programming      # 并行计算
@@ -27,16 +28,24 @@
 │       ├───Chip                        # 嵌入式开发，按照芯片分类
 │       ├───Docker                      # 配置环境
 │       └───Tricks                      # 不知道怎么分类的杂项
-├───Other
+├── Electronic Engineering
+│   └── Integrated Circuit              # 集成电路相关内容，最近还没开始写
+├── LICENSE
+├── Other
 │   ├───BlogPage                        # 博客页面
 │   ├───CangKu                          # 其他平台发布的博客
 │   ├───Config                          # 个人常用的各类配置文件
 │   ├───DCS                             # DCS:World笔记
+│   ├── Log                             # 个人日志
 │   └───Patent                          # 软著与专利
-├───Philosophy                          # 哲学，已经很有没有维护了
-└───Political Economy
-    ├───Political Economy Essay         # 政治经济学随笔，个人感悟为主
-    └───Political Economy Introduction  # 政治经济学导论，读书笔记
+├── Philosophy
+│   ├── Academy                         # 翻译或读书会
+│   └── Project                         # 特定主题的哲学系列专题
+├── Political Economy
+│   ├── Political Economy Essay         # 政治经济学随笔，个人感悟为主
+│   └── Political Economy Introduction  # 政治经济学导论，读书笔记
+├── README.en.md
+└── README.md
 ```
 
 ## 二、其他事项
