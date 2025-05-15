@@ -281,7 +281,7 @@ Func_StopWpa()
 # Brief: Applicable to the first time connecting to WiFi after booting
 # Return:   0 success; 
 #           1-4 corresponding to the step that failed
-API_FirstConnect()
+API_Connect()
 {
     local ret=0
 
@@ -501,7 +501,7 @@ main()
             
         "connect")
             echo "Connecting to WiFi network: $WIFISSID"
-            API_FirstConnect
+            API_Connect
             ret=$?
             case $ret in
                 0) echo "Connection successful" ;;
