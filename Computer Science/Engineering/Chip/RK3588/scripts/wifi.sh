@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default action is connect
-ACTION=${1:-connect}
+ACTION=${1:-Unknown}
 WIFISSID=${2:-AHGZ-2.4}
 WIFIPWD=${3:-cdjp123123}
 
@@ -278,14 +278,14 @@ Func_StopWpa()
 ######################################## Par II: APIs ########################################
 ##############################################################################################
 
-# Brief: Applicable to the first time connecting to WiFi after booting
-# Return:   0 success; 
-#           1-4 corresponding to the step that failed
-API_Connect()
+# Brief: Insmod for init
+# Return:   0 success
+#           1 insmod fail
+API_Insmod()
 {
     local ret=0
 
-    echo "Starting first time WiFi connection..."
+    echo "Starting first time WiFi Init..."
 
     # Step 1: Load WiFi module
     echo "Step 1: Loading WiFi module..."
@@ -296,31 +296,43 @@ API_Connect()
         return 1
     fi
 
-    # Step 2: Configure WPA with SSID and Password
-    echo "Step 2: Configuring WPA..."
+    return 0
+}
+
+# Brief: Applicable to the first time connecting to WiFi after booting
+# Return:   0 success; 
+#           1-4 corresponding to the step that failed
+API_Connect()
+{
+    local ret=0
+
+    echo "Starting first time WiFi connection..."
+
+    # Step 1: Configure WPA with SSID and Password
+    echo "Step 1: Configuring WPA..."
     Func_ConfWpa
     ret=$?
     if [ $ret -ne 0 ]; then
-        echo "Failed at Step 2: WPA configuration failed with error $ret"
-        return 2
+        echo "Failed at Step 1: WPA configuration failed with error $ret"
+        return 1
     fi
 
-    # Step 3: Run wpa_supplicant
-    echo "Step 3: Starting WPA supplicant..."
+    # Step 2: Run wpa_supplicant
+    echo "Step 2: Starting WPA supplicant..."
     Func_RunWpa
     ret=$?
     if [ $ret -ne 0 ]; then
-        echo "Failed at Step 3: WPA supplicant failed with error $ret"
-        return 3
+        echo "Failed at Step 2: WPA supplicant failed with error $ret"
+        return 2
     fi
 
-    # Step 4: DHCP get IP address
-    echo "Step 4: Obtaining IP address..."
+    # Step 3: DHCP get IP address
+    echo "Step 3: Obtaining IP address..."
     Func_UDHCPC
     ret=$?
     if [ $ret -ne 0 ]; then
-        echo "Failed at Step 4: DHCP failed with error $ret"
-        return 4
+        echo "Failed at Step 3: DHCP failed with error $ret"
+        return 3
     fi
 
     echo "WiFi connection completed successfully!"
@@ -330,9 +342,7 @@ API_Connect()
 # Brief: Used to reconnect to a new WiFi after already connected to WiFi
 # Return: 0 success; 
 #         1 stop wpa failed;
-#         2 config wpa failed;
-#         3 run wpa failed;
-#         4 DHCP failed
+#         2-4 same as API_Connect return values
 API_Reconnect()
 {
     local ret=0
@@ -351,31 +361,13 @@ API_Reconnect()
     # Brief pause to ensure clean state
     sleep 1
 
-    # Step 2: Configure new WiFi parameters
-    echo "Step 2: Configuring new WiFi parameters..."
-    Func_ConfWpa
+    # Step 2: Use API_Connect for the rest of the process
+    echo "Step 2: Starting new connection process..."
+    API_Connect
     ret=$?
     if [ $ret -ne 0 ]; then
-        echo "Failed at Step 2: Could not configure new WiFi parameters (error $ret)"
-        return 2
-    fi
-
-    # Step 3: Start wpa_supplicant
-    echo "Step 3: Starting WiFi connection..."
-    Func_RunWpa
-    ret=$?
-    if [ $ret -ne 0 ]; then
-        echo "Failed at Step 3: Could not establish WiFi connection (error $ret)"
-        return 3
-    fi
-
-    # Step 4: Obtain IP address
-    echo "Step 4: Obtaining IP address..."
-    Func_UDHCPC
-    ret=$?
-    if [ $ret -ne 0 ]; then
-        echo "Failed at Step 4: Could not obtain IP address (error $ret)"
-        return 4
+        echo "Failed at Step 2: Connection process failed with error $ret"
+        return $((ret + 1))  # Adjust return value to maintain error code consistency
     fi
 
     echo "WiFi reconnection completed successfully!"
@@ -473,10 +465,12 @@ main()
     if [ "$ACTION" = "-h" ] || [ "$ACTION" = "--help" ]; then
         echo "Usage: $0 [ACTION] [SSID] [PASSWORD]"
         echo "Actions:"
+        echo "  insmod            - Load WiFi module"
         echo "  scan              - Scan available WiFi networks"
         echo "  connect SSID PWD  - Connect to WiFi (first time)"
         echo "  reconnect SSID PWD- Reconnect to different WiFi"
         echo "Examples:"
+        echo "  $0 insmod"
         echo "  $0 scan"
         echo "  $0 connect MyWiFi MyPassword"
         echo "  $0 reconnect NewWiFi NewPassword"
@@ -485,6 +479,17 @@ main()
 
     # Execute requested action
     case "$ACTION" in
+        "insmod")
+            echo "Loading WiFi module..."
+            API_Insmod
+            ret=$?
+            case $ret in
+                0) echo "Module loading successful" ;;
+                1) echo "Module loading failed" ;;
+                *) echo "Unknown error occurred" ;;
+            esac
+            ;;
+
         "scan")
             echo "Scanning for WiFi networks..."
             API_Scan
@@ -505,10 +510,9 @@ main()
             ret=$?
             case $ret in
                 0) echo "Connection successful" ;;
-                1) echo "Module loading failed" ;;
-                2) echo "WPA configuration failed" ;;
-                3) echo "WPA connection failed" ;;
-                4) echo "DHCP configuration failed" ;;
+                1) echo "WPA configuration failed" ;;
+                2) echo "WPA connection failed" ;;
+                3) echo "DHCP configuration failed" ;;
                 *) echo "Unknown error occurred" ;;
             esac
             ;;
