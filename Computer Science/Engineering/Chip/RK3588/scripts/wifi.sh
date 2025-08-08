@@ -2,7 +2,7 @@
 
 # Default action is connect
 ACTION=${1:-Unknown}
-WIFISSID=${2:-AHGZ-2.4}
+WIFISSID=${2:-AHGZ-AP}
 WIFIPWD=${3:-cdjp123123}
 
 ##############################################################################################
@@ -40,9 +40,37 @@ Func_Insmod()
     fi
 }
 
+# Brief: Reset network interface completely
+# Return: 0 success; 1 failed
+Func_ResetInterface()
+{
+    local INTERFACE="wlan0"
+    
+    echo "Resetting network interface ${INTERFACE}..."
+    
+    # Stop all services first
+    pkill -f "hostapd" 2>/dev/null
+    pkill -f "dnsmasq" 2>/dev/null
+    pkill -f "udhcpc.*${INTERFACE}" 2>/dev/null
+    sleep 1
+    
+    # Reset interface
+    ifconfig ${INTERFACE} down 2>/dev/null
+    
+    # Clear any IP configuration
+    ip addr flush dev ${INTERFACE} 2>/dev/null
+    
+    # Remove any routes
+    ip route flush dev ${INTERFACE} 2>/dev/null
+    
+    sleep 1
+    echo "Interface ${INTERFACE} reset completed"
+    return 0
+}
+
 # Brief: config wpa_supplicant.conf with SSID and PWD
 # Return:   0 success; 
-#           1 interface down failed; 
+#           1 interface reset failed; 
 #           2 config write failed; 
 #           3 interface check failed
 Func_ConfWpa()
@@ -50,10 +78,11 @@ Func_ConfWpa()
     local WPA_CONF="/etc/wpa_supplicant.conf"
     local INTERFACE="wlan0"
 
-    # Step 1: Turn down wlan0
-    echo "Turning down ${INTERFACE}..."
-    if ! ifconfig ${INTERFACE} down; then
-        echo "Failed to turn down ${INTERFACE}"
+    # Step 1: Reset interface completely
+    echo "Resetting interface for station mode..."
+    Func_ResetInterface
+    if [ $? -ne 0 ]; then
+        echo "Failed to reset interface"
         return 1
     fi
 
@@ -75,8 +104,8 @@ EOL
         return 2
     fi
 
-    # Step 3: Check wlan0 status
-    echo "Checking ${INTERFACE} status..."
+    # Step 3: Bring up interface
+    echo "Bringing up ${INTERFACE}..."
     if ! ifconfig ${INTERFACE} up; then
         echo "Failed to bring up ${INTERFACE}"
         return 3
@@ -84,7 +113,7 @@ EOL
 
     # Verify interface is up
     if ifconfig ${INTERFACE} | grep -q "UP"; then
-        echo "Successfully configured ${INTERFACE}"
+        echo "Successfully configured ${INTERFACE} for station mode"
         return 0
     else
         echo "Interface ${INTERFACE} is not up"
@@ -171,21 +200,19 @@ Func_UDHCPC()
     # Function to check IP address
     check_ip() {
         local ip=$(ifconfig ${INTERFACE} | grep 'inet ' | awk '{print $2}')
-        if [ -n "$ip" ]; then
+        if [ -n "$ip" ] && [ "$ip" != "192.168.4.1" ]; then  # Exclude AP mode IP
             echo "Current IP address: $ip"
             return 0
         fi
         return 1
     }
 
-    # Check if we already have an IP
-    if check_ip; then
-        echo "IP address already configured"
-        return 0
-    fi
+    # Force clear any existing IP (especially AP mode IP)
+    echo "Clearing any existing IP configuration..."
+    ip addr flush dev ${INTERFACE} 2>/dev/null
 
     # Try to get IP via DHCP
-    echo "No IP address found, attempting DHCP..."
+    echo "Attempting DHCP for new IP..."
     for attempt in $(seq 1 $MAX_RETRY); do
         echo "DHCP attempt $attempt of $MAX_RETRY"
         
@@ -193,13 +220,13 @@ Func_UDHCPC()
         pkill -f "udhcpc.*${INTERFACE}"
         sleep 1
 
-        # Start DHCP client
+        # Start DHCP client with force renew
         if udhcpc -i ${INTERFACE} -T ${DHCP_TIMEOUT} -t ${MAX_RETRY} -n -q; then
             sleep 2  # Wait for IP configuration to settle
             
             # Verify IP was obtained
             if check_ip; then
-                echo "Successfully obtained IP address"
+                echo "Successfully obtained IP address via DHCP"
                 return 0
             fi
         fi
@@ -244,9 +271,6 @@ Func_StopWpa()
             # Clean up any remaining socket files
             rm -f /var/run/wpa_supplicant/${INTERFACE} 2>/dev/null
             
-            # Bring down the interface
-            ifconfig ${INTERFACE} down 2>/dev/null
-            
             return 0
         fi
         sleep 1
@@ -266,12 +290,220 @@ Func_StopWpa()
         # Clean up any remaining socket files
         rm -f /var/run/wpa_supplicant/${INTERFACE} 2>/dev/null
         
-        # Bring down the interface
-        ifconfig ${INTERFACE} down 2>/dev/null
-        
         echo "wpa_supplicant stopped successfully (after forced kill)"
         return 0
     fi
+}
+
+# Brief: Validate WiFi password for AP mode
+# Return: 0 valid; 1 invalid
+Func_ValidatePassword()
+{
+    local password="$1"
+    local min_length=8
+    local max_length=63
+    
+    if [ ${#password} -lt $min_length ] || [ ${#password} -gt $max_length ]; then
+        echo "Error: WiFi password must be between $min_length and $max_length characters"
+        echo "Current password length: ${#password}"
+        return 1
+    fi
+    
+    return 0
+}
+
+# Brief: Configure hostapd for AP mode
+# Return: 0 success;
+#         1 password validation failed;
+#         2 interface configuration failed;
+#         3 hostapd config write failed
+Func_ConfAP()
+{
+    local HOSTAPD_CONF="/etc/hostapd.conf"
+    local INTERFACE="wlan0"
+    local AP_IP="192.168.4.1"
+
+    # Step 1: Validate password
+    echo "Validating WiFi password..."
+    if ! Func_ValidatePassword "$WIFIPWD"; then
+        return 1
+    fi
+
+    # Step 2: Stop any existing services and reset interface
+    echo "Stopping existing services and resetting interface..."
+    Func_StopWpa >/dev/null 2>&1
+    pkill -f "hostapd" >/dev/null 2>&1
+    pkill -f "dnsmasq" >/dev/null 2>&1
+    
+    # Reset interface completely
+    Func_ResetInterface
+
+    # Step 3: Configure interface for AP mode
+    echo "Configuring ${INTERFACE} for AP mode..."
+    if ! ifconfig ${INTERFACE} ${AP_IP} netmask 255.255.255.0 up; then
+        echo "Failed to configure ${INTERFACE} with IP ${AP_IP}"
+        return 2
+    fi
+
+    # Step 4: Create hostapd configuration
+    echo "Creating hostapd configuration..."
+    if ! cat > ${HOSTAPD_CONF} <<EOL
+interface=${INTERFACE}
+driver=nl80211
+ssid=${WIFISSID}
+hw_mode=g
+channel=7
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=${WIFIPWD}
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+EOL
+    then
+        echo "Failed to write ${HOSTAPD_CONF}"
+        return 3
+    fi
+
+    echo "Successfully configured AP mode"
+    echo "AP SSID: ${WIFISSID}"
+    echo "Password length: ${#WIFIPWD} characters"
+    return 0
+}
+
+# Brief: Start hostapd service
+# Return: 0 success;
+#         1 hostapd start failed;
+#         2 hostapd not responding
+Func_RunAP()
+{
+    local HOSTAPD_CONF="/etc/hostapd.conf"
+    local MAX_WAIT=10
+
+    # Start hostapd
+    echo "Starting hostapd..."
+    if ! hostapd -B ${HOSTAPD_CONF}; then
+        echo "Failed to start hostapd"
+        return 1
+    fi
+
+    # Wait for hostapd to start properly
+    local counter=0
+    while [ $counter -lt $MAX_WAIT ]; do
+        if pgrep -f "hostapd" >/dev/null; then
+            echo "hostapd started successfully"
+            return 0
+        fi
+        sleep 1
+        counter=$((counter + 1))
+    done
+
+    echo "hostapd failed to start properly"
+    return 2
+}
+
+# Brief: Configure and start dnsmasq DHCP server for AP mode
+# Return: 0 success;
+#         1 dhcp config failed;
+#         2 dhcp start failed;
+#         3 dnsmasq not available
+Func_DHCPServer()
+{
+    local DNSMASQ_CONF="/etc/dnsmasq.conf"
+    local INTERFACE="wlan0"
+
+    # Check if dnsmasq is available
+    if ! command -v dnsmasq >/dev/null 2>&1; then
+        echo "Error: dnsmasq command not found"
+        return 3
+    fi
+
+    # Stop any existing dnsmasq
+    pkill -f "dnsmasq" 2>/dev/null
+    sleep 1
+
+    # Create dnsmasq configuration for AP mode
+    echo "Configuring dnsmasq DHCP server..."
+    if ! cat > ${DNSMASQ_CONF} <<EOL
+# Interface to use
+interface=${INTERFACE}
+
+# DHCP range
+dhcp-range=192.168.4.20,192.168.4.200,255.255.255.0,12h
+
+# Gateway and DNS
+dhcp-option=3,192.168.4.1
+dhcp-option=6,8.8.8.8,8.8.4.4
+
+# Disable DNS resolution (only DHCP)
+port=0
+
+# Enable logging
+log-dhcp
+
+# Bind only to specified interface
+bind-interfaces
+
+# Don't read /etc/hosts
+no-hosts
+
+# Don't read /etc/resolv.conf
+no-resolv
+EOL
+    then
+        echo "Failed to write ${DNSMASQ_CONF}"
+        return 1
+    fi
+
+    # Start dnsmasq
+    echo "Starting dnsmasq DHCP server..."
+    if ! dnsmasq -C ${DNSMASQ_CONF}; then
+        echo "Failed to start dnsmasq"
+        return 2
+    fi
+
+    # Verify dnsmasq is running
+    sleep 2
+    if pgrep -f "dnsmasq" >/dev/null; then
+        echo "dnsmasq DHCP server started successfully"
+        return 0
+    else
+        echo "dnsmasq failed to start properly"
+        return 2
+    fi
+}
+
+# Brief: Stop hostapd and related services
+# Return: 0 success;
+#         1 failed to stop services
+Func_StopAP()
+{
+    local INTERFACE="wlan0"
+
+    echo "Stopping AP mode services..."
+    
+    # Stop hostapd
+    pkill -f "hostapd" 2>/dev/null
+    
+    # Stop dnsmasq
+    pkill -f "dnsmasq" 2>/dev/null
+    
+    # Reset interface
+    Func_ResetInterface
+    
+    sleep 2
+    
+    # Verify services are stopped
+    if pgrep -f "hostapd" >/dev/null || pgrep -f "dnsmasq" >/dev/null; then
+        echo "Failed to stop some AP services"
+        return 1
+    fi
+
+    echo "AP mode services stopped successfully"
+    return 0
 }
 
 ##############################################################################################
@@ -301,12 +533,12 @@ API_Insmod()
 
 # Brief: Applicable to the first time connecting to WiFi after booting
 # Return:   0 success; 
-#           1-4 corresponding to the step that failed
+#           1-3 corresponding to the step that failed
 API_Connect()
 {
     local ret=0
 
-    echo "Starting first time WiFi connection..."
+    echo "Starting WiFi connection..."
 
     # Step 1: Configure WPA with SSID and Password
     echo "Step 1: Configuring WPA..."
@@ -349,14 +581,10 @@ API_Reconnect()
     echo "Starting WiFi reconnection process..."
     echo "Target Network: $WIFISSID"
 
-    # Step 1: Stop existing wpa_supplicant
-    echo "Step 1: Stopping existing WiFi connection..."
-    Func_StopWpa
-    ret=$?
-    if [ $ret -ne 0 ] && [ $ret -ne 1 ]; then  # ret=1 means no wpa running, which is OK
-        echo "Failed at Step 1: Could not stop existing WiFi connection (error $ret)"
-        return 1
-    fi
+    # Step 1: Stop existing services and reset interface
+    echo "Step 1: Stopping existing services..."
+    Func_StopWpa >/dev/null 2>&1
+    Func_StopAP >/dev/null 2>&1
 
     # Brief pause to ensure clean state
     sleep 1
@@ -372,6 +600,54 @@ API_Reconnect()
 
     echo "WiFi reconnection completed successfully!"
     echo "Connected to: $WIFISSID"
+    return 0
+}
+
+# Brief: Configure WiFi as Access Point mode
+# Return: 0 success;
+#         1 AP configuration failed;
+#         2 hostapd start failed;
+#         3 DHCP server start failed
+API_AP()
+{
+    local ret=0
+
+    echo "Starting WiFi AP mode..."
+    echo "AP SSID: $WIFISSID"
+    echo "Password: $WIFIPWD"
+
+    # Step 1: Configure AP mode
+    echo "Step 1: Configuring AP mode..."
+    Func_ConfAP
+    ret=$?
+    if [ $ret -ne 0 ]; then
+        echo "Failed at Step 1: AP configuration failed with error $ret"
+        return 1
+    fi
+
+    # Step 2: Start hostapd
+    echo "Step 2: Starting hostapd..."
+    Func_RunAP
+    ret=$?
+    if [ $ret -ne 0 ]; then
+        echo "Failed at Step 2: hostapd start failed with error $ret"
+        return 2
+    fi
+
+    # Step 3: Start DHCP server
+    echo "Step 3: Starting DHCP server..."
+    Func_DHCPServer
+    ret=$?
+    if [ $ret -ne 0 ]; then
+        echo "Failed at Step 3: DHCP server start failed with error $ret"
+        return 3
+    fi
+
+    echo "WiFi AP mode started successfully!"
+    echo "AP SSID: $WIFISSID"
+    echo "AP IP: 192.168.4.1"
+    echo "DHCP Range: 192.168.4.20 - 192.168.4.200"
+    echo "DNS Servers: 8.8.8.8, 8.8.4.4"
     return 0
 }
 
@@ -469,11 +745,13 @@ main()
         echo "  scan              - Scan available WiFi networks"
         echo "  connect SSID PWD  - Connect to WiFi (first time)"
         echo "  reconnect SSID PWD- Reconnect to different WiFi"
+        echo "  ap SSID PWD       - Start WiFi Access Point mode (PWD: 8-63 chars)"
         echo "Examples:"
         echo "  $0 insmod"
         echo "  $0 scan"
         echo "  $0 connect MyWiFi MyPassword"
         echo "  $0 reconnect NewWiFi NewPassword"
+        echo "  $0 ap MyHotspot MyPassword123"
         return 0
     fi
 
@@ -527,6 +805,19 @@ main()
                 2) echo "Failed to configure new connection" ;;
                 3) echo "Failed to start WiFi service" ;;
                 4) echo "Failed to obtain IP address" ;;
+                *) echo "Unknown error occurred" ;;
+            esac
+            ;;
+
+        "ap")
+            echo "Starting WiFi Access Point: $WIFISSID"
+            API_AP
+            ret=$?
+            case $ret in
+                0) echo "Access Point started successfully" ;;
+                1) echo "AP configuration failed (check password length: 8-63 chars)" ;;
+                2) echo "hostapd service failed" ;;
+                3) echo "DHCP server failed (dnsmasq issue)" ;;
                 *) echo "Unknown error occurred" ;;
             esac
             ;;
