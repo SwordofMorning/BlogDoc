@@ -7,7 +7,6 @@ echo out > /sys/class/gpio/gpio419/direction
 devmem 0x0ce1c0d8 32 0x00086300
 echo 1 > /sys/class/gpio/gpio419/value
 echo 0 > /sys/class/gpio/gpio419/value
-echo 1 > /sys/class/gpio/gpio419/value
 
 # GPIO77
 # SPI1_SCLK
