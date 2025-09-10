@@ -1,0 +1,111 @@
+#!/bin/sh
+
+echo "Starting system initialization..."
+
+INIT_DIR="/root/init"
+
+# Check Dir
+if [ ! -d "$INIT_DIR" ]; then
+    echo "Error: Init directory $INIT_DIR does not exist"
+    exit 1
+fi
+
+# Get all scripts
+SCRIPT_LIST=""
+for script in "$INIT_DIR"/s??*; do
+    # Check if the file actually exists (excluding the case where the wildcard does not match the file)
+    if [ -f "$script" ]; then
+        SCRIPT_LIST="$SCRIPT_LIST $script"
+    fi
+done
+
+# If no script is found
+if [ -z "$SCRIPT_LIST" ]; then
+    echo "Warning: No initialization scripts found in $INIT_DIR"
+    exit 0
+fi
+
+# Sort the script list (ensure execution in lexicographical order)
+SORTED_SCRIPTS=$(echo $SCRIPT_LIST | tr ' ' '\n' | sort | tr '\n' ' ')
+
+echo "Found scripts to execute: $(echo $SORTED_SCRIPTS | sed "s|$INIT_DIR/||g")"
+
+# Execute all scripts in order
+SCRIPT_COUNT=0
+SUCCESS_COUNT=0
+
+for script in $SORTED_SCRIPTS; do
+    SCRIPT_COUNT=$((SCRIPT_COUNT + 1))
+    SCRIPT_NAME=$(basename "$script")
+    
+    echo ""
+    echo "=== [$SCRIPT_COUNT] Starting $SCRIPT_NAME ==="
+
+    # Record start time
+    START_TIME=$(date)
+
+    # Check if the script is executable
+    if [ ! -x "$script" ]; then
+        echo "Warning: $SCRIPT_NAME is not executable, setting permissions..."
+        chmod +x "$script" 2>/dev/null
+        if [ ! -x "$script" ]; then
+            echo "Error: Cannot make $SCRIPT_NAME executable"
+            continue
+        fi
+    fi
+
+    # Select execution mode based on file extension
+    case "$script" in
+        *.sh)
+            # For scripts with .sh extension, use source to call
+            echo "Executing $SCRIPT_NAME (source mode)..."
+            (
+                trap - INT QUIT TSTP
+                set start
+                . "$script"
+            )
+            RESULT=$?
+            ;;
+        *)
+            # Scripts without .sh extension are executed by fork subprocess
+            echo "Executing $SCRIPT_NAME (fork mode)..."
+            "$script" start
+            RESULT=$?
+            ;;
+    esac
+    
+    # Record end time and check execution results
+    END_TIME=$(date)
+
+    if [ $RESULT -eq 0 ]; then
+        echo "✓ $SCRIPT_NAME completed successfully"
+        echo "  Started:  $START_TIME"
+        echo "  Finished: $END_TIME"
+        SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+    else
+        echo "✗ $SCRIPT_NAME failed with exit code $RESULT"
+        echo "  Started:  $START_TIME"
+        echo "  Failed:   $END_TIME"
+        
+        # Optional: Stop the entire initialization process if a critical script fails
+        # Uncomment the following to enable strict mode
+        # echo "Critical script failed, stopping initialization"
+        # exit $RESULT
+    fi
+
+    sleep 0.2
+done
+
+echo ""
+echo "=== System Initialization Summary ==="
+echo "Total scripts: $SCRIPT_COUNT"
+echo "Successful:    $SUCCESS_COUNT"
+echo "Failed:        $((SCRIPT_COUNT - SUCCESS_COUNT))"
+
+if [ $SUCCESS_COUNT -eq $SCRIPT_COUNT ]; then
+    echo "✓ All initialization scripts completed successfully"
+    exit 0
+else
+    echo "⚠ Some initialization scripts failed"
+    exit 1
+fi
