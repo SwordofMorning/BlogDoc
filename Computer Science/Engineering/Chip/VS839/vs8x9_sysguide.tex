@@ -1,0 +1,805 @@
+\documentclass[UTF8]{ctexart}
+
+\usepackage{ctex}
+\usepackage{times}
+\usepackage{geometry}
+\usepackage{subcaption}
+\usepackage{textcomp}
+\usepackage{tocbibind}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{hyperref}
+\usepackage{fourier}
+\usepackage{tabularx}
+\usepackage{amssymb}
+\usepackage{chemformula}
+\usepackage{appendix}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% -------------------------------------------------------------------------------------
+% Paper Define
+% -------------------------------------------------------------------------------------
+
+\hypersetup{
+    colorlinks,
+    linktoc=all,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=cyan
+}
+
+\geometry{a4paper,left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+\CJKfamily{\fangsong}
+
+% 行内高亮
+\lstdefinestyle{inlinecode}{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\colorbox{gray!10},
+    breaklines=true,
+    frame=none
+}
+
+\newcommand{\code}[1]{\colorbox{gray!10}{\lstinline[style=inlinecode]|#1|}}
+
+% 行间高亮
+\lstdefinestyle{codeblock}{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    frameround=tttt,
+    framerule=0.5pt,
+    rulecolor=\color{gray!50},
+    breaklines=true,
+    breakatwhitespace=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=15pt,
+    xrightmargin=5pt,
+    aboveskip=10pt,
+    belowskip=10pt
+}
+
+\lstset{style=codeblock}
+
+% -------------------------------------------------------------------------------------
+% Begin Document
+% -------------------------------------------------------------------------------------
+
+\begin{document}
+
+% -------------------------------------------------------------------------------------
+% Custom Title Page
+% -------------------------------------------------------------------------------------
+\pagestyle{empty}
+
+% 自定义标题页
+\begin{center}
+    \vspace*{2cm}
+    {\Huge \textbf{VS8x9 系统指南}}
+    \vspace{2cm}
+\end{center}
+
+\section*{文档版本}
+
+\begin{center}
+    \begin{tabular}{|*{5}{c|}} \hline
+        编写日期 & 版本编号 & 编写 & 校对 & 修改说明 \\ \hline
+        2025-09-18 & 1.0 & 肖劲涛  & 初始版本 \\ \hline
+    \end{tabular}
+\end{center}
+
+\vspace{1cm}
+
+\section*{软件版本}
+
+\begin{center}
+    \begin{tabular}{|*{5}{c|}} \hline
+        类型 & 发布日期 & Commit ID & 发布人员 & Tag|Branch \\ \hline
+        整体系统 & 2025-09-11 & -- & 肖劲涛 & m2\_ver5\_usb  \\ \hline
+        mk & 2025-08-25 & 73be3c85d16ab0c60c647303aa5853a721ae2c2b & 肖劲涛  & master \\ \hline
+        vs-tools & 2025-09-09 & 7fa766acf8c727fbbe4ac169ca4584ba47323cc4 & 肖劲涛  & master \\ \hline
+        U-Boot & 2025-09-09 & 493afc5a6860fc1224dfa64530bc4b17f7545e52 & 肖劲涛  & master \\ \hline
+        Kernel & 2025-09-11 & f4edc320412d06d8e4f6e7e010f91d6cabcf1ce7 & 肖劲涛  & master \\ \hline
+        Fs-Overlay & 2025-09-11 & 963526dee7823e49734632f462327847ab566b3f & 肖劲涛  & master \\ \hline
+    \end{tabular}
+\end{center}
+
+\vspace{\fill}
+
+\begin{center}
+    {\large \today}
+\end{center}
+
+\thispagestyle{empty}
+
+% -------------------------------------------------------------------------------------
+% Header Page 正文前内容
+% -------------------------------------------------------------------------------------
+\newpage
+\pagestyle{plain}
+\pagenumbering{Roman}
+
+\pagestyle{fancy}
+
+\setlength{\headsep}{40pt}
+\setlength{\footskip}{40pt}
+
+% 页眉横线宽度
+\renewcommand\headrulewidth{.5pt}
+% 清空页眉
+\fancyhead{}
+% 设置居中的页眉内容
+\fancyhead[C]{VS8x9 系统指南}
+
+\renewcommand\footrulewidth{.5pt}
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
+
+% -------------------------------------------------------------------------------------
+% Version
+% -------------------------------------------------------------------------------------
+
+\section*{仓库与位置}
+
+上游组位置位于\href{http://192.168.110.252:12123/general/sdk/visinex}{General/SDK/Visinex}，几个子仓库分别内容如下：
+
+\begin{enumerate}
+    \item \text{mk}对应\code{customer-rel/board/package/mk}
+    \item \text{vs-tools}对应\code{customer-rel/board/package/vs-tools}
+    \item \text{U-Boot}对应\code{customer-rel/board/package/opensource/u-boot}
+    \item \text{Kernel}对应\code{customer-rel/board/package/opensource/kernel/linux}
+    \item \text{Fs-Overlay}对应\code{customer-rel/board/package/fs-overlay}
+\end{enumerate}
+
+\noindent 其中\text{Fs-Overlay}为\text{busybox}镜像的增量替换，具体内容将在后续章节阐述。
+
+\section*{文档结构}
+
+第一章将讲述基本的\text{SDK}编译、烧录方法，适用于系统发布人员。
+
+第二章将讲述\text{FS-Overlay}中的内容，适用于项目系统发布人员、应用开发人员。该章节中将首要地介绍完整的系统启动流程，以及各模块的使用逻辑；之后将介绍\text{FS-Overlay}中的文件结构，以及针对不同的项目应该如何进行修改。
+
+第三章将讲述\text{EMMC}分区设计，适用于系统发布人员。其中包含\text{vs-tools}中的\code{xml_gen.sh}、\text{U-Boot}中的自定义内容，以及应用层的\text{OTA}设计。如应用开发人员需要修改相应的\text{OTA}功能，以支持更灵活的升级方式，则应当完整地了解本章的内容。
+
+\newpage
+
+% -------------------------------------------------------------------------------------
+% TABLE OF CONTENTS
+% -------------------------------------------------------------------------------------
+\renewcommand{\contentsname}{目录}
+\tableofcontents
+\newpage
+
+% -------------------------------------------------------------------------------------
+% Main Body 正文内容
+% -------------------------------------------------------------------------------------
+\pagenumbering{arabic}
+
+% -------------------------------------------------------------------------------------
+% Section 1 : 基础编译
+% -------------------------------------------------------------------------------------
+
+\section{基础编译}
+
+\subsection{预准备}
+
+\begin{enumerate}
+    \item 在\text{Windows}上解压\code{VS839_M1_release.rar}
+    \item 将\code{vssdk_rel_CS_R1.2.5.tgz}和\code{sdk_unpack.sh}拷贝到\text{Ubuntu}
+    \item 执行\code{./sdk_unpack.sh}解压\text{SDK}
+    \item 修改\code{customer-rel/board/package/mk/common.mk}中的编译器路径
+    \item 拷贝内核\code{linux-5.4.94.tar.gz}到\code{customer-rel/board/package/opensource/kernel}并解压
+    \item 重命名\code{linux-5.4.94}为\code{linux}并打补丁，参考如下的代码块
+\end{enumerate}
+
+\begin{lstlisting}[language=sh]
+mv linux-5.4.94 linux
+cd linux
+patch -p1 < ../linux-5.4.94.patch
+\end{lstlisting}
+
+在正式编译系统之前，请先通过之前的\text{git}仓库同步最新的源码。根据不同的项目，请确保同步至不同的下游仓库，而不是直接同步上游仓库。
+
+\subsection{Makefile}
+
+\subsubsection{Fs-Overlay修改}
+
+如果你同步了上述仓库，并且需要使用\text{Fs-Overlay}来为\text{busybox}镜像增量打包，那么需要首要地修改如下的\text{Makefile}文件：
+
+\begin{lstlisting}
+customer-rel/board/package/Makefile
+\end{lstlisting}
+
+在其中第\text{245}行，\text{Making rootfs image}之前添加如下内容
+
+\begin{lstlisting}[language=sh]
+@echo "Applying fs-overlay..."
+@if [[ -d $(FS_OVERLAY_PATH) ]]; then \
+    echo "Copying fs-overlay files to rootfs..."; \
+    $(CP) $(FS_OVERLAY_PATH)/* $(STRIP_ROOTFS_PATH)/ -rfap; \
+    echo "fs-overlay applied successfully."; \
+else \
+    echo "No fs-overlay directory found, skipping..."; \
+fi
+\end{lstlisting}
+
+\subsubsection{DSP修改}
+
+\text{DSP}部分由原厂预编译完成，\text{SDK}中无相关代码，因此需要注释相关选线，参考如下的配置：
+
+\begin{lstlisting}[language=sh]
+PACKAGES = \
+	atf \
+	uboot \
+	busybox \
+	vs-osal \
+	vs-ispsensor \
+	vs-sample \
+	vs-sign \
+	ros
+\end{lstlisting}
+
+\subsubsection{DDR修改}
+
+修改\text{Makefile}的\code{BOARD_TYPE}以适配\text{LPDDR4}的主板，内容如下：
+
+\begin{lstlisting}[language=sh]
+BOARD_TYPE ?= ci03
+\end{lstlisting}
+
+\noindent 修改后的完整\text{Makefile}请参考\href{http://192.168.110.252:12123/general/sdk/visinex/vs8x9_fs-overlay/-/issues/1}{Makefile For Fs-Overlay
+}议题。
+
+\subsection{编译}
+
+在完成了上述修改之后，切换到\code{customer-rel/board/package}下，通过执行命令\code{make all}来进行第一次的整体编译。
+
+\subsection{输出路径}
+
+\text{Kernel}和\text{FS}的输出路径为：
+
+\begin{lstlisting}[language=sh]
+customer-rel/board/package/image/linux_ext4
+\end{lstlisting}
+
+\text{U-Boot}以及板端\text{xml}配置文件输出路径为：
+
+\begin{lstlisting}[language=sh]
+customer-rel/board/package/image/boot/ci03/vs8x9/lpddr4/single_rank_3200
+\end{lstlisting}
+
+\noindent 其中\code{ci03}指\text{Makefile}中的\text{DDR}选项，与前述内容相同；\code{lpddr4}与\code{single_rank_3200}指板端\text{DDR}的具体配置，需要在\code{vs-tools}修改相关配置实现。
+
+\subsection{烧录方法}
+
+\subsubsection{启动镜像烧写}
+
+如要通过串口单独烧写启动镜像（\text{bootloader}）的部分内容，操作流程如下：
+
+\begin{enumerate}
+    \item 在\text{Windows}上打开\text{VS Burn Tool}工具
+    \item 传输方式选择串口，同时确保芯片此时可通过串口烧录
+    \item 在\textbf{启动镜像烧写}一栏中选择默认的\text{xml}文件
+    \item 将\text{Flash}类型修改为\text{EMMC}
+    \item 确保\text{Package}与\text{xml}中的描述符相一致
+    \item 点击\textbf{烧写}按钮，等待完成即可
+\end{enumerate}
+
+\subsubsection{Linux镜像烧写}
+
+由于板端设计原因，因此本章节只讲述\text{USB}烧录方法。该模式适用于启动镜像烧写之后的整体镜像烧写流程，也适用于重新烧写已有系统的部分或整体分区。
+
+\begin{enumerate}
+    \item 通过\text{Debug}串口进入\text{U-Boot}的命令行模式
+    \item 输入\code{usb device}命令，同时\text{Windows}端通过\text{USB}线连接到板端\text{USB1}接口
+    \item 传输方式选择\text{USB}口
+    \item 在\textbf{Linux镜像烧写}一栏中选择默认的\text{xml}文件
+    \item 将\text{Flash}类型修改为\text{EMMC}
+    \item 选中表格中需要烧写的分区
+    \item 点击\textbf{烧写}按钮，等待完成即可
+\end{enumerate}
+
+\newpage
+
+% -------------------------------------------------------------------------------------
+% Section 2 : 系统模块
+% -------------------------------------------------------------------------------------
+
+\section{系统模块}
+
+\subsection{开机启动}
+
+系统启动时，默认调用\code{/etc/init.d/rcS}脚本。
+
+在\text{Fs-Overlay}中，对其新增了一个引导至\code{/root/init/rcS}的内容：
+
+\begin{lstlisting}[language=sh]
+# sleep for stabilizing
+echo "Run rcS, countdown 2..."
+sleep 1
+echo "Run rcS, countdown 1..."
+sleep 1
+/root/init/rcS
+\end{lstlisting}
+
+\noindent 其中的\text{sleep}时间可以根据自行实际情况修改或取消。
+
+在\code{/root/init/rcS}中，定义了如下的脚本启动流程：
+
+\begin{itemize}
+    \item 读取当前目录下的所有符合\code{s??*}的脚本或可执行程序
+    \item 按照字典顺序将其排序
+    \item 按照从小到大的顺序依次执行上述脚本或程序
+    \item 当某个脚本执行失败后，继续执行下一个脚本
+\end{itemize}
+
+\noindent 其中提供了如下的内容：
+
+\begin{lstlisting}[language=sh]
+# Optional: Stop the entire initialization process if a critical script fails
+# Uncomment the following to enable strict mode
+# echo "Critical script failed, stopping initialization"
+# exit $RESULT
+\end{lstlisting}
+
+\noindent 取消注释则让\code{rcS}在某一个脚本执行失败之后退出，而不继续执行剩下的脚本。
+
+\subsection{初始化脚本}
+
+\subsubsection{pwr}
+
+\code{s10_pwr.sh}主要作用为加载\text{vs}相关的\text{.ko}模块，同时对一系列管脚进行初始化配置。
+
+该脚本仅提供\code{start}、\code{stop}和\code{restart}选项。
+
+\subsubsection{usb}
+
+\code{s20_usb.sh}提供了包含\text{RNDIS}、\text{Serial}以及\text{MTP}的相关配置功能。
+
+该脚本提供如下的选项：
+
+\begin{itemize}
+    \item \code{start}默认引导至\text{RNDIS}模式
+    \item \code{rndis}切换\text{USB}至\text{RNDIS}模式
+    \item \code{serial}切换\text{USB}至\text{Serial}模式
+    \item \code{mtp}切换\text{USB}至\text{MTP}模式
+    \item \code{stop}停止当前的所有\text{USB}功能
+    \item \code{restart}重启\text{USB}功能至\text{RNDIS}模式
+    \item \code{status}显示当前的\text{USB}状态
+    \item \code{config}显示当前的\text{USB}配置信息
+\end{itemize}
+
+同时在\code{/root/init}下，提供了一个\code{usb.conf}的文件，该文件中包含了如下的\text{USB}配置信息：
+
+\begin{itemize}
+    \item \text{RNDIS}模式的\text{IP}地址、掩码和网关
+    \item \text{Serial}模式下的\text{USB}设备信息
+    \item \text{MTP}模式下的\text{USB}设备信息
+    \item \text{MTP}模式下的映射路径与设备名
+    \item 其他通用配置
+\end{itemize}
+
+\subsubsection{oled}
+
+\code{s30_oled.sh}提供了\text{LV1020}的相关\text{GPIO}和\text{SPI}配置。
+
+该脚本仅提供\code{start}、\code{stop}和\code{restart}选项。
+
+\subsubsection{mount}
+
+\code{s90_mount.sh}提供了挂载磁盘分区的选项，同时包含格式化等功能。
+
+该脚本提供如下的选项：
+
+\begin{itemize}
+    \item \code{start}挂载\code{vendor}、\code{app}以及\code{userdata}分区，如果该分区未格式化则先格式化再挂载
+    \item \code{stop}卸载\code{vendor}、\code{app}以及\code{userdata}分区
+    \item \code{restart}卸载并重新挂载上述分区
+    \item \code{status}显示当前的挂在信息和文件系统类型
+    \item \code{format}以\code{ext2}格式化所有分区
+\end{itemize}
+
+\subsubsection{ota}
+
+\code{s95_ota.sh}提供关于\text{AB}分区的状态检查功能，该脚本提供了多个接口，单不应该被用户手动调用。关于\text{AB}分区以及\text{OTA}的相关实现，将在后面的章节中讨论。
+
+\subsection{功能模块}
+
+\subsubsection{串口}
+
+板端留有\text{Debug}串口，串口设置如下：
+
+\begin{enumerate}
+    \item 波特率：\text{115200}
+    \item 数据位：\text{8}
+    \item 停止位：\text{1}
+    \item 无奇偶校验、无控制流
+\end{enumerate}
+
+通过串口连接至板端无需用户名与密码。
+
+\subsubsection{USB}
+
+当前的系统支持\text{RNDIS}、\text{Serial}以及\text{MTP}三种模式，目前只能单独使用其中一种模式。在用户空间，可以通过命令行的方式调用\code{/root/init/s20_usb.sh}来切换不同的状态。
+
+切换至\text{RNDIS}模式：
+
+\begin{lstlisting}[language=sh]
+~ # /root/init/s20_usb.sh rndis
+Loading configuration from /root/init/usb.conf
+Configuration loaded successfully
+Stopping all USB services...
+Unloading module: g_ether
+Unloading module: usb_f_ecm
+Unloading module: usb_f_rndis
+Unloading module: u_ether
+Unloading module: libcomposite
+All USB services stopped
+Starting USB RNDIS (Network) mode...
+Loading module: libcomposite
+Module libcomposite loaded successfully
+Loading module: u_ether
+Module u_ether loaded successfully
+Loading module: usb_f_rndis
+Module usb_f_rndis loaded successfully
+Loading module: usb_f_ecm
+Module usb_f_ecm loaded successfully
+Loading module: g_ether
+Module g_ether loaded successfully
+All RNDIS modules loaded successfully
+RNDIS network configured: 169.254.43.1
+RNDIS mode started successfully
+Starting common services...
+Telnet service started
+SSH service started
+Common services started successfully
+USB services started in RNDIS mode    
+~ # ifconfig 
+usb0      Link encap:Ethernet  HWaddr DE:1A:FC:03:42:32  
+          inet addr:169.254.43.1  Bcast:169.254.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::dc1a:fcff:fe03:4232/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:138 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:12819 (12.5 KiB)  TX bytes:988 (988.0 B)
+\end{lstlisting}
+
+\noindent 在\code{/root/init/usb.conf}中定义了如下的与\text{RNDIS}有关的配置信息：
+
+\begin{lstlisting}[language=sh]
+# RNDIS Network Configuration
+RNDIS_IP="169.254.43.1"
+RNDIS_NETMASK="255.255.0.0"
+RNDIS_GATEWAY="169.254.43.10"
+
+# Service Configuration
+ENABLE_TELNET="1"
+ENABLE_SSH="1"
+\end{lstlisting}
+
+\noindent 在开启\text{RNDIS}功能，并开启\text{Telnet}或\text{SSH}服务之后，可以通过上位机连接到板端。默认的用户名为\code{root}，默认密码为\code{cdjp123}。同时，板端提供\code{tftp}和\code{sftp}功能，均可用于文件传输。
+
+切换至\text{Serial}模式：
+
+\begin{lstlisting}[language=sh]
+~ # /root/init/s20_usb.sh serial
+Loading configuration from /root/init/usb.conf
+Configuration loaded successfully
+Stopping all USB services...
+Unloading module: g_ether
+Unloading module: usb_f_ecm
+Unloading module: usb_f_rndis
+Unloading module: u_ether
+Unloading module: libcomposite
+All USB services stopped
+Starting USB Serial (Console) mode...
+Loading module: libcomposite
+Module libcomposite loaded successfully
+Loading module: u_serial
+Module u_serial loaded successfully
+Loading module: usb_f_acm
+Module usb_f_acm loaded successfully
+All Serial modules loaded successfully
+Setting up USB Serial Gadget...
+Found UDC device: fa00000.dwc3
+Mounting configfs...
+USB Serial Gadget activated successfully
+Setting up serial console...
+Serial device /dev/ttyGS0 detected
+Serial console started on /dev/ttyGS0
+Serial mode started successfully
+Starting common services...
+Telnet service started
+SSH service started
+Common services started successfully
+USB services started in Serial mode
+
+Usage:
+    - Connect USB cable to PC
+    - Install USB Serial driver if needed
+    - Open serial terminal (PuTTY, screen, etc.) at 115200 baud
+\end{lstlisting}
+
+\noindent 在开启\text{Serial}模式之后，可以在上位机通过串口连接到板端的串口终端，设置为：
+
+\begin{enumerate}
+    \item 波特率：\text{115200}
+    \item 数据位：\text{8}
+    \item 停止位：\text{1}
+    \item 无奇偶校验、无控制流
+\end{enumerate}
+
+\noindent 默认的用户名为\code{root}，默认密码为\code{cdjp123}。
+
+切换至\text{MTP}模式：
+
+\begin{lstlisting}[language=sh]
+~ # /root/init/s20_usb.sh mtp
+Loading configuration from /root/init/usb.conf
+Configuration loaded successfully
+Stopping all USB services...
+Removing Serial gadget...
+Unloading module: usb_f_acm
+Unloading module: libcomposite
+All USB services stopped
+Starting USB MTP (Media Transfer Protocol) mode...
+Module libcomposite is already loaded, skipping
+Loading module: usb_f_fs
+Module usb_f_fs loaded successfully
+Loading module: usb_f_mtp
+Module usb_f_mtp loaded successfully
+All MTP modules loaded successfully
+Creating uMTPrd configuration...
+uMTPrd configuration created successfully
+Setting up USB MTP Gadget...
+Found UDC device: fa00000.dwc3
+MTP USB Gadget configured successfully
+Starting uMTPrd daemon...
+[uMTPrd - 00:23:08 - Info] uMTP Responder
+[uMTPrd - 00:23:08 - Info] Version: v1.6.9 compiled Sep 11 2025@11:42:40
+[uMTPrd - 00:23:08 - Info] (c) 2018 - 2025 Viveris Technologies
+[uMTPrd - 00:23:08 - Info] Using config file /etc/umtprd/umtprd.conf
+[uMTPrd - 00:23:08 - Info] Add storage VS839M2 Device - Root Path: /mnt/storage - UID: -1 - GID: -1 - Flags: 0x00000000
+[uMTPrd - 00:23:08 - Info] USB Device path : /dev/ffs-mtp/ep0
+[uMTPrd - 00:23:08 - Info] USB In End point path : /dev/ffs-mtp/ep1
+[uMTPrd - 00:23:08 - Info] USB Out End point path : /dev/ffs-mtp/ep2
+[uMTPrd - 00:23:08 - Info] USB Event End point path : /dev/ffs-mtp/ep3
+[uMTPrd - 00:23:08 - Info] USB Max packet size : 0x200 bytes
+[uMTPrd - 00:23:08 - Info] USB Max write buffer size : 0x2000 bytes
+[uMTPrd - 00:23:08 - Info] USB Max read buffer size : 0x2000 bytes
+[uMTPrd - 00:23:08 - Info] Read file buffer size : 0x100000 bytes
+[uMTPrd - 00:23:08 - Info] Manufacturer string : YourCompany
+[uMTPrd - 00:23:08 - Info] Product string : VS839M2
+[uMTPrd - 00:23:08 - Info] Serial string : 123456789ABCDEF
+[uMTPrd - 00:23:08 - Info] Firmware Version string : 1.0.0
+[uMTPrd - 00:23:08 - Info] MTP Exstensions string : 
+[uMTPrd - 00:23:08 - Info] Interface string : MTP
+[uMTPrd - 00:23:08 - Info] USB Vendor ID : 0x0E8D
+[uMTPrd - 00:23:08 - Info] USB Product ID : 0x201D
+[uMTPrd - 00:23:08 - Info] USB class ID : 0x06
+[uMTPrd - 00:23:08 - Info] USB subclass ID : 0x01
+[uMTPrd - 00:23:08 - Info] USB Protocol ID : 0x01
+[uMTPrd - 00:23:08 - Info] USB Device version : 0x3008
+[uMTPrd - 00:23:08 - Info] USB FunctionFS Mode
+[uMTPrd - 00:23:08 - Info] Wait for connection : 0
+[uMTPrd - 00:23:08 - Info] Loop on disconnect : 0
+[uMTPrd - 00:23:08 - Info] Show hidden files : 1
+[uMTPrd - 00:23:08 - Info] File creation umask : System default umask
+[uMTPrd - 00:23:08 - Info] Default UID : 0
+[uMTPrd - 00:23:08 - Info] Default GID : 0
+[uMTPrd - 00:23:08 - Info] inotify : yes
+[uMTPrd - 00:23:08 - Info] Sync when close : no
+uMTPrd started with PID: 627
+MTP USB Gadget activated successfully
+MTP mode started successfully
+Starting common services...
+Telnet service started
+SSH service started
+Common services started successfully
+USB services started in MTP mode
+
+Usage:
+    - Connect USB cable to PC
+    - PC should detect MTP device automatically
+    - Access files through Windows Explorer or MTP client
+    - Storage location: /mnt/storage    
+\end{lstlisting}
+
+\noindent 在\code{/root/init/usb.conf}中定义了如下的与\text{MTP}有关的配置信息：
+
+\begin{lstlisting}[language=sh]
+# USB Device Descriptors - MTP Mode
+MTP_VENDOR_ID="0x0e8d"
+MTP_PRODUCT_ID="0x201d"
+MTP_MANUFACTURER="YourCompany"
+MTP_PRODUCT="VS839M2 MTP Device"
+MTP_SERIAL_NUMBER="123456789ABCDEF"
+
+# MTP Storage Configuration
+MTP_STORAGE_PATH="/mnt/storage"
+MTP_DEVICE_NAME="VS839M2 Device"
+\end{lstlisting}
+
+\subsubsection{I2C}
+
+\text{Busybox}自带了\code{i2cdetect}与\code{i2ctransfer}工具用于调试\text{I2C}接口。其用法如下：
+
+\begin{lstlisting}[language=sh]
+~ # i2cdetect -l
+i2c-10	i2c       	Visinextek HDMI                 	I2C adapter
+i2c-1	i2c       	Synopsys DesignWare I2C adapter 	I2C adapter
+i2c-2	i2c       	Synopsys DesignWare I2C adapter 	I2C adapter
+i2c-0	i2c       	Synopsys DesignWare I2C adapter 	I2C adapter
+i2c-5	i2c       	Synopsys DesignWare I2C adapter 	I2C adapter
+~ # i2cdetect -yr 5
+        0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- 32 -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --                         
+~ # i2ctransfer -y 5 w2@0x32 0x00 0x0c r1
+\end{lstlisting}
+
+\noindent 值得注意的是，在使用\code{i2cdetect}的时候，需要添加\code{-r}参数。
+
+\subsubsection{SPI}
+
+\text{Busybox}本身没有提供任何相关的\text{SPI}工具，如果需要使用命令行的方式快速调试\text{SPI}接口。
+
+在\code{/root/app/utils}下有两个如此工具：
+
+\begin{lstlisting}[language=sh]
+~ # ls -la /root/app/utils/spitransfer*
+-rwxrwxrwx    1 root     root        136184 Sep  5  2025 /root/app/utils/spitransfer
+-rwxrwxrwx    1 root     root         18920 Sep  5  2025 /root/app/utils/spitransfer_GNU    
+\end{lstlisting}
+
+\noindent 两者均以相同的方式调用：
+
+\begin{lstlisting}[language=sh]
+~ # /root/app/utils/spitransfer --help
+Usage:
+    Read:  /root/app/utils/spitransfer [spi_dev] [csn] [spi_mode] [reg_addr] -r [bytes]
+    Write: /root/app/utils/spitransfer [spi_dev] [csn] [spi_mode] [reg_addr] -w [data_bytes] [data1] [data2] ...
+
+Examples:
+    /root/app/utils/spitransfer 1 0 3 0x30 -r 2              # Read 2 bytes from 8-bit register 0x30
+    /root/app/utils/spitransfer 1 0 3 0x3040 -r 2            # Read 2 bytes from 16-bit register 0x3040
+    /root/app/utils/spitransfer 1 0 3 0x30 -w 2 0x11 0x22    # Write 2 bytes (0x11,0x22) to register 0x30
+    /root/app/utils/spitransfer 1 0 3 0x3040 -w 2 0x11 0x22  # Write 2 bytes (0x11,0x22) to 16-bit register 0x3040
+
+SPI Modes:
+    0: CPOL:0, CPHA:0
+    1: CPOL:0, CPHA:1
+    2: CPOL:1, CPHA:0
+    3: CPOL:1, CPHA:1
+
+Register Address:
+    - 8-bit:  0x00 to 0xFF
+    - 16-bit: 0x0100 to 0xFFFF    
+\end{lstlisting}
+
+区别在于，\code{spitransfer}使用\code{vs\_regtools}实现，需要在加载\code{vs\_regtools.ko}模块后使用，开机脚本\code{s10_pwr.sh}中默认包含加载了该选项；而\code{spitransfer_GNU}则使用\code{spidev}实现，但需要注意的是，仍然需要在加载\code{vs\_regtools.ko}模块后使用，否则可能出现内核错误。
+
+\subsubsection{UART}
+
+TODO
+
+\newpage
+
+% -------------------------------------------------------------------------------------
+% Section 3 : EMMC分区
+% -------------------------------------------------------------------------------------
+
+\section{EMMC分区}
+
+当前系统采用\text{AB}分区实现，分区大小与地址如下所示：
+
+\begin{lstlisting}
+/*
+* eMMC A/B Partition Layout:
+* +----------+------+----------+
+* | vs_aov   | 512K | p1       |
+* | env      | 512K | p2       |
+* | bootload | 7M   | p3       |
+* | misc     | 1M   | p4       |
+* +----------+------+----------+
+* | dtb_a    | 2M   | p5   [A] |
+* | dtb_b    | 2M   | p6   [B] |
+* | kernel_a | 20M  | p7   [A] |
+* | kernel_b | 20M  | p8   [B] |
+* | rootfs_a | 512M | p9   [A] |
+* | rootfs_b | 512M | p10  [B] |
+* +----------+------+----------+
+* | vendor   | 32M  | p11      |
+* | app      | 256M | p12      |
+* | userdata | Rest | p13      |
+* +----------+------+----------+
+*/  
+\end{lstlisting}
+
+\subsection{\text{xOTA}程序}
+
+系统升级分为三个部分：
+
+\begin{enumerate}
+    \item \code{Bootloader}：该部分不做\text{AB}分区，可在用户空间通过应用程序\code{xOTA}升级实现
+    \item \code{Kernel}：该部分提供\text{AB}分区，并实现了完整的检查与回退机制，同样通过\code{xOTA}升级
+    \item \code{Users}：该部分用应用层独立控制，不应由系统层进行\text{EMMC raw data}的读写
+\end{enumerate}
+
+当前的\code{xOTA}可以通过如下的方式调用：
+
+\begin{lstlisting}
+~ # xOTA --help
+Usage: xOTA [OPTIONS]
+
+Options:
+    --slot, -s                    Show current slot information
+    --upgrade, -u                 Upgrade system to inactive slot
+    --dtb, -d <file>              DTB file for upgrade
+    --kernel, -k <file>           Kernel file for upgrade
+    --rootfs, -f <file>           Rootfs file for upgrade (.img format only)
+    --set-label, -l               Set slot label
+    --target-slot, -t <A|B>       Target slot (A or B)
+    --label, -n <name>            Label name (see below)
+    --value, -v <value>           Label value
+    --help, -h                    Show this help message
+
+Available labels:
+    bootable                      Bootable flag (0 or 1)
+    successful                    Successful flag (0 or 1)
+    active                        Active flag (0 or 1)
+    retry_count                   Retry count (0-255)
+    boot_attempts                 Boot attempts counter (0-255)
+    last_boot_slot                Last boot slot ('a' or 'b' as ASCII value)
+
+Notes:
+    - Fast failover is enabled (default retry count = 1)
+    - Only .img files are supported for rootfs. Convert .simg using simg2img.
+    - Boot attempts counter is used for automatic failover detection.
+
+Examples:
+    xOTA --slot
+    xOTA --upgrade -d dtb.dtb -k Image -f rootfs.img
+    xOTA --set-label -t A -n active -v 1
+    xOTA --set-label -t B -n boot_attempts -v 0
+    xOTA --set-label -t A -n last_boot_slot -v 97  # 'a' as ASCII    
+\end{lstlisting}
+
+仅推荐应用程序通过如下的方式查看与升级系统：
+
+\begin{lstlisting}
+xOTA --slot
+xOTA --upgrade -d dtb.dtb -k Image -f rootfs.img
+\end{lstlisting}
+
+\noindent 其中，\code{--slot}用于检查当前分区，\code{--upgrade}用于进行升级。
+
+\textcolor{red}{警告}，用户程序不应该执行任何有关\text{label}的操作；\textcolor{red}{注意}，编译生成的文件系统为\code{simg}格式，\code{xOTA}目前只实现\code{img}格式的升级，因此需要提前使用\code{simg2img}进行格式转换。
+
+% -------------------------------------------------------------------------------------
+% End Document
+% -------------------------------------------------------------------------------------
+
+\end{document}
