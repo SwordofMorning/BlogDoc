@@ -99,7 +99,7 @@
 \begin{center}
     \begin{tabular}{|*{5}{c|}} \hline
         编写日期 & 版本编号 & 编写 & 校对 & 修改说明 \\ \hline
-        2025-09-18 & 1.0 & 肖劲涛  & 初始版本 \\ \hline
+        2025-09-18 & 1.0 & 肖劲涛  & 初始版本 & -- \\ \hline
     \end{tabular}
 \end{center}
 
@@ -495,6 +495,8 @@ ENABLE_SSH="1"
 
 \noindent 在开启\text{RNDIS}功能，并开启\text{Telnet}或\text{SSH}服务之后，可以通过上位机连接到板端。默认的用户名为\code{root}，默认密码为\code{cdjp123}。同时，板端提供\code{tftp}和\code{sftp}功能，均可用于文件传输。
 
+\textcolor{red}{注意}，使用\text{RNDIS}功能需要提前安装相应的驱动，参考为旌文档《\text{Linux}外设驱动开发参考》中第\text{41}页（\text{6-33}）。
+
 切换至\text{Serial}模式：
 
 \begin{lstlisting}[language=sh]
@@ -705,6 +707,71 @@ Register Address:
 
 TODO
 
+\subsubsection{旋转编码器}
+
+板端配有型号为\text{RE08115MX}的旋转编码器，系统为其提供了如下的接口：
+
+\begin{enumerate}
+    \item 单击
+    \item 双击
+    \item 正转
+    \item 反转
+\end{enumerate}
+
+\noindent 该设备集成于\code{/dev/input/event0}中，同时提供了一个事件监听程序用于验证其基本功能，使用方式和日志如下：
+
+\begin{lstlisting}[language=sh]
+~ # /root/app/demo/event0_re08115mx 
+RE08115MX Rotary Encoder Event Reader
+=====================================
+Device: /dev/input/event0
+Press Ctrl+C to exit
+
+=== Device Information ===
+Device name: re08115mx
+Device ID: bustype 6, vendor 0001, product 0001, version 0100
+=============================
+
+=== Supported Event Types ===
+    EV_SYN (0)
+    EV_KEY (1)
+    EV_REL (2)
+==============================
+
+Waiting for events... (Ctrl+C to exit)
+Time		Type		Code		Value		Description
+----		----		----		-----		-----------
+154.566291	EV_REL	8		-1		REL_WHEEL (Rotation) -> Counter-clockwise Rotation (1 steps)
+154.566291	EV_SYN	0		0		Event separator
+154.619259	EV_REL	8		-1		REL_WHEEL (Rotation) -> Counter-clockwise Rotation (1 steps)
+154.619259	EV_SYN	0		0		Event separator
+154.652600	EV_REL	8		-1		REL_WHEEL (Rotation) -> Counter-clockwise Rotation (1 steps)
+154.652600	EV_SYN	0		0		Event separator
+155.326068	EV_REL	8		1		REL_WHEEL (Rotation) -> Clockwise Rotation (1 steps)
+155.326068	EV_SYN	0		0		Event separator
+155.395305	EV_REL	8		1		REL_WHEEL (Rotation) -> Clockwise Rotation (1 steps)
+155.395305	EV_SYN	0		0		Event separator
+155.482870	EV_REL	8		1		REL_WHEEL (Rotation) -> Clockwise Rotation (1 steps)
+155.482870	EV_SYN	0		0		Event separator
+156.471772	EV_KEY	15		1		KEY_TAB (Double Click) (PRESSED) -> Double Click Detected!
+156.471772	EV_KEY	15		0		KEY_TAB (Double Click) (RELEASED)
+156.471772	EV_SYN	0		0		Event separator
+156.624033	EV_KEY	57		1		KEY_SPACE (Single Click) (PRESSED) -> Single Click Detected!
+156.624033	EV_KEY	57		0		KEY_SPACE (Single Click) (RELEASED)    
+\end{lstlisting}
+
+同时在\code{/sys/kernel/re08115m/}目录下，提供了如此的调试接口：
+
+\begin{enumerate}
+    \item \code{debug_state}用于控制内核日志
+    \item 当两次点击的时间间隔小于等于\code{double_click_ms}则触发双击事件，否则触发单击事件
+    \item \code{swap_direction}交换正反转的方向
+    \item 累计\code{wheel_min_steps}次完整的相位变化后触发\textbf{一次}旋转事件
+    \item 当触发旋转事件后，超过\code{wheel_timeout_ms}才允许触发相反方向的旋转事件
+\end{enumerate}
+
+\noindent 这些接口都可以通过\code{read}和\code{write}来实现读写，也可以在命令行中直接使用\code{cat}和\code{echo}来进行简单调试。
+
 \newpage
 
 % -------------------------------------------------------------------------------------
@@ -739,6 +806,8 @@ TODO
 \end{lstlisting}
 
 \subsection{\text{xOTA}程序}
+
+\subsubsection{基本介绍}
 
 系统升级分为三个部分：
 
@@ -796,7 +865,134 @@ xOTA --upgrade -d dtb.dtb -k Image -f rootfs.img
 
 \noindent 其中，\code{--slot}用于检查当前分区，\code{--upgrade}用于进行升级。
 
-\textcolor{red}{警告}，用户程序不应该执行任何有关\text{label}的操作；\textcolor{red}{注意}，编译生成的文件系统为\code{simg}格式，\code{xOTA}目前只实现\code{img}格式的升级，因此需要提前使用\code{simg2img}进行格式转换。
+\textcolor{red}{警告}，用户程序不应该执行任何有关\text{label}或\text{misc}分区的操作；
+
+\textcolor{red}{注意}，编译生成的文件系统镜像为\code{simg}格式，\code{xOTA}目前只实现\code{img}格式的升级，因此需要提前使用\code{simg2img}进行格式转换。
+
+\subsubsection{如何升级}
+
+本小节展示了从用户空间完成\text{OTA}的完整过程。
+
+首先，我们将相应的镜像拷贝到系统中。目录位置、校验方式等应当由用户空间程序完成。假设我们现在于\code{/userdata}下有如此的文件：
+
+\begin{lstlisting}[language=sh]
+/userdata # ls -l
+total 537368
+-rw-r--r--    1 root     root      12787720 Jan  1 00:21 Image
+drwxr-xr-x    2 root     root         16384 Jan  1 00:00 lost+found
+-rw-r--r--    1 root     root     536870912 Jan  1 00:29 rootfs.img
+-rw-r--r--    1 root     root         34170 Jan  1 00:21 vs8x9-ci03.dtb     
+\end{lstlisting}
+
+接下来我们通过\code{xOTA}对系统进行在线升级：
+
+\begin{lstlisting}[language=sh]
+/userdata # xOTA -u -d vs8x9-ci03.dtb -k Image -f rootfs.img 
+Info: Rootfs file format validated (.img)
+Info: Rootfs file format validated (.img)
+Current slot: A, upgrading slot: B
+Flashing DTB to /dev/mmcblk0p6...
+Flashing kernel to /dev/mmcblk0p8...
+Flashing rootfs to /dev/mmcblk0p10...
+Upgrade completed successfully!
+Please reboot to switch to slot B
+Note: Fast failover enabled (retry count = 1)    
+\end{lstlisting}
+
+当提示\code{Upgrade completed successfully!}则说明升级成功，此时重启或等待下次开机则默认进入新系统。在系统启动后，\code{s95_ota.sh}会提示当前的系统状态：
+
+\begin{lstlisting}
+=== FINAL SLOT STATUS ===
+Current slot: B
+Misc partition info:
+    Magic: ANDROID_BOOT
+    Active slot: _b
+    Last boot slot: b
+
+Slot A:
+    Bootable: 1
+    Successful: 1
+    Active: 0
+    Retry count: 1
+    Boot attempts: 0
+
+Slot B:
+    Bootable: 1
+    Successful: 1
+    Active: 1
+    Retry count: 1
+    Boot attempts: 0        
+\end{lstlisting}
+
+\noindent 此时我们可以看到，系统已经切换到了\text{Slot B}，并且\text{Slot A}中标签也是符合预期的。
+
+\subsection{镜像打包与烧写}
+
+\subsubsection{\text{U-Boot}修改内容}
+
+为适配\text{AB}分区，因此新增自定义命令\code{ab_boot}用于引导系统。在修改后的系统中，\text{U-Boot}阶段的环境变量如下：
+
+\begin{lstlisting}[language=sh]
+vs8x9> pri
+baudrate=115200
+bootargs=quiet mem=512M console=ttyAMA0,115200n8 rw rootwait rootfstype=ext4 init=/linuxrc
+bootcmd=ab_boot
+bootdelay=1
+fdt_high=0x22600000
+fdtcontroladdr=9fe20d00
+stderr=serial@320A000
+stdin=serial@320A000
+stdout=serial@320A000      
+\end{lstlisting}
+
+\noindent 其中\code{ab_boot}完成了分区检测、系统引导、\text{fdt}配置等功能。从用户空间查看的启动参数如下：
+
+\begin{lstlisting}[language=sh]
+~ # cat /proc/cmdline 
+quiet mem=512M console=ttyAMA0,115200n8 rw rootwait rootfstype=ext4 init=/linuxrc root=/dev/mmcblk0p9 rootfstype=ext4 rw rootwait blkdevparts=mmcblk0:512K(vs_aov),512K(env),7M(bootloader),1M(misc),2M(dtb_a),2M(dtb_b),20M(kernel_a),20M(kernel_b),512M(rootfs_a),512M(rootfs_b),32M(vendor),256M(app),-(userdata)
+\end{lstlisting}
+
+\subsubsection{系统打包}
+
+系统不为如下的分区进行镜像打包：
+
+\begin{enumerate}
+    \item \code{vendor}
+    \item \code{app}
+    \item \code{userdata}
+\end{enumerate}
+
+\noindent 如果在系统启动后，上述分区未被格式化，则将被\code{s90_mount.sh}格式化为\code{ext2}后挂载。因此，如果想要打包一个包含上述分区的完整镜像，则应当修改\text{xml}文件中的如下配置：
+
+\begin{lstlisting}[language=xml]
+<Partition_Info>
+	<Part PartitionName="vs_aov" FlashType="emmc" FileSystem="none" Start="0M" Length="512K" SelectFile=".\vs_aov.bin"/>
+	<Part PartitionName="u-boot-env" FlashType="emmc" FileSystem="none" Start="512K" Length="512K" Display="HIDDEN"/>
+	<Part PartitionName="bootloader" FlashType="emmc" FileSystem="none" Start="1M" Length="7M" SelectFile=".\nsec_package.bin"/>
+	<Part PartitionName="misc" FlashType="emmc" FileSystem="none" Start="8M" Length="1M" SelectFile=".\misc_init.bin"/>
+	<Part PartitionName="dtb_a" FlashType="emmc" FileSystem="none" Start="9M" Length="2M" SelectFile=".\vs8x9-ci03.dtb"/>
+	<Part PartitionName="dtb_b" FlashType="emmc" FileSystem="none" Start="11M" Length="2M" SelectFile=".\vs8x9-ci03.dtb"/>
+	<Part PartitionName="kernel_a" FlashType="emmc" FileSystem="none" Start="13M" Length="20M" SelectFile=".\Image"/>
+	<Part PartitionName="kernel_b" FlashType="emmc" FileSystem="none" Start="33M" Length="20M" SelectFile=".\Image"/>
+	<Part PartitionName="rootfs_a" FlashType="emmc" FileSystem="ext4" Start="53M" Length="512M" SelectFile=".\rootfs_ext4.simg"/>
+	<Part PartitionName="rootfs_b" FlashType="emmc" FileSystem="ext4" Start="565M" Length="512M" SelectFile=".\rootfs_ext4.simg"/>
+	<Part PartitionName="vendor" FlashType="emmc" FileSystem="ext4" Start="1077M" Length="32M" Display="HIDDEN"/>
+	<Part PartitionName="app" FlashType="emmc" FileSystem="ext4" Start="1109M" Length="256M" Display="HIDDEN"/>
+	<Part PartitionName="userdata" FlashType="emmc" FileSystem="ext4" Start="1365M" Length="0K" Display="HIDDEN"/>
+</Partition_Info>
+\end{lstlisting}
+    
+\noindent 可以看到，上述的分区均为\code{HIDDEN}。以打包\code{app}为例：
+
+\begin{enumerate}
+    \item 在\text{Linux}系统中创建一个名为\code{app}的文件夹
+    \item 将用户空间应用程序放入其中
+    \item 使用\code{dd}命令将其打包为需要的格式
+\end{enumerate}
+
+在完成上述打包之后，修改\code{Display="HIDDEN"}为对应的\code{app.img}即可。
+
+同时，该功能适用于制作烧录器镜像。
 
 % -------------------------------------------------------------------------------------
 % End Document
