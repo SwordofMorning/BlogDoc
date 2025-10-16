@@ -99,6 +99,8 @@
 \begin{center}
     \begin{tabular}{|*{5}{c|}} \hline
         编写日期 & 版本编号 & 编写 & 校对 & 修改说明 \\ \hline
+        2025-10-13 & 1.2 & 肖劲涛  & 适配第\text{9}版本系统 & -- \\ \hline
+        2025-09-23 & 1.1 & 肖劲涛  & 增加\text{GPIO}和\text{UART}说明 & -- \\ \hline
         2025-09-18 & 1.0 & 肖劲涛  & 初始版本 & -- \\ \hline
     \end{tabular}
 \end{center}
@@ -110,12 +112,12 @@
 \begin{center}
     \begin{tabular}{|*{5}{c|}} \hline
         类型 & 发布日期 & Commit ID & 发布人员 & Tag|Branch \\ \hline
-        整体系统 & 2025-09-11 & -- & 肖劲涛 & m2\_ver5\_usb  \\ \hline
+        整体系统 & 2025-10-09 & -- & 肖劲涛 & m2\_ver9  \\ \hline
         mk & 2025-08-25 & 73be3c85d16ab0c60c647303aa5853a721ae2c2b & 肖劲涛  & master \\ \hline
-        vs-tools & 2025-09-09 & 7fa766acf8c727fbbe4ac169ca4584ba47323cc4 & 肖劲涛  & master \\ \hline
+        vs-tools & 2025-09-19 & 37349a26e6a87245e3e504164d660cdebcc69f48 & 肖劲涛  & master \\ \hline
         U-Boot & 2025-09-09 & 493afc5a6860fc1224dfa64530bc4b17f7545e52 & 肖劲涛  & master \\ \hline
-        Kernel & 2025-09-11 & f4edc320412d06d8e4f6e7e010f91d6cabcf1ce7 & 肖劲涛  & master \\ \hline
-        Fs-Overlay & 2025-09-11 & 963526dee7823e49734632f462327847ab566b3f & 肖劲涛  & master \\ \hline
+        Kernel & 2025-09-25 & a354ea130855fc54b51b607ae7ec875081731f47 & 肖劲涛  & master \\ \hline
+        Fs-Overlay & 2025-10-09 & d4e82cd4574b936692503bd1b1de8936da93004a & 肖劲涛  & master \\ \hline
     \end{tabular}
 \end{center}
 
@@ -361,15 +363,52 @@ sleep 1
 
 \subsection{初始化脚本}
 
-\subsubsection{pwr}
+\subsubsection{insmod}
 
-\code{s10_pwr.sh}主要作用为加载\text{vs}相关的\text{.ko}模块，同时对一系列管脚进行初始化配置。
+\code{s10_insmod_pre.sh}和\code{s20_insmod_post.sh}一起实现了\code{load8x9.sh}中的加载模块的功能；区别在于，前者只加载和屏幕相关的部分内容，后者加载其余的模块。
 
-该脚本仅提供\code{start}、\code{stop}和\code{restart}选项。
+这两个脚本应当由系统调用，用户层空间不做任何操作。
+
+\subsubsection{bootanimation}
+
+\code{s15_bootanimation.sh}提供了一个开机动画脚本：
+
+\begin{lstlisting}[language=sh]
+start)
+    /usr/bin/bootanimation /root/oem/logo.bmp &
+    ;;
+stop)
+    killall /usr/bin/bootanimation
+    ;;
+\end{lstlisting}
+
+\noindent 其中，\code{/root/oem/logo.bmp}可以替换为任意分辨率为$1280 \times 960$的\text{bmp}图片。
+
+\subsubsection{ota}
+
+\code{s30_ota.sh}实现\text{OTA}分区检测功能。该脚本由系统自行维护，用户层不应该执行任何对这个脚本的操作。
+
+\subsubsection{mount}
+
+\code{s40_mount.sh}提供了挂载磁盘分区的选项，同时包含格式化等功能。
+
+该脚本提供如下的选项：
+
+\begin{itemize}
+    \item \code{start}挂载\code{vendor}、\code{app}以及\code{userdata}分区，如果该分区未格式化则先格式化再挂载
+    \item \code{stop}卸载\code{vendor}、\code{app}以及\code{userdata}分区
+    \item \code{restart}卸载并重新挂载上述分区
+    \item \code{status}显示当前的挂在信息和文件系统类型
+    \item \code{format <name>}以\code{ext2}格式化所有分区，其中参数\text{name}可以用来指定某个单独分区。
+\end{itemize}
+
+\subsubsection{sysconf}
+
+\code{s50_sysconf.sh}提供了系统配置，主要实现\text{pinctrl}、低功耗等配置。该脚本由系统自行维护，用户层不应该执行任何对这个脚本的操作。
 
 \subsubsection{usb}
 
-\code{s20_usb.sh}提供了包含\text{RNDIS}、\text{Serial}以及\text{MTP}的相关配置功能。
+\code{s80_usb.sh}提供了包含\text{RNDIS}、\text{Serial}以及\text{MTP}的相关配置功能。
 
 该脚本提供如下的选项：
 
@@ -394,29 +433,15 @@ sleep 1
     \item 其他通用配置
 \end{itemize}
 
-\subsubsection{oled}
+\subsubsection{deb}
 
-\code{s30_oled.sh}提供了\text{LV1020}的相关\text{GPIO}和\text{SPI}配置。
+\code{s90_deb.sh}将在开机后检测应用程序是否安装，如果没有安装，则将自动为其安装\code{/root/deb/}下的应用。该脚本由系统自行维护，用户层不应该执行任何对这个脚本的操作。
 
-该脚本仅提供\code{start}、\code{stop}和\code{restart}选项。
+\subsubsection{app}
 
-\subsubsection{mount}
+\code{app}
 
-\code{s90_mount.sh}提供了挂载磁盘分区的选项，同时包含格式化等功能。
-
-该脚本提供如下的选项：
-
-\begin{itemize}
-    \item \code{start}挂载\code{vendor}、\code{app}以及\code{userdata}分区，如果该分区未格式化则先格式化再挂载
-    \item \code{stop}卸载\code{vendor}、\code{app}以及\code{userdata}分区
-    \item \code{restart}卸载并重新挂载上述分区
-    \item \code{status}显示当前的挂在信息和文件系统类型
-    \item \code{format}以\code{ext2}格式化所有分区
-\end{itemize}
-
-\subsubsection{ota}
-
-\code{s95_ota.sh}提供关于\text{AB}分区的状态检查功能，该脚本提供了多个接口，单不应该被用户手动调用。关于\text{AB}分区以及\text{OTA}的相关实现，将在后面的章节中讨论。
+\code{s95_app.sh}将跳转至\code{/app/rcS}，执行应用程序启动。
 
 \subsection{功能模块}
 
@@ -435,12 +460,12 @@ sleep 1
 
 \subsubsection{USB}
 
-当前的系统支持\text{RNDIS}、\text{Serial}以及\text{MTP}三种模式，目前只能单独使用其中一种模式。在用户空间，可以通过命令行的方式调用\code{/root/init/s20_usb.sh}来切换不同的状态。
+当前的系统支持\text{RNDIS}、\text{Serial}以及\text{MTP}三种模式，目前只能单独使用其中一种模式。在用户空间，可以通过命令行的方式调用\code{/root/init/s50_usb.sh}来切换不同的状态。
 
 切换至\text{RNDIS}模式：
 
 \begin{lstlisting}[language=sh]
-~ # /root/init/s20_usb.sh rndis
+~ # /root/init/s50_usb.sh rndis
 Loading configuration from /root/init/usb.conf
 Configuration loaded successfully
 Stopping all USB services...
@@ -500,7 +525,7 @@ ENABLE_SSH="1"
 切换至\text{Serial}模式：
 
 \begin{lstlisting}[language=sh]
-~ # /root/init/s20_usb.sh serial
+~ # /root/init/s50_usb.sh serial
 Loading configuration from /root/init/usb.conf
 Configuration loaded successfully
 Stopping all USB services...
@@ -552,7 +577,7 @@ Usage:
 切换至\text{MTP}模式：
 
 \begin{lstlisting}[language=sh]
-~ # /root/init/s20_usb.sh mtp
+~ # /root/init/s50_usb.sh mtp
 Loading configuration from /root/init/usb.conf
 Configuration loaded successfully
 Stopping all USB services...
@@ -705,7 +730,67 @@ Register Address:
 
 \subsubsection{UART}
 
-TODO
+当前的系统中有如下的两个串口：
+
+\begin{enumerate}
+    \item \code{/dev/ttyAMA0}
+    \item \code{/dev/ttyAMA6}
+\end{enumerate}
+
+\noindent 其中\code{/dev/tty/AMA6}用于同\text{MCU}通讯，可以通过\code{echo}、\code{cat}等方式对其进行操作。同时，系统中提供了如下的应用程序用于监听串口消息：
+
+\begin{lstlisting}[language=sh]
+~ # /root/app/utils/uart_listen --help
+Usage: /root/app/utils/uart_listen <baudrate> <device>
+~ # /root/app/utils/uart_listen 115200 /dev/ttyAMA6
+Received data: 24 0F 03 00 4A 4C 0A FE DA 
+Received data: 24 0F 03 00 4A 4C 0A FE DA 
+Received data: 24 0F 03 00 4A 4C 0A FE DA 
+Received data: 24 0F 03 00 4A 4C 0A FE DA 
+\end{lstlisting}
+
+\subsubsection{GPIO}
+
+\text{GPIO}目前使用集成控制的驱动统一管理，于目录\code{/sys/devices/platform/gpio-controller}下提供了如此的接口：
+
+\begin{lstlisting}[language=sh]
+~ # ls -la /sys/devices/platform/gpio-controller/
+total 0
+drwxr-xr-x    3 root     root             0 Jan  1 00:00 .
+drwxr-xr-x   11 root     root             0 Jan  1 00:00 ..
+lrwxrwxrwx    1 root     root             0 Jan  1 00:11 driver -> ../../../bus/platform/drivers/gpio-controller
+-rw-r--r--    1 root     root          4096 Jan  1 00:11 driver_override
+-r--r--r--    1 root     root          4096 Jan  1 00:11 modalias
+lrwxrwxrwx    1 root     root             0 Jan  1 00:11 of_node -> ../../../firmware/devicetree/base/gpio-controller
+-rw-r--r--    1 root     root          4096 Jan  1 00:00 panel_reset
+drwxr-xr-x    2 root     root             0 Jan  1 00:11 power
+-rw-r--r--    1 root     root          4096 Jan  1 00:11 regulator_1v8
+-rw-r--r--    1 root     root          4096 Jan  1 00:11 regulator_2v8
+-rw-r--r--    1 root     root          4096 Jan  1 00:11 regulator_3v3
+-rw-r--r--    1 root     root          4096 Jan  1 00:11 sensor_reset
+lrwxrwxrwx    1 root     root             0 Jan  1 00:11 subsystem -> ../../../bus/platform
+-rw-r--r--    1 root     root          4096 Jan  1 00:11 uevent
+-rw-r--r--    1 root     root          4096 Jan  1 00:11 ullc_stdby    
+\end{lstlisting}
+
+\noindent 它们分别是：
+
+\begin{enumerate}
+    \item \code{regulator\_1v8}，用于板端\text{1.8v}供电
+    \item \code{regulator\_2v8}，用于板端\text{2.8v}供电
+    \item \code{regulator\_3v3}，用于板端\text{3.3v}供电
+    \item \code{sensor\_reset}，用于控制摄像头或\text{FPGA}的\text{reset}引脚
+    \item \code{panel\_reset}，用于控制屏幕的\text{reset}引脚
+    \item \code{ullc\_stdby}，用于控制\text{ullc\_stdby}引脚
+\end{enumerate}
+
+\noindent 举例来说，其使用方法如下：
+\begin{lstlisting}[language=sh]
+echo off > /sys/devices/platform/gpio-controller/panel_reset
+echo 1 > /sys/devices/platform/gpio-controller/panel_reset
+\end{lstlisting}
+
+\noindent 保留了两种不同的风格用于控制GPIO的电平。
 
 \subsubsection{旋转编码器}
 
@@ -760,7 +845,7 @@ Time		Type		Code		Value		Description
 156.624033	EV_KEY	57		0		KEY_SPACE (Single Click) (RELEASED)    
 \end{lstlisting}
 
-同时在\code{/sys/kernel/re08115m/}目录下，提供了如此的调试接口：
+同时在\code{/sys/devices/platform/re08115m/}目录下，提供了如此的调试接口：
 
 \begin{enumerate}
     \item \code{debug_state}用于控制内核日志
@@ -962,7 +1047,7 @@ quiet mem=512M console=ttyAMA0,115200n8 rw rootwait rootfstype=ext4 init=/linuxr
     \item \code{userdata}
 \end{enumerate}
 
-\noindent 如果在系统启动后，上述分区未被格式化，则将被\code{s90_mount.sh}格式化为\code{ext2}后挂载。因此，如果想要打包一个包含上述分区的完整镜像，则应当修改\text{xml}文件中的如下配置：
+\noindent 如果在系统启动后，上述分区未被格式化，则将被\code{s20_mount.sh}格式化为\code{ext2}后挂载。因此，如果想要打包一个包含上述分区的完整镜像，则应当修改\text{xml}文件中的如下配置：
 
 \begin{lstlisting}[language=xml]
 <Partition_Info>
@@ -993,6 +1078,35 @@ quiet mem=512M console=ttyAMA0,115200n8 rw rootwait rootfstype=ext4 init=/linuxr
 在完成上述打包之后，修改\code{Display="HIDDEN"}为对应的\code{app.img}即可。
 
 同时，该功能适用于制作烧录器镜像。
+
+\subsubsection{应用程序打包}
+
+当前的系统推荐使用\text{deb}安装包的形式进行管理，工程位于\href{http://192.168.110.252:12123/cmos/vs819_LLHM/app_dpkg}{app\_dpkg}。其文件结构如下：
+
+\begin{lstlisting}[language=sh]
+.
+|-- build.sh
+`-- pkg
+    |-- app
+    `-- DEBIAN
+\end{lstlisting}
+
+\noindent 其中：
+
+\begin{enumerate}
+    \item \code{build.sh}提供了一键打包功能
+    \item \code{pkg/app}下对应板端\code{/app}分区的内容
+    \item \code{pkg/DEBIAN}为应用描述文件
+\end{enumerate}
+
+打包流程如下：
+
+\begin{enumerate}
+    \item 在\code{pkg/app}配置板端文件
+    \item 修改\code{pkg/DEBIAN/control}中的应用描述信息
+    \item 按照需求修改\code{pkg/DEBIAN/prerm}和\code{pkg/DEBIAN/postinst}中的相关功能
+    \item 使用\code{./build.sh}进行打包，如果需要增量包、自增版本号等，请参考\code{--help}中的内容
+\end{enumerate}
 
 % -------------------------------------------------------------------------------------
 % End Document
