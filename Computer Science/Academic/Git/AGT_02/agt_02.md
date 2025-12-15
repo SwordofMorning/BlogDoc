@@ -25,7 +25,7 @@ git reset --hard upstream/master
 git pull upstream master
 
 # 3. 使用 force-with-lease 强制推送
-git push origin master --force-with-lease
+git push -u origin master --force-with-lease
 ```
 
 ### 1.2 Different Assets
