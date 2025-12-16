@@ -1,0 +1,386 @@
+\documentclass[UTF8]{ctexart}
+
+\usepackage{ctex}
+\usepackage{times}
+\usepackage{geometry}
+\usepackage{subcaption}
+\usepackage{textcomp}
+\usepackage{tocbibind}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{hyperref}
+\usepackage{fourier}
+\usepackage{tabularx}
+\usepackage{amssymb}
+\usepackage{chemformula}
+\usepackage{appendix}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{ulem}
+\usepackage{enumitem}
+
+% =====================================================================================
+% Paper Define
+% =====================================================================================
+
+\hypersetup{
+    colorlinks,
+    linktoc=all,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=cyan
+}
+
+\geometry{a4paper,left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+\CJKfamily{\fangsong}
+
+% 行内高亮
+\lstdefinestyle{inlinecode}{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\colorbox{gray!10},
+    breaklines=true,
+    frame=none
+}
+
+\newcommand{\code}[1]{\colorbox{gray!10}{\lstinline[style=inlinecode]|#1|}}
+
+% 行间高亮
+\lstdefinestyle{codeblock}{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    frameround=tttt,
+    framerule=0.5pt,
+    rulecolor=\color{gray!50},
+    breaklines=true,
+    breakatwhitespace=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=15pt,
+    xrightmargin=5pt,
+    aboveskip=10pt,
+    belowskip=10pt
+}
+
+\lstset{style=codeblock}
+
+% 定义命令：双下划线 或者 波浪线
+% \newcommand{\integrated}[1]{\uuline{#1}} % 双下划线
+\newcommand{\integrated}[1]{\uwave{#1}} % 波浪线
+
+% =====================================================================================
+% Begin Document
+% =====================================================================================
+
+\begin{document}
+
+% =====================================================================================
+% Custom Title Page
+% =====================================================================================
+\pagestyle{empty}
+
+% 自定义标题页
+\begin{center}
+    \vspace*{2cm}
+    {\Huge \textbf{HGD(RK3588) 系统指南}}
+    \vspace{2cm}
+\end{center}
+
+\section*{文档版本}
+
+\begin{center}
+    \begin{tabular}{|*{5}{c|}} \hline
+        编写日期 & 版本编号 & 编写 & 校对 & 修改说明 \\ \hline
+        2025-12-12 & 1.0 & 肖劲涛  & 初始版本 & -- \\ \hline
+    \end{tabular}
+\end{center}
+
+\vspace{1cm}
+
+\section*{软件版本}
+
+\begin{center}
+    \begin{tabular}{|*{5}{c|}} \hline
+        类型 & 发布日期 & Commit ID & 发布人员 & Tag|Branch \\ \hline
+        整体系统 & 2025-12-15 & 无 & 肖劲涛 & HGD\_1  \\ \hline
+        Kernel & 2025-12-11 & 614e185ad3aaf9866a68c51e5979be8cab8a58a4 & 肖劲涛  & HGD\_NewLogo \\ \hline
+        Buildroot & 2025-5-30 & 1c124ea63c7e2033443269fd9d2a7da1aa264181 & 肖劲涛  & master \\ \hline
+        Device & 2025-5-30 & d66165e16232f7f38a000fd364e8c31477e279ab & 肖劲涛 & master \\ \hline
+        image\_parts & 2025-10-3 & ac04f50c8ec47486860c3ed965c28ae9f432b85d & 肖劲涛 & master \\ \hline
+        rkbin & 2025-2-22 & a2a0b89b6c8c612dca5ed9ed8a68db8a07f68bc0 & 肖劲涛 & master \\ \hline
+    \end{tabular}
+\end{center}
+
+\vspace{\fill}
+
+\begin{center}
+    {\large \today}
+\end{center}
+
+\thispagestyle{empty}
+
+% =====================================================================================
+% Header Page 正文前内容
+% =====================================================================================
+\newpage
+\pagestyle{plain}
+\pagenumbering{Roman}
+
+\pagestyle{fancy}
+
+\setlength{\headsep}{40pt}
+\setlength{\footskip}{40pt}
+
+% 页眉横线宽度
+\renewcommand\headrulewidth{.5pt}
+% 清空页眉
+\fancyhead{}
+% 设置居中的页眉内容
+\fancyhead[C]{HGD(RK3588) 系统指南}
+
+\renewcommand\footrulewidth{.5pt}
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
+
+% =====================================================================================
+% Version
+% =====================================================================================
+
+\section*{仓库与位置}
+
+上游组位置位于\href{http://10.42.0.252:12123/general/sdk/rockchip}{General/SDK/rockchip}，几个子仓库分别内容如下：
+
+\begin{enumerate}
+    \item \text{RK3588\_Buildroot}对应\code{/buildroot}
+    \item \text{RK3588\_Device}对应\code{/device}
+    \item \text{RK3588\_ImageParts}对应\code{/image\_parts}
+    \item \text{RK3588\_Kernel}对应\code{/kernel}
+    \item \text{RK3588\_rkbin}对应\code{/rkbin}
+\end{enumerate}
+
+\noindent 其中\text{RK3588\_ImageParts}打包了包括如下的分区：
+
+\begin{enumerate}
+    \item \code{app}，应用程序
+    \item \code{oemven}，可替换\text{OEM}资源
+    \item \code{vendor}，制造商分区，用于保留\text{lib}库等
+    \item \code{hold}，不更变分区，用于保留永久数据等
+    \item \code{userdata}，用户数据分区
+\end{enumerate}
+
+\section*{文档结构}
+
+第一章将讲述各类系统模块如何调用，适用于项目系统发布人员、应用开发人员。
+
+第二章将讲述\text{Buildroot/Fs-Overlay}中的内容，适用于项目系统发布人员、应用开发人员。该章节中将首要地介绍完整的系统启动流程，以及各模块的使用逻辑；之后将介绍\text{Buildroot/FS-Overlay}中的文件结构，以及针对不同的项目应该如何进行修改。
+
+第三章将讲述\text{EMMC}分区设计，适用于系统发布人员。
+
+\newpage
+
+% =====================================================================================
+% TABLE OF CONTENTS
+% =====================================================================================
+\renewcommand{\contentsname}{目录}
+\tableofcontents
+\newpage
+
+% =====================================================================================
+% Main Body 正文内容
+% =====================================================================================
+\pagenumbering{arabic}
+
+% =====================================================================================
+% Section 1 : 系统模块
+% =====================================================================================
+
+\section{系统模块}
+
+% ----------------------------------------
+%  Subsection 1.1 : GPIO
+% ----------------------------------------
+
+\subsection{GPIO}
+
+\text{HGD}将所有需要被调用的\text{GPIO}管脚均封装为了\code{/dev/jp\_hgd\_gpio\_ctl\_enable\_\*}设备，列表如下：
+
+\begin{lstlisting}[language=sh]
+root@HGD:/# ls /dev/jp_hgd_gpio_ctl_enable_*
+/dev/jp_hgd_gpio_ctl_enable_evf
+/dev/jp_hgd_gpio_ctl_enable_panel
+/dev/jp_hgd_gpio_ctl_enable_laser
+/dev/jp_hgd_gpio_ctl_enable_refrigerator
+\end{lstlisting}
+
+对于上述“设备”，均可以使用\code{echo 1}或者\code{echo on}来进行使能，例如：
+
+\begin{lstlisting}[language=sh]
+root@HGD:/# echo 1 > /dev/jp_hgd_gpio_ctl_enable_evf
+\end{lstlisting}
+
+% ----------------------------------------
+%  Subsection 1.2 : UART
+% ----------------------------------------
+
+\subsection{UART}
+
+当前的系统中主要提供如下的串口：
+
+\begin{enumerate}
+    \item \code{/dev/ttyS1}，电源\text{MCU}
+    \item \code{/dev/ttyS2}，调试串口
+    \item \code{/dev/ttyS4}，对焦\text{MCU}
+    \item \code{/dev/ttyS7}，连接\text{GPS}
+\end{enumerate}
+
+系统提供了一个\code{uart_listen}的串口监听程序，以对焦\text{MCU}通讯为例：
+
+\begin{lstlisting}[language=sh]
+root@HGD:/root/app/utils# ./uart_listen 115200 /dev/ttyS4 &
+root@HGD:/root/app/utils# echo -en '\x43\x44\x4A\x50\x02\x02\x01\x00\x10\x0C' > /dev/ttyS4
+root@HGD:/root/app/utils# Received data: 43 44 4A 50 02 02 01 00 10 FE F2 
+\end{lstlisting}
+    
+% ----------------------------------------
+%  Subsection 1.3 : I2C
+% ----------------------------------------
+
+\subsection{I2C}
+
+当前的系统中\text{I2C}配置情况如下：
+
+\begin{enumerate}
+    \item \code{i2c2}
+    \begin{itemize}
+        \item \integrated{触摸屏：\text{GT9xx}}
+    \end{itemize}
+
+    \item \code{i2c3}
+    \begin{itemize}
+        \item 地磁传感器：\text{MMC5603NJ}
+    \end{itemize}
+
+    \item \code{i2c3}
+    \begin{itemize}
+        \item \integrated{可见光摄像头：\text{IMX335}}
+    \end{itemize}
+
+    \item \code{i2c6}
+    \begin{itemize}
+        \item \integrated{\text{RTC}时钟：\text{PCF8536T}}
+        \item 温度传感器：\text{MTS4P}
+    \end{itemize}
+
+    \item \code{i2c7}
+    \begin{itemize}
+        \item 陀螺仪：\text{ICM-20600}
+        \item \integrated{音频芯片：\text{ES8311}}
+    \end{itemize}
+\end{enumerate}
+
+\noindent 其中用波浪线标识的设备均已集成在系统中。
+
+板端提供了如下的工具用于查询并读写\text{I2C}设备：
+
+\begin{lstlisting}[language=sh]
+root@HGD:/# i2cdetect -l 
+i2c-0	i2c       	rk3x-i2c                        	I2C adapter
+i2c-1	i2c       	rk3x-i2c                        	I2C adapter
+i2c-2	i2c       	rk3x-i2c                        	I2C adapter
+i2c-3	i2c       	rk3x-i2c                        	I2C adapter
+i2c-4	i2c       	rk3x-i2c                        	I2C adapter
+i2c-6	i2c       	rk3x-i2c                        	I2C adapter
+i2c-7	i2c       	rk3x-i2c                        	I2C adapter
+i2c-9	i2c       	ddc                             	I2C adapter
+root@HGD:/# i2cdetect -y 7
+        0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:                         -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- UU -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- -- 69 -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --                         
+root@HGD:/# i2ctransfer -y 7 w2@0x69 0x00 0x0c r1
+\end{lstlisting}
+
+% ----------------------------------------
+%  Subsection 1.4 : 按键
+% ----------------------------------------
+
+系统一共提供了三组按键，其中两组为\text{ADC Key}、一组为\text{GPIO Key}，以\code{evtest}为例：
+
+\begin{lstlisting}[language=sh]
+root@HGD:/# evtest 
+No device specified, trying to scan all of /dev/input/event*
+Available devices:
+/dev/input/event0:	rk805 pwrkey
+/dev/input/event1:	goodix-ts
+/dev/input/event2:	adc-keys-ch1
+/dev/input/event3:	adc-keys-ch3
+/dev/input/event4:	rockchip-hdmi0 rockchip-hdmi0
+/dev/input/event5:	gpio-keys
+\end{lstlisting}
+
+\noindent 其中，按键定义如下：
+
+\begin{enumerate}
+    \item \code{/dev/input/event2} \text{adc-keys-ch1}
+        \begin{itemize}
+            \item Event type 0 (EV\_SYN)
+            \item Event type 1 (EV\_KEY)
+                \begin{enumerate}[label=\arabic*.]
+                    \item Event code 2 (KEY\_1)
+                    \item Event code 3 (KEY\_2)
+                    \item Event code 4 (KEY\_3)
+                    \item Event code 5 (KEY\_4)
+                    \item Event code 6 (KEY\_5)
+                \end{enumerate}
+        \end{itemize}
+
+    \item \code{/dev/input/event3} \text{adc-keys-ch3}
+        \begin{itemize}
+            \item Event type 0 (EV\_SYN)
+            \item Event type 1 (EV\_KEY)
+                \begin{enumerate}[label=\arabic*.]
+                    \item Event code 59 (KEY\_F1)
+                    \item Event code 60 (KEY\_F2)
+                    \item Event code 61 (KEY\_F3)
+                    \item Event code 62 (KEY\_F4)
+                    \item Event code 63 (KEY\_F5)
+                    \item Event code 64 (KEY\_F6)
+                \end{enumerate}
+        \end{itemize}
+
+    \item \code{/dev/input/event5} \text{gpio-keys}
+        \begin{itemize}
+            \item Event type 0 (EV\_SYN)
+            \item Event type 1 (EV\_KEY)
+                \begin{enumerate}[label=\arabic*.]
+                    \item Event code 30 (KEY\_A)
+                    \item Event code 31 (KEY\_S)
+                    \item Event code 46 (KEY\_C)
+                \end{enumerate}
+        \end{itemize}
+\end{enumerate}
+
+% =====================================================================================
+% End Document
+% =====================================================================================
+
+\end{document}
