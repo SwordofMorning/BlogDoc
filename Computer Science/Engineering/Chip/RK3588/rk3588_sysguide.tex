@@ -323,6 +323,8 @@ root@HGD:/# i2ctransfer -y 7 w2@0x69 0x00 0x0c r1
 %  Subsection 1.4 : 按键
 % ----------------------------------------
 
+\subsection{Keys}
+
 系统一共提供了三组按键，其中两组为\text{ADC Key}、一组为\text{GPIO Key}，以\code{evtest}为例：
 
 \begin{lstlisting}[language=sh]
@@ -378,6 +380,156 @@ Available devices:
                 \end{enumerate}
         \end{itemize}
 \end{enumerate}
+
+% ----------------------------------------
+%  Subsection 1.5 : USB
+% ----------------------------------------
+
+\subsection{USB}
+
+系统在如下的位置提供了\text{USB}使能的脚本：
+
+\begin{lstlisting}[language=sh]
+root@HGD:/root/sys/usb# ls
+adb.sh  mtp.sh    
+\end{lstlisting}
+
+\noindent 其中，\code{adb.sh}开启\text{ADB}和\text{RNDIS}功能；\code{mtp}开启\text{MTP}服务。\text{MTP}服务由\code{mpt-server}实现，如有自定义需求，可以自行修改\text{SDK-Buildroot}中的相关配置。
+
+% ----------------------------------------
+%  Subsection 1.6 : WiFi
+% ----------------------------------------
+
+\subsection{WiFi}
+
+系统在如下的位置提供了\text{WiFi}使能的脚本：
+
+\begin{lstlisting}[language=sh]
+root@HGD:/root/sys/wifi# ./wifi.sh --help
+Usage: ./wifi.sh [ACTION] [SSID] [PASSWORD]
+Actions:
+  insmod            - Load WiFi module
+  scan              - Scan available WiFi networks
+  connect SSID PWD  - Connect to WiFi (first time)
+  reconnect SSID PWD- Reconnect to different WiFi
+  ap SSID PWD       - Start WiFi Access Point mode (PWD: 8-63 chars)
+Examples:
+  ./wifi.sh insmod
+  ./wifi.sh scan
+  ./wifi.sh connect MyWiFi MyPassword
+  ./wifi.sh reconnect NewWiFi NewPassword
+  ./wifi.sh ap MyHotspot MyPassword123
+\end{lstlisting}
+
+\noindent 其中，\text{WiFi}的核心配置部分在\code{/etc/hostapd}中实现，其部分参考配置如下：
+
+\begin{lstlisting}[language=sh]
+interface=${INTERFACE}
+driver=nl80211
+ssid=${WIFISSID}
+hw_mode=g
+channel=7
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=${WIFIPWD}
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+\end{lstlisting}
+
+同时，\code{scan}的结果将存放在\code{/var/run/wpa_supplicant/scan.txt}中，内容以如下的格式存放：
+
+\begin{lstlisting}[language=sh]
+# Scan Results (2025-05-15 07:18:50)
+# BSSID / Frequency / Signal Level / Flags / SSID
+2a:d0:f5:2b:ca:2b 2422 -64 [WPA2-PSK-CCMP][ESS] AHGZ-2.4
+be:fc:e7:5f:a9:e2 5260 -72 [WPA2-PSK-CCMP][WPS][ESS] ESW
+c4:70:ab:7a:6a:bb 5180 -65 [WPA-PSK-CCMP][WPA2-PSK-CCMP][ESS] AHGZ
+c6:70:ab:1a:6a:bb 5180 -65 [WPA2-PSK-CCMP][ESS] AHGZ-5G
+bc:fc:e7:5f:a9:e2 2442 -55 [WPA2-PSK-CCMP][WPS][ESS] ESW
+d8:15:0d:f0:b6:b8 2412 -70 [WPA-PSK-CCMP][WPA2-PSK-CCMP][WPS][ESS] xwc802
+c6:70:ab:aa:6a:bb 2467 -46 [WPA2-PSK-CCMP][ESS] AHGZ-2.4
+cc:4b:73:f5:1c:88 2442 -65 [WPA2-PSK-CCMP][ESS] NightEyes-76
+d6:31:27:83:b9:f6 5785 -79 [WPA-PSK-CCMP][WPA2-PSK-CCMP][ESS] AHGZ
+d6:31:27:93:b9:f6 5785 -79 [WPA2-PSK-CCMP][ESS] AHGZ-5G
+10:2c:6b:08:f1:5a 2457 -72 [WPA2-PSK-CCMP][ESS] NightEyes-150
+f8:cd:c8:54:43:ec 2417 -77 [WPA-PSK-CCMP+TKIP][WPA2-PSK-CCMP+TKIP][WPS][ESS] ChinaNet-Urca
+b0:44:14:ef:ec:e0 5745 -89 [WPA2-PSK-CCMP][ESS] CDCL
+b0:44:14:ef:85:00 5260 -89 [WPA2-PSK-CCMP][ESS] CDCL
+94:d9:b3:24:11:9a 2437 -84 [WPA-PSK-CCMP+TKIP][WPA2-PSK-CCMP+TKIP][ESS] Tedu_class_2.4
+\end{lstlisting}
+
+值得注意的是，由于制板工艺问题，可能存在\text{WiFi}模块加载模块失败的情况，此时可以尝试重启，确保在开机阶段有如下的输出：
+
+\begin{lstlisting}[language=sh]
+[   12.401401] [dhd] ======== PULL WL_REG_ON(-1) LOW! ========
+[   12.401419] [WLAN_RFKILL]: jiang rockchip_wifi_power: 0
+[   12.401436] [BT_RFKILL]: rfkill_get_bt_power_state: rfkill-bt driver has not Successful initialized
+[   12.401453] [BT_RFKILL]: rfkill_get_bt_power_state: rfkill-bt driver has not Successful initialized
+[   12.401470] [WLAN_RFKILL]: wifi shut off power [GPIO-1-1]
+[   12.401487] [dhd] [wlan0] wl_android_wifi_off : out
+[   12.401519] [dhd] dhd_os_wake_lock_destroy: wake lock count=1
+[   12.401673] [dhd] [wlan0] dhd_stop : Exit
+[   12.401707] [dhd] [wlan0] dhd_open : Exit ret=-1
+[   12.401726] [dhd] Failed to open primary dev ret -1
+[   12.401742] [dhd] dhd_pri_open : mutex is released.
+\end{lstlisting}
+
+% ----------------------------------------
+%  Subsection 1.7 : SSH & sFTP
+% ----------------------------------------
+
+\subsection{SSH and sFTP}
+
+系统默认开启\text{SSH}和\text{sFTP}服务，可以通过如此的方式查看设备\text{IP}地址：
+
+\begin{lstlisting}[language=sh]
+root@HGD:/# ifconfig 
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:266 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:266 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:19197 (18.7 KiB)  TX bytes:19197 (18.7 KiB)
+
+usb0      Link encap:Ethernet  HWaddr 96:2D:C9:F6:EC:1F  
+          inet addr:169.254.43.1  Bcast:169.254.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::942d:c9ff:fef6:ec1f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:187 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:12 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:31825 (31.0 KiB)  TX bytes:1464 (1.4 KiB)
+
+wlan0     Link encap:Ethernet  HWaddr CC:64:1A:75:46:A0  
+          inet addr:192.168.50.96  Bcast:192.168.50.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:105 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:88 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:10705 (10.4 KiB)  TX bytes:7404 (7.2 KiB)
+\end{lstlisting}
+
+\noindent 其中，若要调整\code{usb0}的地址，请自行根据\text{RFC1918}或\text{RFC3927}进行相关内容配置；\code{wlan0}支持\text{AP}模式，其地址将在配置后显示：
+
+\begin{lstlisting}[language=sh]
+Configuring dnsmasq DHCP server...
+Starting dnsmasq DHCP server...
+dnsmasq DHCP server started successfully
+WiFi AP mode started successfully!
+AP SSID: HaHa
+AP IP: 192.168.4.1
+DHCP Range: 192.168.4.20 - 192.168.4.200
+DNS Servers: 8.8.8.8, 8.8.4.4
+Access Point started successfully
+\end{lstlisting}
+
+当前的登录凭证为：用户名\code{root}，密码\code{1}。
 
 % =====================================================================================
 % End Document
