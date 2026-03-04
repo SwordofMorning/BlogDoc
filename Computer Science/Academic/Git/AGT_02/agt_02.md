@@ -6,7 +6,7 @@
 
 &emsp;&emsp;假设我们面对一个如下的场景：
 
-1. 我们通过PR将prigin仓库的`master`分支同步到了upstream上；
+1. 我们通过PR将origin仓库的`master`分支同步到了upstream上；
 2. upstream通过`rebase`接收了PR；
 3. origin和upstream有了不同的提交历史；
 4. 现在我们需要同步upstream和origin。
