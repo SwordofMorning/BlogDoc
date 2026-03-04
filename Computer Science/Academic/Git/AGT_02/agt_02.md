@@ -57,3 +57,25 @@ git rebase upstream/master
 # 4. 使用 force-with-lease 强制推送
 git push -u origin master --force-with-lease
 ```
+
+### 1.3 PR Modify
+
+&emsp;&emsp;假设我们面对一个如下的场景：
+
+1. 我们在upstream上提交了一个`upstream:feat`到`upstream:main`的PR(`pr-292`)；
+2. 但是产生了冲突，需要我们手动checkout处理解决Bug。
+
+```sh
+# 1.1 fetch远程仓库到本地仓库
+git fetch upstream pull/292/head:pr-292
+# 1.2 切换到pr-292
+git checkout pr-292
+# 1.3 再次同步远程仓库(确保一致性)
+git fetch upstream
+
+# 2. 手动进行Merge
+git merge upstream/main -> 手动修文件 -> git add . -> git commit
+
+# 3. 推送回原有发feat分支
+git push origin pr-292:feat
+```
