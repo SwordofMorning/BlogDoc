@@ -154,3 +154,63 @@ End Turn.
 
 ## II. Turn 2
 
+### 2.1 Deploy Team
+
+```cs
+AP 18
+
+// 1. Artillery 1 (Scarecrow) attack lower-1 Node-95384
+art ap1 95384
+// 2. Move Scarecrow to lower-1
+mov 1 95384
+// 3. Deploy Team 2 on Upper's HP
+dep 2 95333
+// 4. Supply Team 2
+sup 2
+
+// 5. Swap Team 2 with Scarecrow
+swp 2 1
+// 6. Swap Team 2 with Team 7
+swp 2 7
+// 7. Swap Team 7 with Scarecrow
+swp 1 7
+// Now: 7 on 95333; Scarecrow on 95384; 2 on 95382
+```
+
+### 2.2 Move & Artillery
+
+```cs
+AP 17
+
+// 1. Move tank to right-1 HHP
+mov tank 95389
+// 2. Supply tank
+sup tank
+
+// 3. Move Team 6 to left-1 artillery 3
+mov 6 95403
+// 4. Artillery 3 (Team 6) attack HP-95379
+art ap3 95379
+
+// 5. Deploy Team 8 on T6's upper-2 HP
+dep 8 95387
+// 6. Supply Team 8
+sup 8
+
+// 7. Move Team 8 to lower-1 artillery 2
+mov 8 95385
+// 8. Artillery 2 (Team 8) attack Node-95381
+art ap2 95381
+
+// 9. Swap Team 8 and Team 6
+swp 8 6
+// 10. Move Team 8 to lower-1 artillery 4
+mov 8 95371
+// 11. Artillery 4 attack Node-95375
+art ap4 95375
+
+// 12. Move Team 8 to lower-2 artillery 5
+mov 8 95370
+// 13. Artillery 5 attack Node-95377
+art ap5 95377
+```
