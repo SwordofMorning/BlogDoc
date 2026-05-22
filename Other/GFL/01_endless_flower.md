@@ -287,3 +287,13 @@ rbh tank 95361
 // 17. Supply tank
 sup tank
 ```
+
+### 2.6 Team 4 & 5
+
+```cs
+AP 7
+
+// 1. Supply Team 4
+sup 4
+// 2. Move
+```
