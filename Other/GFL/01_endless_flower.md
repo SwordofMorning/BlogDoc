@@ -206,11 +206,39 @@ art ap2 95381
 swp 8 6
 // 10. Move Team 8 to lower-1 artillery 4
 mov 8 95371
-// 11. Artillery 4 attack Node-95375
+// 11. Artillery 4 (Team 8) attack Node-95375
 art ap4 95375
 
 // 12. Move Team 8 to lower-2 artillery 5
 mov 8 95370
-// 13. Artillery 5 attack Node-95377
+// 13. Artillery 5 (Team 8) attack Node-95377
 art ap5 95377
+```
+
+### 2.3 Mech
+
+```cs
+AP 11
+
+// 1. Artillery 6 (Mech) attack AP7-95343
+art ap6 95343
+// 2. Move Mech to right-1 Artillery 7
+mov mech 95343
+
+// 3. Artillery 7 (Mech) attack lower-1
+art ap7 95335
+// 4. Move Mech to right-3 AP9-95340
+move mech 95340
+```
+
+### 2.4 Team 5 Ripper
+
+```cs
+AP 11
+
+// 1. Move Team 5 4-steps [95397, 35400, 95401, 95399]
+mov 5 95397
+mov 5 35400
+mov 5 95401
+mov 5 95399
 ```
