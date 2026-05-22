@@ -242,3 +242,48 @@ mov 5 35400
 mov 5 95401
 mov 5 95399
 ```
+
+### 2.5 Tank
+
+```cs
+AP 7
+
+// 1. Move tank to CC
+mov tank 95357
+// 2. Supply tank
+sup tank
+// 3. Move tank to detonator
+mov tank 95363
+
+// 4. Destroy (tank on detonator) Build 1 HP-95397
+des tank 95397
+// 5. Destroy (tank on detonator) Build 2 Node-95361
+des tank 95361
+// 6. Destroy (tank on detonator) Build 4 Node-95352
+des tank 95352
+// 7. Destroy (tank on detonator) Build 5 Node 95393
+des tank 95393
+
+// 8. Move upper-1 back to HHP
+mov tank 95356
+// 9. Supply tank
+sup tank
+
+// 10. remote bombardment (hit building, and Destroy) i.e. rba->rbb HP-95397 (4 Hits)
+rbd tank 95397
+// 11. Supply tank
+sup tank
+// 12. Move tank down 1 step
+mov tank 95355
+// 13. Hit building (non Destroy) Node-95393 (3 Hits)
+rbh tank 95393
+
+// 14. Move tank back to HHP
+mov tank 95356
+// 15. Supply tank
+sup tank
+// 16. Hit Building (non Destroy) Node-95361 (3 Hits)
+rbh tank 95361
+// 17. Supply tank
+sup tank
+```
