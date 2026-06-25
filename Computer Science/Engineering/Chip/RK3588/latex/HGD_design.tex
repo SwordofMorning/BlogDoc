@@ -23,9 +23,10 @@
 \section*{文档版本}
 
 \begin{center}
-    \begin{tabular}{|*{5}{c|}} \hline
-        编写日期 & 版本编号 & 编写 & 校对 & 修改说明 \\ \hline
-        2026-06-25 & 1.0 & 肖劲涛 & 无 & 初始版本 \\ \hline
+    \begin{tabular}{|*{6}{c|}} \hline
+        编写日期 & 版本编号 & 编写 & 校对 & 审核 & 修改说明 \\ \hline
+        2026-06-25 & 1.1 & 肖劲涛 & 无 & 无 & 补充第二、三章说明 \\ \hline
+        2025-12-12 & 1.0 & 肖劲涛 & 无 & 无 & 初始版本 \\ \hline
     \end{tabular}
 \end{center}
 
@@ -494,7 +495,7 @@ TODO
 触摸屏型号为\text{GT9xx}，通过前述的\text{I2C}接口与系统连接。可以通过\code{evtest}的进行验证：
 
 \begin{lstlisting}[language=sh]
-root@HGD:~# evtest          
+# evtest          
 No device specified, trying to scan all of /dev/input/event*
 Available devices:
 /dev/input/event0:	rk805 pwrkey
@@ -543,5 +544,29 @@ Event: time 1770236401.331938, type 3 (EV_ABS), code 50 (ABS_MT_WIDTH_MAJOR), va
 Event: time 1770236401.331938, type 3 (EV_ABS), code 57 (ABS_MT_TRACKING_ID), value 0
 Event: time 1770236401.331938, ++++++++++++++ SYN_MT_REPORT ++++++++++++    
 \end{lstlisting}
+
+% =====================================================================================
+% Section 2 : FS-Overlay
+% =====================================================================================
+
+\newpage
+
+\section{FS-Overlay}
+
+\subsection{启动脚本}
+
+系统在加载文件系统后，通过\code{/etc/init.d/rcS}，按照字典顺序调用其目录下的\text{S*}脚本进行初始化工作。其中大部分脚本为原版\text{SDK}自带，在\text{FS-Overlay}中新增了如下的脚本。
+
+\begin{enumerate}
+    \item \code{S01automount}，挂载\text{MMC}分区；
+    \item \code{S02bootanimation}，启用应用层的开机动画；
+    \item \code{S49weston}，无功能，仅屏蔽\text{SDK}原有的\text{weston}启动流程；
+    \item \code{S50launcher}，无功能，仅屏蔽\text{SDK}原有的\text{QT}桌面启动流程；
+    \item \code{S50wifi}，加载\text{WiFi}驱动；
+    \item \code{S60evf}，初始化电子取景器功能，然后关闭；
+    \item \code{S80launcher}，无功能，仅屏蔽\text{SDK}原有的\text{QT}桌面启动流程；
+    \item \code{S98bootanimation_stop}，结束应用层开机动画；
+    \item \code{S99vendor}，开启应用层依赖程序，并跳转到\code{/app}下的开机脚本。
+\end{enumerate}
 
 \end{document}
