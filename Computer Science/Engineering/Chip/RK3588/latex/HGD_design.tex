@@ -127,7 +127,6 @@
 \text{HGD}将所有需要被调用的\text{GPIO}管脚均封装为了\code{/dev/jp\_hgd\_gpio\_ctl\_enable\_\*}设备，列表如下：
 
 \begin{lstlisting}[language=sh]
-root@HGD:/# ls /dev/jp_hgd_gpio_ctl_enable_*
 /dev/jp_hgd_gpio_ctl_enable_evf
 /dev/jp_hgd_gpio_ctl_enable_panel
 /dev/jp_hgd_gpio_ctl_enable_laser
@@ -137,7 +136,7 @@ root@HGD:/# ls /dev/jp_hgd_gpio_ctl_enable_*
 对于上述“设备”，均可以使用\code{echo 1}或者\code{echo on}来进行使能，例如：
 
 \begin{lstlisting}[language=sh]
-root@HGD:/# echo 1 > /dev/jp_hgd_gpio_ctl_enable_evf
+echo 1 > /dev/jp_hgd_gpio_ctl_enable_evf
 \end{lstlisting}
 
 % ----------------------------------------
@@ -153,14 +152,18 @@ root@HGD:/# echo 1 > /dev/jp_hgd_gpio_ctl_enable_evf
     \item \code{/dev/ttyS2}，调试串口
     \item \code{/dev/ttyS4}，对焦\text{MCU}
     \item \code{/dev/ttyS7}，连接\text{GPS}
+    \item \code{/dev/ttyS9}，连接红外机芯
 \end{enumerate}
 
-系统提供了一个\code{uart_listen}的串口监听程序，以对焦\text{MCU}通讯为例：
+系统提供了一个\code{/root/app/utils/uart_listen}的串口监听程序，该程序可以配置串口波特率，并进行监听。以对焦\text{MCU}通讯为例：
 
 \begin{lstlisting}[language=sh]
-root@HGD:/root/app/utils# ./uart_listen 115200 /dev/ttyS4 &
-root@HGD:/root/app/utils# echo -en '\x43\x44\x4A\x50\x02\x02\x01\x00\x10\x0C' > /dev/ttyS4
-root@HGD:/root/app/utils# Received data: 43 44 4A 50 02 02 01 00 10 FE F2 
+# Run uart_listen
+./uart_listen 115200 /dev/ttyS4 &
+# Send message to UART4
+echo -en '\x43\x44\x4A\x50\x02\x02\x01\x00\x10\x0C' > /dev/ttyS4
+# output of uart_listen
+Received data: 43 44 4A 50 02 02 01 00 10 FE F2 
 \end{lstlisting}
     
 % ----------------------------------------
@@ -205,7 +208,7 @@ root@HGD:/root/app/utils# Received data: 43 44 4A 50 02 02 01 00 10 FE F2
 板端提供了如下的工具用于查询并读写\text{I2C}设备：
 
 \begin{lstlisting}[language=sh]
-root@HGD:/# i2cdetect -l 
+# i2cdetect -l 
 i2c-0	i2c       	rk3x-i2c                        	I2C adapter
 i2c-1	i2c       	rk3x-i2c                        	I2C adapter
 i2c-2	i2c       	rk3x-i2c                        	I2C adapter
@@ -214,7 +217,7 @@ i2c-4	i2c       	rk3x-i2c                        	I2C adapter
 i2c-6	i2c       	rk3x-i2c                        	I2C adapter
 i2c-7	i2c       	rk3x-i2c                        	I2C adapter
 i2c-9	i2c       	ddc                             	I2C adapter
-root@HGD:/# i2cdetect -y 7
+# i2cdetect -y 7
         0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 00:                         -- -- -- -- -- -- -- -- 
 10: -- -- -- -- -- -- -- -- -- UU -- -- -- -- -- -- 
@@ -224,19 +227,19 @@ root@HGD:/# i2cdetect -y 7
 50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 60: -- -- -- -- -- -- -- -- -- 69 -- -- -- -- -- -- 
 70: -- -- -- -- -- -- -- --                         
-root@HGD:/# i2ctransfer -y 7 w2@0x69 0x00 0x0c r1
+# i2ctransfer -y 7 w2@0x69 0x00 0x0c r1
 \end{lstlisting}
 
 % ----------------------------------------
 %  Subsection 1.4 : 按键
 % ----------------------------------------
 
-\subsection{Keys}
+\subsection{按键}
 
 系统一共提供了三组按键，其中两组为\text{ADC Key}、一组为\text{GPIO Key}，以\code{evtest}为例：
 
 \begin{lstlisting}[language=sh]
-root@HGD:/# evtest 
+# evtest 
 No device specified, trying to scan all of /dev/input/event*
 Available devices:
 /dev/input/event0:	rk805 pwrkey
@@ -295,10 +298,9 @@ Available devices:
 
 \subsection{USB}
 
-系统在如下的位置提供了\text{USB}使能的脚本：
+系统在\code{/root/sys/usb}下供\text{USB}使能的脚本：
 
 \begin{lstlisting}[language=sh]
-root@HGD:/root/sys/usb# ls
 adb.sh  mtp.sh    
 \end{lstlisting}
 
@@ -310,10 +312,10 @@ adb.sh  mtp.sh
 
 \subsection{WiFi}
 
-系统在如下的位置提供了\text{WiFi}使能的脚本：
+系统在\code{/root/sys/wifi}下提供\text{WiFi}使能的脚本：
 
 \begin{lstlisting}[language=sh]
-root@HGD:/root/sys/wifi# ./wifi.sh --help
+# ./wifi.sh --help
 Usage: ./wifi.sh [ACTION] [SSID] [PASSWORD]
 Actions:
   insmod            - Load WiFi module
@@ -395,7 +397,7 @@ b0:44:14:ef:85:00 5260 -89 [WPA2-PSK-CCMP][ESS] CDCL
 系统默认开启\text{SSH}和\text{sFTP}服务，可以通过如此的方式查看设备\text{IP}地址：
 
 \begin{lstlisting}[language=sh]
-root@HGD:/# ifconfig 
+# ifconfig 
 lo        Link encap:Local Loopback  
           inet addr:127.0.0.1  Mask:255.0.0.0
           inet6 addr: ::1/128 Scope:Host
@@ -438,5 +440,108 @@ Access Point started successfully
 \end{lstlisting}
 
 当前的登录凭证为：用户名\code{root}，密码\code{1}。
+
+\subsection{待机与唤醒}
+
+\text{HGD}目前支持以如此的方式进行休眠：
+
+\begin{lstlisting}[language=sh]
+echo freeze > /sys/power/state
+\end{lstlisting}
+
+在休眠后，可以通过按下右侧手柄上方的物理按键\code{C}，将其恢复至休眠前状态。
+
+\textbf{注意}：休眠状态下不会单独关闭制冷机、\text{EVF}等外设的电源\text{GPIO}，此部分应该由用户通过\text{UI}进行手动关闭或暂停。
+
+\subsection{屏幕}
+
+\text{HGD}包含三个屏幕：
+
+\begin{enumerate}
+    \item \text{5.5}寸主屏幕，\code{/sys/class/drm/card0-DSI-1}
+    \item \text{0.49}寸电子取景器，\code{/sys/class/drm/card0-DSI-2}
+    \item \text{HDMI}输出接口，\code{/sys/class/drm/card0-HDMI-A-1}
+\end{enumerate}
+
+\subsubsection{MIPI-DSI}
+
+\text{MIPI-DSI}屏幕控制一般包含\text{GPIO}电源使能和\text{MIPI-DSI}输出控制两个部分。
+
+以电子取景器的上电并输出信号为例：
+
+\begin{lstlisting}[language=sh]
+# Power on evf
+echo 1 > /dev/jp_hgd_gpio_ctl_enable_evf
+# Enable DSI's output
+echo on > /sys/class/drm/card0-DSI-2/status
+\end{lstlisting}
+
+以电子取景器的关闭输出并下电为例：
+
+\begin{lstlisting}[language=sh]
+# Disable DSI's output which shown as pure withe now
+echo off > /sys/class/drm/card0-DSI-2/status
+# Power off evf
+echo 0 > /dev/jp_hgd_gpio_ctl_enable_evf
+\end{lstlisting}
+
+\subsubsection{HDMI}
+
+TODO
+
+\subsubsection{触摸屏}
+
+触摸屏型号为\text{GT9xx}，通过前述的\text{I2C}接口与系统连接。可以通过\code{evtest}的进行验证：
+
+\begin{lstlisting}[language=sh]
+root@HGD:~# evtest          
+No device specified, trying to scan all of /dev/input/event*
+Available devices:
+/dev/input/event0:	rk805 pwrkey
+/dev/input/event1:	goodix-ts
+/dev/input/event2:	adc-keys-ch1
+/dev/input/event3:	adc-keys-ch3
+/dev/input/event4:	rockchip-hdmi0 rockchip-hdmi0
+/dev/input/event5:	gpio-keys
+Select the device event number [0-5]: 1
+Input driver version is 1.0.1
+Input device ID: bus 0x18 vendor 0xdead product 0xbeef version 0x28bb
+Input device name: "goodix-ts"
+Supported events:
+    Event type 0 (EV_SYN)
+    Event type 1 (EV_KEY)
+    Event code 330 (BTN_TOUCH)
+    Event type 3 (EV_ABS)
+    Event code 48 (ABS_MT_TOUCH_MAJOR)
+        Value      0
+        Min        0
+        Max      255
+    Event code 50 (ABS_MT_WIDTH_MAJOR)
+        Value      0
+        Min        0
+        Max      255
+    Event code 53 (ABS_MT_POSITION_X)
+        Value      0
+        Min        0
+        Max     1080
+    Event code 54 (ABS_MT_POSITION_Y)
+        Value      0
+        Min        0
+        Max     1920
+    Event code 57 (ABS_MT_TRACKING_ID)
+        Value      0
+        Min        0
+        Max      255
+Properties:
+    Property type 1 (INPUT_PROP_DIRECT)
+Testing ... (interrupt to exit)
+Event: time 1770236401.331938, type 1 (EV_KEY), code 330 (BTN_TOUCH), value 1
+Event: time 1770236401.331938, type 3 (EV_ABS), code 53 (ABS_MT_POSITION_X), value 669
+Event: time 1770236401.331938, type 3 (EV_ABS), code 54 (ABS_MT_POSITION_Y), value 1327
+Event: time 1770236401.331938, type 3 (EV_ABS), code 48 (ABS_MT_TOUCH_MAJOR), value 16
+Event: time 1770236401.331938, type 3 (EV_ABS), code 50 (ABS_MT_WIDTH_MAJOR), value 16
+Event: time 1770236401.331938, type 3 (EV_ABS), code 57 (ABS_MT_TRACKING_ID), value 0
+Event: time 1770236401.331938, ++++++++++++++ SYN_MT_REPORT ++++++++++++    
+\end{lstlisting}
 
 \end{document}
