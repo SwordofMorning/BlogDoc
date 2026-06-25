@@ -1,0 +1,102 @@
+% =====================================================================================
+% File: style.sty
+% Description: 文档模板
+% =====================================================================================
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{hgd_style}[2025/01/01 HGD Document Style Package]
+
+% --- 1. 宏包 ---
+
+% \RequirePackage{times}
+\RequirePackage{geometry}
+\RequirePackage{subcaption}
+\RequirePackage{textcomp}
+\RequirePackage{tocbibind}
+\RequirePackage{fancyhdr}
+\RequirePackage{xcolor}      
+\RequirePackage{graphicx}    
+\RequirePackage{titling}
+\RequirePackage{hyperref}
+\RequirePackage{fourier}
+\RequirePackage{tabularx}
+\RequirePackage{amssymb}
+\RequirePackage{chemformula}
+\RequirePackage{appendix}
+\RequirePackage{multirow}
+\RequirePackage{makecell}
+\RequirePackage{adjustbox}
+\RequirePackage{listings}
+\RequirePackage{ulem}
+\RequirePackage{enumitem}
+
+% --- 2. 页面与字体 ---
+
+\geometry{a4paper,left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+\hypersetup{
+    colorlinks,
+    linktoc=all,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=cyan
+}
+
+% 原版仿宋字体，\CJKfamily{\fangsong}，替换为如下：
+% \AtBeginDocument{\fangsong}
+
+% --- 3. 代码块 (Listings) ---
+
+% 行内高亮
+\lstdefinestyle{inlinecode}{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\colorbox{gray!10},
+    breaklines=true,
+    frame=none
+}
+
+% 行间高亮
+\lstdefinestyle{codeblock}{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    frameround=tttt,
+    framerule=0.5pt,
+    rulecolor=\color{gray!50},
+    breaklines=true,
+    breakatwhitespace=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=15pt,
+    xrightmargin=5pt,
+    aboveskip=10pt,
+    belowskip=10pt
+}
+\lstset{style=codeblock}
+
+% --- 4. 自定义命令 ---
+
+\newcommand{\code}[1]{\colorbox{gray!10}{\lstinline[style=inlinecode]|#1|}}
+\newcommand{\integrated}[1]{\uwave{#1}} % 波浪线
+
+% --- 5. 页眉页脚样式定义 (Fancyhdr) ---
+
+\setlength{\headsep}{40pt}
+\setlength{\footskip}{40pt}
+\renewcommand\headrulewidth{.5pt}
+\renewcommand\footrulewidth{.5pt}
+
+\fancypagestyle{fancy}{
+    \fancyhf{}                             % 清空当前设置
+    \fancyhead[C]{HGD(RK3588) 设计方案}     % 设置居中的页眉内容
+    \fancyfoot[C]{\thepage}                % 设置居中的页脚页码
+}
+
+\endinput
