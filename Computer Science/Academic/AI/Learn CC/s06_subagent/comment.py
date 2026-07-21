@@ -17,8 +17,8 @@ s06: Subagent — spawn sub-agents with fresh messages[] for context isolation.
 
   Subagent tools: bash, read, write, edit, glob (NO task — no recursion)
 
-Logs added:
-  + Saves detailed JSON interactions (requests, responses, tool calls) to agent.log
+Logs:
+  + Saves exact LLM requests & responses in classic header format to agent.log
 """
 
 import ast, json, os, subprocess, datetime
@@ -56,13 +56,14 @@ SUB_SYSTEM = (
 
 
 # ═══════════════════════════════════════════════════════════
-#  Logging Helper: Save complete JSON data to agent.log
+#  Logging Helper: Match s05 header style with raw API JSON
 # ═══════════════════════════════════════════════════════════
 
-def log_to_file(event_type: str, payload: dict, filename: str = "agent.log"):
+def log_api_call(tag: str, payload: dict | object, filename: str = "agent.log"):
     """
-    Appends full JSON snapshots of messages and API responses to agent.log.
-    Handles Pydantic objects from Anthropic SDK seamlessly.
+    Appends LLM API request/response payloads in the classic s05 format:
+    ==================== [TAG] YYYY-MM-DD HH:MM:SS ====================
+    { ... json payload ... }
     """
     def default_serializer(obj):
         if hasattr(obj, "model_dump"):
@@ -73,16 +74,13 @@ def log_to_file(event_type: str, payload: dict, filename: str = "agent.log"):
             return obj.__dict__
         return str(obj)
 
-    entry = {
-        "timestamp": datetime.datetime.now().isoformat(),
-        "event": event_type,
-        "payload": payload
-    }
+    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    header = f"==================== [{tag}] {now_str} ===================="
 
     try:
+        json_str = json.dumps(payload, ensure_ascii=False, indent=2, default=default_serializer)
         with open(filename, "a", encoding="utf-8") as f:
-            f.write(json.dumps(entry, ensure_ascii=False, indent=2, default=default_serializer))
-            f.write("\n\n" + "=" * 60 + "\n\n")
+            f.write(f"{header}\n{json_str}\n\n")
     except Exception as e:
         print(f"\033[31m[Log Error] Failed to write log: {e}\033[0m")
 
@@ -235,24 +233,23 @@ def spawn_subagent(description: str) -> str:
     messages = [{"role": "user", "content": description}]  # fresh context
 
     for turn in range(30):  # safety limit
-        # 日志记录：Subagent 发起请求前的上下文 snapshot
-        log_to_file("subagent_request", {
-            "turn": turn + 1,
+        # 构造发给 Subagent API 的完整 Request Payload
+        req_payload = {
+            "model": MODEL,
             "system": SUB_SYSTEM,
-            "messages": messages
-        })
+            "messages": messages,
+            "tools": SUB_TOOLS,
+            "max_tokens": 8000
+        }
+        log_api_call(f"PRE LLM CALL - SUBAGENT (Turn {turn + 1})", req_payload)
 
         response = client.messages.create(
             model=MODEL, system=SUB_SYSTEM,
             messages=messages, tools=SUB_TOOLS, max_tokens=8000,
         )
 
-        # 日志记录：Subagent 接收到的模型 Response
-        log_to_file("subagent_response", {
-            "turn": turn + 1,
-            "stop_reason": response.stop_reason,
-            "content": response.content
-        })
+        # 记录 Subagent 接收到的 API Response
+        log_api_call(f"POST LLM CALL - SUBAGENT (Turn {turn + 1})", response)
 
         messages.append({"role": "assistant", "content": response.content})
         if response.stop_reason != "tool_use":
@@ -283,9 +280,7 @@ def spawn_subagent(description: str) -> str:
         if not result:
             result = "Subagent stopped after 30 turns without final answer."
 
-    # 日志记录：Subagent 执行完毕，记录返回给 Parent 的最终 Summary
-    log_to_file("subagent_finish", {"summary_returned": result})
-
+    log_api_call("SUBAGENT FINISHED", {"summary_returned": result})
     print(f"\033[35m[Subagent done]\033[0m")
     return result  # only summary, entire message history discarded
 
@@ -350,7 +345,7 @@ register_hook("Stop", summary_hook)
 
 
 # ═══════════════════════════════════════════════════════════
-#  agent_loop — main loop with full JSON logging
+#  agent_loop — main loop with s05 style logging
 # ═══════════════════════════════════════════════════════════
 
 rounds_since_todo = 0
@@ -363,22 +358,23 @@ def agent_loop(messages: list):
                              "content": "<reminder>Update your todos.</reminder>"})
             rounds_since_todo = 0
 
-        # 日志记录：Parent Agent 发起请求前的完整上下文数据
-        log_to_file("parent_request", {
+        # 构造发给 Parent Agent API 的完整 Request Payload
+        req_payload = {
+            "model": MODEL,
             "system": SYSTEM,
-            "messages": messages
-        })
+            "messages": messages,
+            "tools": TOOLS,
+            "max_tokens": 8000
+        }
+        log_api_call("PRE LLM CALL - PARENT", req_payload)
 
         response = client.messages.create(
             model=MODEL, system=SYSTEM, messages=messages,
             tools=TOOLS, max_tokens=8000,
         )
 
-        # 日志记录：Parent Agent 接收到的 API 原始响应
-        log_to_file("parent_response", {
-            "stop_reason": response.stop_reason,
-            "content": response.content
-        })
+        # 记录 Parent Agent 接收到的 API Response
+        log_api_call("POST LLM CALL - PARENT", response)
 
         messages.append({"role": "assistant", "content": response.content})
 
