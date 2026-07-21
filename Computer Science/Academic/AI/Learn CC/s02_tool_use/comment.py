@@ -90,6 +90,7 @@ def run_bash(command: str) -> str:
         return f"Error: {e}"
 
 
+# 针对Python代码的“路径保护”，但是不能对`../../..`一类的路径进行保护
 def safe_path(p: str) -> Path:
     path = (WORKDIR / p).resolve()
     if not path.is_relative_to(WORKDIR):
@@ -129,6 +130,7 @@ def run_edit(path: str, old_text: str, new_text: str) -> str:
         return f"Error: {e}"
 
 
+# 搜索工具，提供给LLM进行文件查找
 def run_glob(pattern: str) -> str:
     import glob as g
     try:
