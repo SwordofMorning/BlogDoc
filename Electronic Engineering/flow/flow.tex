@@ -109,7 +109,7 @@
     \draw [->, line width=0.8pt] (bsp_os.west) -- node[above=1pt, font=\tiny\bfseries] {系统点亮} (driver_fpga.east);
 
     % Transition Row 2 -> Row 3
-    \draw [->, line width=0.8pt] ([xshift=5pt]driver_fpga.south) -- node[right=1pt, font=\tiny\bfseries] {API 就绪} ([xshift=5pt]app_ui.north);
+    \draw [->, line width=0.8pt] ([xshift=-5pt]driver_fpga.south) -- node[left=1pt, font=\tiny\bfseries] {API 就绪} ([xshift=-5pt]app_ui.north);
 
     % --- Main Flow: Row 3 (L->R) ---
     \draw [->, line width=0.8pt] (app_ui.east) -- node[above=1pt, font=\tiny\bfseries] {业务调通} (board_screen.west);
@@ -117,20 +117,20 @@
     \draw [->, line width=0.8pt] (qa_test.east) -- node[above=1pt, font=\tiny\bfseries] {用例通过} (ess_test.west);
 
     % Transition Row 3 -> Row 4
-    \draw [->, line width=0.8pt] ([xshift=-5pt]ess_test.south) -- node[left=1pt, font=\tiny\bfseries] {压测通过} ([xshift=-5pt]archiving.north);
+    \draw [->, line width=0.8pt] ([xshift=5pt]ess_test.south) -- node[right=1pt, font=\tiny\bfseries] {压测通过} ([xshift=5pt]archiving.north);
 
     % ================= 异常驳回路径 (Red Orthogonal Lines) =================
 
     % FB1: EE Reject (Top clear space)
-    \draw [->, line width=0.8pt, color=alertred] ([xshift=-8pt]ee_audit.north) |- (ee_reject.east);
+    \draw [->, line width=0.8pt, color=alertred] ([xshift=-5pt]ee_audit.north) |- (ee_reject.east);
     \draw [->, line width=0.8pt, color=alertred] (ee_reject.west) -| (start.north);
 
     % FB2: FPGA Reject (Top clear space, lower level than FB1)
     \draw [->, line width=0.8pt, color=alertred] (fpga_audit.north) |- (fpga_reject.east);
-    \draw [->, line width=0.8pt, color=alertred] (fpga_reject.west) -| ([xshift=8pt]ee_audit.north);
+    \draw [->, line width=0.8pt, color=alertred] (fpga_reject.west) -| ([xshift=5pt]ee_audit.north);
 
     % FB3: Hardware ECN (Far Right Margin Highway)
-    \draw [->, line width=0.8pt, color=alertred] ([xshift=8pt]hw_bringup.south) -- +(0, -0.6) -| (ecn_fix.south);
+    \draw [->, line width=0.8pt, color=alertred] ([xshift=5pt]hw_bringup.south) -- +(0, -0.6) -| (ecn_fix.south);
     \draw [->, line width=0.8pt, color=alertred] (ecn_fix.north) |- (sch_pcb.east);
 
     % FB4: API Mismatch (Far Left Margin Highway)
@@ -138,11 +138,11 @@
     \draw [->, line width=0.8pt, color=alertred] (api_reject.north) |- ([yshift=-5pt]driver_fpga.west);
 
     % FB5: QA Bug Fix (Inner Horizontal Highway between Row 2 & 3)
-    \draw [->, line width=0.8pt, color=alertred] ([xshift=-8pt]qa_test.north) |- (bug_fix.east);
-    \draw [->, line width=0.8pt, color=alertred] (bug_fix.west) -| ([xshift=-8pt]app_ui.north);
+    \draw [->, line width=0.8pt, color=alertred] ([xshift=-5pt]qa_test.north) |- (bug_fix.east);
+    \draw [->, line width=0.8pt, color=alertred] (bug_fix.west) -| ([xshift=5pt]app_ui.north);
 
     % FB6: ESS Environmental Failure (Bottom horizontal run back to Left Margin)
-    \draw [->, line width=0.8pt, color=alertred] ([xshift=8pt]ess_test.south) |- (ess_fail.east);
+    \draw [->, line width=0.8pt, color=alertred] ([xshift=-5pt]ess_test.south) |- (ess_fail.east);
     \draw [->, line width=0.8pt, color=alertred] (ess_fail.west) -- (-3.6, -7.0) |- ([yshift=5pt]driver_fpga.west);
 
 \end{tikzpicture}
