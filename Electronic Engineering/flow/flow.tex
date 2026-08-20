@@ -103,7 +103,7 @@
     % --- Main Flow: Row 1 (L->R) ---
     \draw [->, line width=0.8pt] (start.east) -- node[above=1pt, font=\tiny\bfseries] {并行分解} (ee_audit.west);
     \draw [->, line width=0.8pt] (ee_audit.east) -- node[above=1pt, font=\tiny\bfseries] {通过} (fpga_audit.west);
-    \draw [->, line width=0.8pt] (fpga_audit.east) -- node[above=1pt, font=\tiny\bfseries] {无FPGA/通过} (sch_pcb.west);
+    \draw [->, line width=0.8pt] (fpga_audit.east) -- node[above=1pt, font=\tiny\bfseries] {无FPGA或 \\ 评审通过} (sch_pcb.west);
 
     % Transition Row 1 -> Row 2
     \draw [->, line width=0.8pt] (sch_pcb.south) -- node[right=1pt, font=\tiny\bfseries] {评审通过} (pcba_fab.north);
@@ -114,8 +114,8 @@
     \draw [->, line width=0.8pt] (bsp_os.west) -- node[above=1pt, font=\tiny\bfseries] {系统点亮} (driver_fpga.east);
 
     % Transition Row 2 -> Row 3 (API就绪与反向需求修改)
-    \draw [->, line width=0.8pt] ([xshift=-8pt]app_ui.north) -- node[left=1pt, font=\tiny\bfseries] {按需修改API/协议} ([xshift=-8pt]driver_fpga.south);
-    \draw [->, line width=0.8pt] ([xshift=8pt]driver_fpga.south) -- node[right=1pt, font=\tiny\bfseries] {API 就绪} ([xshift=8pt]app_ui.north);
+    \draw [->, line width=0.8pt] ([xshift=-5pt]app_ui.north) -- node[left=1pt, font=\tiny\bfseries] {按需修改 API \\ 或FPGA/MCU协议} ([xshift=-5pt]driver_fpga.south);
+    \draw [->, line width=0.8pt] ([xshift=5pt]driver_fpga.south) -- node[right=1pt, font=\tiny\bfseries] {API \\ 就绪} ([xshift=5pt]app_ui.north);
 
     % --- Main Flow: Row 3 (L->R) ---
     \draw [->, line width=0.8pt] (app_ui.east) -- node[above=1pt, font=\tiny\bfseries] {业务调通} (board_screen.west);
@@ -144,7 +144,7 @@
 
     % FB4: QA Bug Fix
     \draw [->, line width=0.8pt, color=alertred] ([xshift=-5pt]qa_test.north) |- (bug_fix.east);
-    \draw [->, line width=0.8pt, color=alertred] (bug_fix.west) -| ([xshift=10pt]app_ui.north);
+    \draw [->, line width=0.8pt, color=alertred] (bug_fix.west) -| ([xshift=25pt]app_ui.north);
 
     % FB5: ESS Environmental Failure (走底部的 Y=-8.6 水平通道)
     \draw [->, line width=0.8pt, color=alertred] ([xshift=-5pt]ess_test.south) |- (ess_fail.east);
