@@ -21,6 +21,8 @@
 \definecolor{gategold}{RGB}{255, 242, 204}
 \definecolor{apppurple}{RGB}{230, 224, 236}
 \definecolor{appborder}{RGB}{112, 48, 160}
+\definecolor{algogreen}{RGB}{226, 240, 217}
+\definecolor{algoborder}{RGB}{84, 130, 53}
 
 % =====================================================================================
 % 超链接徽章宏定义 (双向绑定图表与表格)
@@ -31,17 +33,17 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\textbf{嵌入式 Linux 跨部门协同研发与调试工程流程规范}}
-\fancyhead[R]{\textbf{Ver 1.0}}
+\fancyhead[R]{\textbf{Ver 2.1 (集成算法组与风险评估版)}}
 \fancyfoot[C]{\thepage}
 
 \begin{document}
 
 % =====================================================================================
-% PAGE 1: 流程图 (保留原版 4行 S-Curve 拓扑布局)
+% PAGE 1: 流程图 (保留原版 4行 S-Curve 拓扑布局 + 3.5层算法节点)
 % =====================================================================================
 \begin{center}
     {\Large \textbf{\color{themeblue} 嵌入式 Linux 软硬件全周期协同研发与调试流程}} \\[0.2em]
-    {\scriptsize \textbf{参与团队：} 硬件(EE)组、FPGA组、ARM组、测试(QA)组 \\ 
+    {\scriptsize \textbf{参与团队：} 硬件(EE)组、FPGA组、ARM组、算法(Algo)组、测试(QA)组 \\ 
     \textit{*提示：点击图表或表格中的 \bdg{1} 红色标号，可实现双向超链接跳转。}}
 \end{center}
 
@@ -57,18 +59,19 @@
     process/.style={rectangle, rounded corners=2pt, minimum width=2.4cm, minimum height=0.85cm, fill=themelightblue, draw=themeblue, line width=0.8pt, font=\scriptsize},
     gate/.style={diamond, aspect=1.9, minimum width=2.5cm, minimum height=0.85cm, fill=gategold, draw=orange!90!black, line width=0.8pt, font=\scriptsize\bfseries},
     appnode/.style={rectangle, rounded corners=2pt, minimum width=2.4cm, minimum height=0.85cm, fill=apppurple, draw=appborder, line width=0.8pt, font=\scriptsize},
+    algonode/.style={rectangle, rounded corners=2pt, minimum width=2.4cm, minimum height=0.85cm, fill=algogreen, draw=algoborder, line width=0.8pt, font=\scriptsize},
     feedback/.style={rectangle, rounded corners=2pt, fill=red!10, draw=alertred, line width=0.8pt, font=\tiny\bfseries}
 ]
 
     % ----------------- ROW 1: 硬件设计与联合评估 (向右 ->) -----------------
     \node (start)       at (0, 0)      [startstop] {\bdg{1} 需求与任务书\\[-1pt]\tiny 软硬件同步输入};
     \node (ee_audit)    at (4.5, 0)    [gate]      {\bdg{2} 硬件(EE)选型\\[-1pt]\tiny 驱动/Pinmux审查};
-    \node (fpga_audit)  at (9.0, 0)    [gate, dashed]      {\bdg{3} [可选] FPGA协议\\[-1pt]\tiny 行宽/时序对齐};
+    \node (fpga_audit)  at (9.0, 0)    [gate, dashed]      {\bdg{3} [可选] FPGA/MCU协议\\[-1pt]\tiny 软/硬/算法联合审查};
     \node (sch_pcb)     at (13.5, 0)   [process]   {\bdg{4} 原理图与 Layout\\绘制及联合评审};
 
     % Row 1 专用报错节点
     \node (ee_reject)   at (2.25, 1.6)  [feedback] {驳回选型\\EE组重新选型};
-    \node (fpga_reject) at (6.75, 1.6)  [feedback] {驳回协议\\FPGA重新协商};
+    \node (fpga_reject) at (6.75, 1.6)  [feedback] {驳回协议\\重新协商制订};
 
     % ----------------- ROW 2: 底层与中间件 Bring-up (向左 <-) -----------------
     \node (pcba_fab)    at (13.5, -2.8) [process]   {\bdg{5} PCBA 打样贴片\\与阻抗初检};
@@ -80,18 +83,20 @@
     \node (ecn_fix)     at (16.2, -1.4) [feedback] {硬件 ECN 变更\\改板重新打样};
 
     % ----------------- ROW 3: 上层业务开发与黑盒测试 (向右 ->) -----------------
-    \node (app_ui)      at (0, -5.6)    [appnode]   {\bdg{9} 应用与 UI 开发\\(ARM组)};
+    \node (app_ui)      at (0, -5.6)    [appnode]   {\bdg{9.1} 应用与 UI 开发\\(ARM组)};
     \node (board_screen)at (4.5, -5.6)  [process]   {\bdg{10} 板筛固件与大纲\\(产测准备)};
     \node (qa_test)     at (9.0, -5.6)  [gate]      {\bdg{11} 黑盒集成测试\\(QA测试组)};
     \node (ess_test)    at (13.5, -5.6) [gate]      {\bdg{12} 环境应力筛选\\高低温/振动压测};
 
-    % Row 3 专用报错节点 (内部逻辑报错置于 Y=-4.2 夹层)
-    \node (api_reject)  at (-2.6, -4.2) [feedback] {API 不匹配\\ARM组修正驱动};
+    % ----------------- ROW 3.5: 算法集成专属层 -----------------
+    \node (algo_int)    at (0, -7.5)    [algonode]  {\bdg{9.2} 算法集成\\(算法组)};
+
+    % 内部逻辑报错置于专属夹层 (Y=-4.2 与 Y=-8.6)
     \node (bug_fix)     at (4.5, -4.2)  [feedback] {测试Bug修复\\[-1pt]\tiny 版本迭代优化};
-    \node (ess_fail)    at (6.75, -7.0) [feedback] {温漂/底层崩溃\\触发硬件/ARM回溯};
+    \node (ess_fail)    at (6.75, -8.6) [feedback] {温漂/底层崩溃\\触发硬件/ARM回溯};
 
     % ----------------- ROW 4: 资料归档 -----------------
-    \node (archiving)   at (13.5, -8.4) [startstop] {\bdg{13} 资料归档转产\\(SDK/BOM/SOP)};
+    \node (archiving)   at (13.5, -9.8) [startstop] {\bdg{13} 资料归档转产\\(SDK/BOM/SOP)};
 
     % ================= 连线逻辑 (Strictly Manhattan Orthogonal Routing) =================
     
@@ -108,42 +113,42 @@
     \draw [->, line width=0.8pt] (hw_bringup.west) -- node[above=1pt, font=\tiny\bfseries] {时序正常} (bsp_os.east);
     \draw [->, line width=0.8pt] (bsp_os.west) -- node[above=1pt, font=\tiny\bfseries] {系统点亮} (driver_fpga.east);
 
-    % Transition Row 2 -> Row 3
-    \draw [->, line width=0.8pt] ([xshift=-5pt]driver_fpga.south) -- node[left=1pt, font=\tiny\bfseries] {API 就绪} ([xshift=-5pt]app_ui.north);
+    % Transition Row 2 -> Row 3 (API就绪与反向需求修改)
+    \draw [->, line width=0.8pt] ([xshift=-8pt]app_ui.north) -- node[left=1pt, font=\tiny\bfseries] {按需修改API/协议} ([xshift=-8pt]driver_fpga.south);
+    \draw [->, line width=0.8pt] ([xshift=8pt]driver_fpga.south) -- node[right=1pt, font=\tiny\bfseries] {API 就绪} ([xshift=8pt]app_ui.north);
 
     % --- Main Flow: Row 3 (L->R) ---
     \draw [->, line width=0.8pt] (app_ui.east) -- node[above=1pt, font=\tiny\bfseries] {业务调通} (board_screen.west);
     \draw [->, line width=0.8pt] (board_screen.east) -- node[above=1pt, font=\tiny\bfseries] {大纲定版} (qa_test.west);
     \draw [->, line width=0.8pt] (qa_test.east) -- node[above=1pt, font=\tiny\bfseries] {用例通过} (ess_test.west);
 
+    % Transition Row 3.5 (算法集成)
+    \draw [<->, line width=0.8pt] (app_ui.south) -- node[right=1pt, font=\tiny\bfseries] {集成 .h/.so} (algo_int.north);
+
     % Transition Row 3 -> Row 4
     \draw [->, line width=0.8pt] ([xshift=5pt]ess_test.south) -- node[right=1pt, font=\tiny\bfseries] {压测通过} ([xshift=5pt]archiving.north);
 
     % ================= 异常驳回路径 (Red Orthogonal Lines) =================
 
-    % FB1: EE Reject (Top clear space)
+    % FB1: EE Reject
     \draw [->, line width=0.8pt, color=alertred] ([xshift=-5pt]ee_audit.north) |- (ee_reject.east);
     \draw [->, line width=0.8pt, color=alertred] (ee_reject.west) -| (start.north);
 
-    % FB2: FPGA Reject (Top clear space, lower level than FB1)
+    % FB2: FPGA/MCU Reject
     \draw [->, line width=0.8pt, color=alertred] (fpga_audit.north) |- (fpga_reject.east);
     \draw [->, line width=0.8pt, color=alertred] (fpga_reject.west) -| ([xshift=5pt]ee_audit.north);
 
-    % FB3: Hardware ECN (Far Right Margin Highway)
+    % FB3: Hardware ECN
     \draw [->, line width=0.8pt, color=alertred] ([xshift=5pt]hw_bringup.south) -- +(0, -0.6) -| (ecn_fix.south);
     \draw [->, line width=0.8pt, color=alertred] (ecn_fix.north) |- (sch_pcb.east);
 
-    % FB4: API Mismatch (Far Left Margin Highway)
-    \draw [->, line width=0.8pt, color=alertred] (app_ui.west) -| (api_reject.south);
-    \draw [->, line width=0.8pt, color=alertred] (api_reject.north) |- ([yshift=-5pt]driver_fpga.west);
-
-    % FB5: QA Bug Fix (Inner Horizontal Highway between Row 2 & 3)
+    % FB4: QA Bug Fix
     \draw [->, line width=0.8pt, color=alertred] ([xshift=-5pt]qa_test.north) |- (bug_fix.east);
-    \draw [->, line width=0.8pt, color=alertred] (bug_fix.west) -| ([xshift=5pt]app_ui.north);
+    \draw [->, line width=0.8pt, color=alertred] (bug_fix.west) -| ([xshift=10pt]app_ui.north);
 
-    % FB6: ESS Environmental Failure (Bottom horizontal run back to Left Margin)
+    % FB5: ESS Environmental Failure (走底部的 Y=-8.6 水平通道)
     \draw [->, line width=0.8pt, color=alertred] ([xshift=-5pt]ess_test.south) |- (ess_fail.east);
-    \draw [->, line width=0.8pt, color=alertred] (ess_fail.west) -- (-3.6, -7.0) |- ([yshift=5pt]driver_fpga.west);
+    \draw [->, line width=0.8pt, color=alertred] (ess_fail.west) -- (-3.6, -8.6) |- ([yshift=5pt]driver_fpga.west);
 
 \end{tikzpicture}
 }
@@ -151,7 +156,7 @@
 
 \newpage
 % =====================================================================================
-% PAGE 2: 质量控制表 (表1：依赖与控制逻辑 | 表2：输出与规范约束)
+% PAGE 2: 质量控制表 (表1：依赖与控制逻辑 | 表2：输出与规范约束 + 潜在风险)
 % =====================================================================================
 
 \begin{center}
@@ -167,19 +172,20 @@
 \toprule
 \textbf{序号} & \textbf{所处节点} & \textbf{前置依赖与输入项 (Inputs)} & \textbf{核心技术动作 (Actions)} & \textbf{质量门禁与驳回机制 (Gates \& Goto)} \\ 
 \midrule
-\tabbdg{1} & 需求与任务书 & PM下发《产品设计定义》、《软件设计需求说明书》等源文档。 & 软、硬件同步并行分解需求，划定架构边界与算力需求。 & 若硬件预算或选项无法承载软件业务，则驳回重新评估立项。 \\
-\tabbdg{2} & 硬件(EE)选型 & EE 组输出初步芯片方案与引脚分配 & ARM 组同步评估核心元器件的生态体系与内核驱动支持度，以及 SDK 厂家的技术支持。 & 核心芯片须具备稳定主线驱动以及原厂技术支持；否则一票否决驳回 EE 重选 \\
-\tabbdg{3} & FPGA协议 & 依赖传感器/外设接口硬件选型 (可选节点) & 联合 FPGA 制定 DVP/MIPI 协议，约定数据打包格式 & 确认物理行宽对齐；若 VSYNC 相位裕量不足则驳回重配 \\
-\tabbdg{4} & 原理图与 Layout & EE 组需要向 ARM 组输出完整的 PDF 原理图。 & 跨部门审查 Pinmux 复用冲突、电源轨带载能力与信号阻抗 & 核心引脚严禁冲突；电源时序裕量 $\ge 20\%$；否则驳回改图 \\
-\tabbdg{5} & PCBA 打样贴片 & 依赖 Layout 定版工程文件及 BOM 表 & EE 组排查空板阻抗与短路；SMT 贴片加工及首件目检 & 焊接无虚焊、连锡；基本阻抗测试通过即可交接 \\
-\tabbdg{6} & 裸板硬件上电 & 依赖首件 PCBA 实物产出 & 示波器测量 PMIC 上电时序、晶振频偏及复位信号 & 供电纹波合格；若时序严重错乱或存在大面积短路，触发 ECN \\
-\tabbdg{7} & SPL/Kernel 启动 & 依赖硬件核心电源树时序正常，且主频晶振起振 & ARM 组移植 U-Boot，标定 DDR，适配 DTS 并挂载 RootFS & DDR 压测零报错；内核无 Oops/Panic；保障串口台交互正常 \\
-\tabbdg{8} & 外设/FPGA 联调 & 依赖底层系统点亮，文件系统环境搭建完毕 & 调试 DRM 显示引擎、I2C 外设，解析 FPGA 原始图像流 & 图像无撕裂/丢帧；向下提供稳定 API；否则底层重新修正时序 \\
-\tabbdg{9} & 应用与 UI 开发 & 依赖 ARM 组内部底层驱动提供的高层 API 接口 & 基于 API 开发业务控制流、数据流闭环与前端图形交互界面 & 业务逻辑闭环；若接口抛出异常或吞吐率不达标，驳回修正底层 \\
-\tabbdg{10} & 板筛固件与大纲 & 依赖基础业务逻辑打通，各项外设功能可控可达 & 编写覆盖外设全要素的自动化板级自检固件与测试大纲 & 产测项覆盖率需达 100\%；具备量产车间一键 PASS/FAIL 判定 \\
-\tabbdg{11} & 黑盒集成测试 & 依赖板筛固件冻结及《测试大纲》审查完成 & QA 测试组独立介入，执行边界压测、黑盒功能及 UI 健壮性验证 & P0/P1 用例全部通过；若发生死机或严重交互错误，驳回修复 Bug \\
-\tabbdg{12} & 环境应力(ESS) & 依赖 QA 组集成功能测试全量验证通过 & 温箱执行 $-40^\circ\mathrm{C}\sim+85^\circ\mathrm{C}$ 冷热重启与 72h 极限拷机 & 极限温区无亚稳态现象；发生硬死机则触发软硬件底层联合回溯 \\
-\tabbdg{13} & 资料归档转产 & 依赖可靠性 ESS 压测报告结论合格 & 工程资料（源码 Tag/PCB 图纸/SOP 脚本）合入主干并全面冻结 & 软硬件版本号强绑定；各部门文档签署齐备；正式流转进入量产 \\
+\tabbdg{1} & 需求与任务书 & PM下发《产品设计定义》、《软件设计需求说明书》等。 & 软、硬件同步并行分解需求，划定架构边界与算力需求。 & 若硬件选项无法承载软件业务，驳回重新评估立项。 \\
+\tabbdg{2} & 硬件(EE)选型 & EE 组输出初步芯片方案与引脚分配。 & ARM 组同步评估核心元器件生态体系与驱动支持度。 & 芯片须具备稳定主线驱动及原厂支持；否则一票否决重选。 \\
+\tabbdg{3} & FPGA/MCU协议 & 依赖传感器/外设接口硬件选型 (可选节点)。 & 联合 FPGA/算法组 制定控制逻辑与通信协议。 & 确认逻辑完备；若时序相位或控制流有缺陷则驳回重配。 \\
+\tabbdg{4} & 原理图 Layout& EE 组需向 ARM 组输出完整的 PDF 原理图。 & 跨部门审查 Pinmux 冲突、电源轨带载能力与信号阻抗。 & 核心引脚严禁冲突；电源时序裕量 $\ge 20\%$；否则驳回改图。 \\
+\tabbdg{5} & PCBA 打样贴片 & 依赖 Layout 定版工程文件及 BOM 表。 & EE 组排查空板阻抗与短路；SMT 贴片加工及首件目检。 & 焊接无虚焊、连锡；基本阻抗测试通过即可交接。 \\
+\tabbdg{6} & 裸板硬件上电 & 依赖首件 PCBA 实物产出。 & 示波器测量 PMIC 上电时序、晶振频偏及复位信号。 & 供电纹波合格；若时序严重错乱或存在短路，触发 ECN。 \\
+\tabbdg{7} & SPL/Kernel启动 & 依赖硬件核心电源树时序正常，且主频晶振起振。 & ARM 组移植 U-Boot，标定 DDR，适配 DTS 并挂载 RootFS。 & DDR 压测零报错；内核无 Oops/Panic；保障串口台交互正常。 \\
+\tabbdg{8} & 外设/FPGA联调& 依赖底层系统点亮，文件系统环境搭建完毕。 & 调试 DRM/I2C 等外设，按需响应算法组的底层修改要求。 & 图像无撕裂；提供稳定 API；否则底层重新修正时序/协议。 \\
+\tabbdg{9.1} & 应用与UI开发 & 依赖 ARM 底层提供的高层 API 及算法组的动态库。 & 基于 API 与 .so 库开发业务控制流、数据流与图形界面。 & 业务逻辑闭环；若接口抛出异常或吞吐率不达标，驳回修正底层。 \\
+\tabbdg{9.2} & 算法集成 & 依赖算法组提供的 `.h` 头文件及 `.so` 跨平台编译库。 & ARM 组与算法组联合执行内存映射、硬件算力加速及逻辑集成。 & 算法耗时与内存必须达标；否则算法组需配合联调优化。 \\
+\tabbdg{10} & 板筛固件大纲 & 依赖基础业务逻辑打通，各项外设功能可控可达。 & 编写覆盖外设全要素的自动化板级自检固件与测试大纲。 & 产测项覆盖率需达 100\%；具备量产车间一键 PASS/FAIL。 \\
+\tabbdg{11} & 黑盒集成测试 & 依赖板筛固件冻结及《测试大纲》审查完成。 & QA 组独立执行边界压测、黑盒功能及 UI 健壮性验证。 & P0/P1 用例全部通过；若发生死机或严重错误，驳回修复 Bug。 \\
+\tabbdg{12} & 环境应力(ESS)& 依赖 QA 组集成功能测试全量验证通过。 & 温箱执行 $-40^\circ\mathrm{C}\sim+85^\circ\mathrm{C}$ 冷热重启与 72h 极限拷机。 & 极限温区无亚稳态现象；发生硬死机则触发软硬件底层联合回溯。 \\
+\tabbdg{13} & 资料归档转产 & 依赖可靠性 ESS 压测报告结论合格。 & 工程资料（源码 Tag/PCB 图纸/SOP 脚本）合入主干并冻结。 & 软硬件版本号强绑定；各部门文档签署齐备；流转进入量产。 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -187,31 +193,32 @@
 \vspace{0.4cm}
 
 \begin{center}
-    {\large \textbf{\color{themeblue} 表 2：标准化研发输出交付件与规范约束清单}}
+    {\large \textbf{\color{themeblue} 表 2：标准化研发输出交付件与潜在风险评估矩阵}}
 \end{center}
 \vspace{-0.2cm}
 
 \begin{table}[!ht]
 \centering
 \scriptsize
-\renewcommand{\arraystretch}{1.25}
-\begin{tabularx}{\linewidth}{@{} c l l X @{}}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{@{} c l l X X @{}}
 \toprule
-\textbf{序号} & \textbf{所处节点} & \textbf{标准输出交付件 (Deliverables)} & \textbf{说明 (Notes)} \\ 
+\textbf{序号} & \textbf{所处节点} & \textbf{输出交付件} & \textbf{说明约束 (Constraints)} & \textbf{潜在风险 (Potential Risks)} \\ 
 \midrule
-\tabbdg{1} & 需求与任务书 & 《软件设计架构与功能》 & 明确软件的具体架构与功能逻辑，后续代码实施阶段\textbf{不承接}较大内容变更。 \\
-\tabbdg{2} & 硬件(EE)选型 & 《软硬件选型评估表》 & \textbf{对内：}先作基础输出约束要求，后续视项目推进情况与复杂度，逐步新增审查项。 \\
-\tabbdg{3} & FPGA协议 & 《FPGA接口传输协议书》 & 仅在带有自研 FPGA 图像/信号前置处理的项目中输出；非必选项。 \\
-\tabbdg{4} & 原理图 Layout & 《Layout 文件》、《硬件设计评审表》 & 需引入内部 Checklist 机制逐一勾兑引脚定义，避免人为低级错漏。 \\
-\tabbdg{5} & PCBA 贴片 & 《首件打样检验记录》 & 详细记录初级加工工艺缺陷，防范批量转产阶段的 SMT 生产事故。 \\
-\tabbdg{6} & 裸板硬件上电 & 《上电确认记录》、《\textcolor{alertred}{\textbf{故障案例记录}}》 & \textbf{经验库：}通过《故障案例记录》持续积累裸板联调经验，为后续产品研制提供支持。 \\
-\tabbdg{7} & SPL/Kernel 启动 & 《底层 BSP 调试报告》 & 附带内存物理分布映射图 (Memory Map) 与系统核心启动时序耗时分析。 \\
-\tabbdg{8} & 外设/FPGA 联调 & 《外设驱动 Patch 集》、《API 接口手册》 & 软硬件接口定义文档必须随内核代码同步更新，严禁纯口头对接与联调。 \\
-\tabbdg{9} & 应用与 UI 开发 & 《应用软件 Release/Debug 镜像》 & 需同步提供带符号表的 Debug 版供 QA 定位问题，及用于实际出货的 Release 版。 \\
-\tabbdg{10} & 板筛固件与大纲 & 《定版板筛大纲》、《自动化产测固件》 & 提供给生产线与装配车间使用的操作级 SOP，有效降低产线工人的判断门槛。 \\
-\tabbdg{11} & 黑盒集成测试 & 《集成测试 Bug 追踪单/回归报告》 & 包含全面详实的版本迭代优化、回归测试记录与遗留已知问题（Known Issues）清单。 \\
-\tabbdg{12} & 环境应力(ESS) & 《可靠性压测及失效分析报告》 & 需提供温箱运行实时监控曲线截图，以及触发死机时的 Kernel Dump 日志分析结论。 \\
-\tabbdg{13} & 资料归档转产 & 《转产 Release 完整工程包》 & 软、硬、机结构图纸大一统，正式进入受控文件服务器，项目研发流程闭环。 \\
+\tabbdg{1} & 需求与任务书 & 《软件设计架构与功能》 & 明确具体架构逻辑，后续代码实施阶段\textbf{不承接}大范围变更。 & 需求变更频繁导致架构被推翻，严重影响整体研制进度。 \\
+\tabbdg{2} & 硬件(EE)选型 & 《软硬件选型评估表》 & 对内：先作基础输出约束要求，后续视推进情况逐步新增审查项。 & 核心元器件缺货，或缺少原厂/开源社区的技术与驱动支持。 \\
+\tabbdg{3} & FPGA/MCU协议 & 《FPGA接口传输协议书》 & 仅在带有 FPGA/MCU 前置处理的项目中联合算法组输出。 & \textbf{算法组认为电机控制逻辑需补充，导致后端向前端提修改需求，造成返工。} \\
+\tabbdg{4} & 原理图 Layout & 《硬件设计评审表》 & 需引入内部 Checklist 机制逐一勾兑引脚，避免人为低级错漏。 & 高速信号阻抗不匹配或电源平面割裂，导致后期联调通信丢包。 \\
+\tabbdg{5} & PCBA 贴片 & 《首件打样检验记录》 & 记录初级工艺缺陷，防范批量转产阶段的 SMT 生产事故。 & SMT 贴片发生不可见 BGA 虚焊或连锡，导致排查困难。 \\
+\tabbdg{6} & 裸板硬件上电 & 《\textcolor{alertred}{\textbf{故障案例记录}}》 & \textbf{经验库：}持续积累裸板联调经验，为后续产品研制提供支持。 & 电源时序错乱或关键网络短路，导致一上电即烧毁核心 SoC。 \\
+\tabbdg{7} & SPL/Kernel启动 & 《底层 BSP 调试报告》 & 附带 Memory Map 与系统核心启动时序耗时分析。 & DDR 标定不稳定，导致在后续的高低温环境下出现随机死机。 \\
+\tabbdg{8} & 外设/FPGA联调 & 《API 接口手册》 & 接口定义文档必须随内核代码同步更新，严禁纯口头联调。 & 外设中断冲突、I2C 时钟超频，或总线实际带宽无法满足图像吞吐。 \\
+\tabbdg{9.1}& 应用与UI开发 & 《应用软件 Release镜像》 & 同步提供带符号表的 Debug 版供 QA 定位问题及量产的 Release 版。 & 多线程抢占导致 UI 阻塞卡顿，或发生隐蔽的长期内存泄漏。 \\
+\tabbdg{9.2}& 算法集成 & 算法调用 Demo 及说明 & 明确算法初始化的上下文及多核/NPU资源占用预估。 & 算法 `.so` 库的交叉编译工具链不兼容，或算力消耗远超硬件瓶颈。 \\
+\tabbdg{10} & 板筛固件大纲 & 《自动化产测固件》 & 提供给装配车间使用的操作级 SOP，降低工人的判断门槛。 & 产测大纲存在外设漏测项，导致不良品流入终端客户或组装环节。 \\
+\tabbdg{11} & 黑盒集成测试 & 《集成 Bug 回归追踪单》 & 包含版本迭代优化记录与遗留已知问题（Known Issues）清单。 & 边界条件触发极低概率的偶发 Bug，导致难以复现与快速修复。 \\
+\tabbdg{12} & 环境应力(ESS) & 《可靠性失效分析报告》 & 提供温箱运行实时监控截图及触发死机时的 Dump 日志结论。 & 硬件晶振随温漂发生频偏导致硬死机，引发软硬件各组责任扯皮。 \\
+\tabbdg{13} & 资料归档转产 & 《转产 Release 工程包》 & 软、硬、结构图纸大一统，正式进入受控系统，研发流程闭环。 & 软硬件版本强绑定管理混乱，导致试产期间产线烧录了错误固件。 \\
 \bottomrule
 \end{tabularx}
 \end{table}
