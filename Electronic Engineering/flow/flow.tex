@@ -63,7 +63,7 @@
     % ----------------- ROW 1: 硬件设计与联合评估 (向右 ->) -----------------
     \node (start)       at (0, 0)      [startstop] {\bdg{1} 软件设计需求\\(Sys/App/UI)};
     \node (ee_audit)    at (4.5, 0)    [gate]      {\bdg{2} 硬件(EE)选型\\驱动/Pinmux审查};
-    \node (fpga_audit)  at (9.0, 0)    [gate]      {\bdg{3} [可选] FPGA协议\\行宽/时序对齐};
+    \node (fpga_audit)  at (9.0, 0)    [gate, dashed]      {\bdg{3} [可选] FPGA协议\\行宽/时序对齐};
     \node (sch_pcb)     at (13.5, 0)   [process]   {\bdg{4} 原理图与 Layout\\绘制及联合评审};
 
     % Row 1 专用报错节点
