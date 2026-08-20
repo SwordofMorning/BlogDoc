@@ -207,12 +207,12 @@
 \midrule
 \tabbdg{1} & 需求与任务书 & 《软件设计架构与功能》 & 明确具体架构逻辑，后续代码实施阶段\textbf{不承接}大范围变更。 & 需求变更频繁导致架构被推翻，严重影响整体研制进度。 \\
 \tabbdg{2} & 硬件(EE)选型 & 《软硬件选型评估表》 & 先作基础输出约束要求，后续视推进情况逐步新增审查项。 & 核心元器件缺货，或缺少原厂/开源社区的技术与驱动支持。 \\
-\tabbdg{3} & FPGA/MCU协议 & 《FPGA接口传输协议书》 & 仅在带有 FPGA/MCU 前置处理的项目中联合算法组输出。 & \textbf{算法组认为电机控制逻辑需补充，导致后端向前端提修改需求，造成返工。} \\
+\tabbdg{3} & FPGA/MCU协议 & 《FPGA接口传输协议书》\cite{ref:protocol} & 仅在带有 FPGA/MCU 前置处理的项目中联合算法组输出。 & \textbf{算法组认为电机控制逻辑需补充，导致后端向前端提修改需求，造成返工。} \\
 \tabbdg{4} & 原理图 Layout & 《硬件设计评审表》 & 需引入内部 Checklist 机制逐一勾兑引脚，避免人为低级错漏。 & 高速信号阻抗不匹配或电源平面割裂，导致后期联调通信丢包。 \\
 \tabbdg{5} & PCBA 贴片 & 《首件打样检验记录》 & 记录初级工艺缺陷，防范批量转产阶段的 SMT 生产事故。 & SMT 贴片发生不可见 BGA 虚焊或连锡，导致排查困难。 \\
-\tabbdg{6} & 裸板硬件上电 & 《故障案例记录》 & 持续积累裸板联调经验，为后续产品研制提供支持。 & 电源时序错乱或关键网络短路，导致一上电即烧毁核心 SoC。 \\
-\tabbdg{7} & Kernel启动 & 《系统设计指南》 & 附带 Memory Map 与系统核心启动时序耗时分析。 & DDR 标定不稳定，导致在后续的高低温环境下出现随机死机。 \\
-\tabbdg{8} & 外设/FPGA联调 & 《系统设计指南》 & 接口定义文档必须随内核代码同步更新，严禁纯口头联调。 & 外设中断冲突、I2C 时钟超频，或总线实际带宽无法满足图像吞吐。 \\
+\tabbdg{6} & 裸板硬件上电 & 《故障案例记录》 & \textbf{经验库：}持续积累裸板联调经验，为后续产品研制提供支持。 & 电源时序错乱或关键网络短路，导致一上电即烧毁核心 SoC。 \\
+\tabbdg{7} & SPL/Kernel启动 & 《系统设计指南》\cite{ref:sysguide} & 附带 Memory Map 与系统核心启动时序耗时分析。 & DDR 标定不稳定，导致在后续的高低温环境下出现随机死机。 \\
+\tabbdg{8} & 外设/FPGA联调 & 《系统设计指南》\cite{ref:sysguide} & 接口定义文档必须随内核代码同步更新，严禁纯口头联调。 & 外设中断冲突、I2C 时钟超频，或总线实际带宽无法满足图像吞吐。 \\
 \tabbdg{9.1}& 应用与UI开发 & 《应用软件 Release镜像》 & 同步提供带符号表的 Debug 版供 QA 定位问题及量产的 Release 版。 & 多线程抢占导致 UI 阻塞卡顿，或发生隐蔽的长期内存泄漏。 \\
 \tabbdg{9.2}& 算法集成 & 算法调用 Demo 及说明 & 明确算法初始化的上下文及多核/NPU资源占用预估。 & 算法 `.so` 库的交叉编译工具链不兼容，或算力消耗远超硬件瓶颈。 \\
 \tabbdg{10} & 板筛固件大纲 & 《自动化产测固件》 & 提供给装配车间使用的操作级 SOP，降低工人的判断门槛。 & 产测大纲存在外设漏测项，导致不良品流入终端客户或组装环节。 \\
@@ -223,7 +223,22 @@
 \end{tabularx}
 \end{table}
 
-% 《系统设计指南》，参考《VS8x9 系统指南》，vs8x9_sysguide.pdf
-% 《FPGA接口传输协议书》，参考《HTQ15-L DVP传输协议规范》，protocol.pdf
+\newpage
+% =====================================================================================
+% PAGE 3: 参考资料 (References)
+% =====================================================================================
+
+\renewcommand{\refname}{\large \textbf{\color{themeblue} 参考资料 (References)}}
+
+\begin{thebibliography}{99}
+    \addcontentsline{toc}{section}{参考资料}
+    
+    \bibitem{ref:sysguide}
+    \href{run:vs8x9_sysguide.pdf}{\textcolor{blue}{\underline{\textit{VS8x9 系统指南 (Ver 1.2)}}}} [R]. 2025-10-13.
+    
+    \bibitem{ref:protocol}
+    \href{run:protocol.pdf}{\textcolor{blue}{\underline{\textit{HTQ15-L DVP 传输协议规范 (HTQ15-L DVP Protocol Specification, Ver 1.1)}}}} [R]. 适用平台: Rockchip RK3588 / HTQ15-L. 2026-01-19.
+
+\end{thebibliography}
 
 \end{document}
