@@ -1,23 +1,23 @@
 function crc_value = crc16(data, varargin)
-    % CRC16计算器 - 基于给定的C代码实现
-    % 输入: 
-    %   data - 数据数组（可以是十进制数组或十六进制字符串）
-    %   varargin - 可选参数，'hex'表示输入是十六进制字符串
-    % 输出: 
-    %   crc_value - 16位CRC值
+    % CRC16 calculation - MATLAB implementation matching C code
+    % Inputs: 
+    %   data     - Input array (numeric or hex string)
+    %   varargin - Optional parameter 'hex' indicates input is hex string
+    % Outputs: 
+    %   crc_value - 16-bit CRC value
     
-    % 处理输入参数
+    % Process input arguments
     if nargin > 1 && strcmp(varargin{1}, 'hex')
-        % 输入是十六进制字符串，转换为数组
+        % Convert hexadecimal string to byte array
         if ischar(data)
-            % 移除可能的空格和0x前缀
+            % Remove spaces and 0x/0X prefixes
             data = strrep(data, ' ', '');
             data = strrep(data, '0x', '');
             data = strrep(data, '0X', '');
             
-            % 转换为字节数组
+            % Check for even character length
             if mod(length(data), 2) ~= 0
-                error('十六进制字符串长度必须是偶数');
+                error('Hex string length must be even.');
             end
             
             byte_array = [];
@@ -29,40 +29,40 @@ function crc_value = crc16(data, varargin)
         end
     end
     
-    % 算法常量
-    POLY = hex2dec('8408');  % 0x8408，多项式0x1021的位反转
+    % Algorithm configuration
+    POLY = hex2dec('8408');  % 0x8408 (bit-reversed polynomial of 0x1021)
     
-    % 初始化
-    crc = hex2dec('ffff');   % 0xFFFF
+    % Initialization
+    crc = hex2dec('ffff');   % Initial value 0xFFFF
     length_data = length(data);
     
-    % 如果数据长度为0，直接返回初始CRC
+    % Return initial CRC if data length is zero
     if length_data == 0
         crc_value = crc;
         return;
     end
     
-    % 主循环 - 处理每个字节
+    % Outer loop - process each byte
     for byte_idx = 1:length_data
-        % 获取当前字节并确保在0-255范围内
+        % Get current byte and mask to 0-255 range
         current_byte = bitand(data(byte_idx), hex2dec('ff'));
         
-        % 处理当前字节的每一位（从LSB开始）
+        % Process each bit starting from LSB
         for bit_idx = 0:7
-            % 提取CRC的LSB和数据的当前位
+            % Get LSB of CRC and current bit of data
             crc_lsb = bitand(crc, 1);
             data_bit = bitand(current_byte, 1);
             
-            % 检查是否需要与多项式异或
+            % Check if polynomial XOR is required
             if bitxor(crc_lsb, data_bit)
-                % CRC右移1位后与多项式异或
+                % Shift CRC right by 1 bit and XOR with polynomial
                 crc = bitxor(bitshift(crc, -1), POLY);
             else
-                % CRC直接右移1位
+                % Shift CRC right by 1 bit
                 crc = bitshift(crc, -1);
             end
             
-            % 数据字节右移1位，准备处理下一位
+            % Shift current byte right by 1 bit for the next iteration
             current_byte = bitshift(current_byte, -1);
         end
     end
